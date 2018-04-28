@@ -6,25 +6,23 @@
    */
 #include <string.h>
 #include "util.h"
-#include "tokens.h"
+#include "absyn.h"
+#include "y.tab.h"
 #include "errormsg.h"
 
 int charPos=1;
 static int commentLevel = 0;
-
 int yywrap(void)
 {
  charPos=1;
  return 1;
 }
 
-
 void adjust(void)
 {
  EM_tokPos=charPos;
  charPos+=yyleng;
 }
-
 %}
 
 %x S_COMMENT
