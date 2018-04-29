@@ -6,14 +6,14 @@ CC = gcc
 CPP_FLAGS = -I include
 VPATH = src include
 OBJS = parsetest.o errormsg.o util.o symbol.o absyn.o table.o y.tab.o lex.yy.o
+
 .PHONY: all
-all: y.tab.c lex.yy.c parsetest.out test
+all: parsetest
 
-test: parsetest.out
-	./$< test.txt 	
-
-parsetest.out: $(OBJS)
-	$(CC) -o $@ $^
+.PHONY: parsetest
+parsetest: $(OBJS)
+	$(CC) -o $@.out $^
+	./$@.out $@.tig
 
 %.o: %.c
 	$(CC) $(CPP_FLAGS) -c -o $@ $<

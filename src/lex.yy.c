@@ -1121,7 +1121,7 @@ YY_RULE_SETUP
 case 52:
 YY_RULE_SETUP
 #line 99 "src/tiger.lex"
-{adjust(); yylval.sval = yytext; return ID;}
+{adjust(); yylval.sval = String(yytext); return ID;}
 	YY_BREAK
 case 53:
 /* rule 53 can match eol */

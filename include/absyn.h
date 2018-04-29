@@ -26,10 +26,9 @@ typedef struct A_nametyList_ *A_nametyList;
 typedef struct A_efield_ *A_efield;
 typedef struct A_efieldList_ *A_efieldList;
 
-// add AND and OR op
 typedef enum {A_plusOp, A_minusOp, A_timesOp, A_divideOp,
 	     A_eqOp, A_neqOp, A_ltOp, A_leOp, A_gtOp, A_geOp, 
-		 A_andOp, A_orOp} A_oper;
+		 } A_oper;
 
 struct A_var_
        {enum {A_simpleVar, A_fieldVar, A_subscriptVar} kind;
@@ -132,7 +131,7 @@ A_ty A_ArrayTy(A_pos pos, S_symbol array);
 A_field A_Field(A_pos pos, S_symbol name, S_symbol typ);
 A_fieldList A_FieldList(A_field head, A_fieldList tail);
 A_expList A_ExpList(A_exp head, A_expList tail);
-//TODO: what's list for
+
 A_fundec A_Fundec(A_pos pos, S_symbol name, A_fieldList params, S_symbol result,
 		  A_exp body);
 A_fundecList A_FundecList(A_fundec head, A_fundecList tail);

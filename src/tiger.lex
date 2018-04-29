@@ -96,7 +96,7 @@ of {adjust(); return OF;}
 nil {adjust(); return NIL;}
 
 [0-9]+	 {adjust(); yylval.ival=atoi(yytext); return INT;}
-[A-Za-z][A-Za-z0-9_]* {adjust(); yylval.sval = yytext; return ID;}
+[A-Za-z][A-Za-z0-9_]* {adjust(); yylval.sval = String(yytext); return ID;}
 
 \"(\\.|[^\\"])*\" {
   adjust();

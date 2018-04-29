@@ -88,7 +88,8 @@ extern int yydebug;
     FUNCTION = 298,
     VAR = 299,
     TYPE = 300,
-    UMINUS = 301
+    LPREC = 301,
+    UMINUS = 302
   };
 #endif
 /* Tokens.  */
@@ -135,14 +136,15 @@ extern int yydebug;
 #define FUNCTION 298
 #define VAR 299
 #define TYPE 300
-#define UMINUS 301
+#define LPREC 301
+#define UMINUS 302
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 
 union YYSTYPE
 {
-#line 18 "src/tiger.y" /* yacc.c:1909  */
+#line 16 "src/tiger.y" /* yacc.c:1909  */
 
 	int pos;
 	int ival;
@@ -154,13 +156,15 @@ union YYSTYPE
       A_decList decs;
       A_ty ty;
       A_fieldList tyfields;
-      A_nametyList tydec;
-      A_fundecList fundec;
+      A_field tyfield;
+      A_nametyList tydecs;
+      A_namety tydec;
+      A_fundecList fundecs;
+      A_fundec fundec;
       A_efieldList recordfields;
-	/* et cetera */
 	
 
-#line 164 "src/y.tab.h" /* yacc.c:1909  */
+#line 168 "src/y.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;
