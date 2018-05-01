@@ -9,6 +9,7 @@
 #include <stdarg.h>
 #include "util.h"
 #include "errormsg.h"
+#include "assert.h"
 
 
 bool anyErrors= FALSE;
@@ -52,7 +53,7 @@ void EM_error(int pos, char *message,...)
   vfprintf(stderr, message, ap);
   va_end(ap);
   fprintf(stderr,"\n");
-
+  assert(0);
 }
 
 void EM_reset(string fname)
