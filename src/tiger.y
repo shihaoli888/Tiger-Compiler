@@ -66,7 +66,7 @@ void yyerror(char *s)
 %type <tydecs> tydecs
 %type <fundec> fundec
 %type <fundecs> fundecs
-%type <recordfields> recordfields
+%type <recordfields> recordfields lrecordfields
 
 %start program
 
@@ -132,8 +132,12 @@ lvalue:     ID                            {$$=A_SimpleVar(EM_tokPos, S_Symbol($1
       |     ID LBRACK exp RBRACK          {$$=A_SubscriptVar(EM_tokPos, A_SimpleVar(EM_tokPos, S_Symbol($1)), $3);}
       ;
 
-recordfields: ID EQ exp                   {$$=A_EfieldList(A_Efield(S_Symbol($1), $3), NULL);}
-            | ID EQ exp COMMA recordfields {$$=A_EfieldList(A_Efield(S_Symbol($1), $3), $5);}
+recordfields: /*empty*/                   {$$=NULL;}
+            | ID EQ exp lrecordfields     {$$=A_EfieldList(A_Efield(S_Symbol($1), $3), $4);}
+            ;
+
+lrecordfields: /*empty*/                  {$$=NULL;}
+            | COMMA ID EQ exp lrecordfields {$$=A_EfieldList(A_Efield(S_Symbol($2), $4), $5);}
             ;
 
  /* declaration */
