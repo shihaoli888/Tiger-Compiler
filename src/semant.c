@@ -243,12 +243,12 @@ struct expty transExp(S_table venv, S_table tenv, A_exp a){
 		if (typ->kind != Ty_array) {
 			EM_error(a->pos, "%s is no array type", S_name(a->u.array.typ));
 		}
-		struct expty e1 = transExp(tenv, venv, a->u.array.size);
-		struct expty e2 = transExp(tenv, venv, a->u.array.init);
+		struct expty e1 = transExp(venv, tenv, a->u.array.size);
+		struct expty e2 = transExp(venv, tenv, a->u.array.init);
 		if ((e1.ty)->kind != Ty_int ) {
 			EM_error(a->pos, "array size must be int");
 		}
-		if ((e2.ty)->kind != typ->u.array) {
+		if (e2.ty != typ->u.array) {
 			EM_error(a->pos, "initializing exp and array type differ");
 		}
 		return expTy(NULL, typ);
