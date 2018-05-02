@@ -44,4 +44,5 @@ Ty_fieldList Ty_FieldList(Ty_field head, Ty_fieldList tail) {
 	Ty_fieldList tmp = checked_malloc(sizeof(*tmp));
 	tmp->head = head;
 	tmp->tail = tail;
+	return tmp;
 }

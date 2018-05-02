@@ -4,7 +4,7 @@
 E_enventry E_VarEntry(Ty_ty ty) {
 	E_enventry tmp = checked_malloc(sizeof(*tmp));
 	tmp->kind = E_varEntry;
-	tmp->u.var = ty;
+	tmp->u.var.ty = ty;
 	return tmp;
 }
 

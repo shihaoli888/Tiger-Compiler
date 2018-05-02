@@ -6,6 +6,7 @@ static S_symbol mksymbol(string name, S_symbol next) {
 	S_symbol s = checked_malloc(sizeof(*s));
 	s->name = name;
 	s->next = next;
+	return s;
 }
 
 #define SYMTABLESIZE 109
@@ -33,6 +34,7 @@ S_symbol S_Symbol(string name) {
 }
 
 string S_name(S_symbol sym) {
+	assert(sym != NULL);
 	return sym->name;
 }
 

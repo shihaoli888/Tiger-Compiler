@@ -3,13 +3,13 @@
 #include "util.h"
 #include "table.h"
 
+typedef struct S_symbol_ *S_symbol;
+
 struct S_symbol_
 {
 	string name;
 	S_symbol next;
 };
-
-typedef struct S_symbol_ *S_symbol;
 
 S_symbol S_Symbol(string name);
 

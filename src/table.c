@@ -5,8 +5,8 @@
 TAB_table TAB_empty(void) {
 	TAB_table tmp = checked_malloc(sizeof(*tmp));
 	tmp->top = NULL;
-	int i;
-	memset(tmp->table, NULL, sizeof(tmp->table[0])*TABSIZE);
+	//int i;
+	memset(tmp->table, 0, sizeof(tmp->table[0])*TABSIZE);
 	return tmp;
 }
 
@@ -14,11 +14,11 @@ void TAB_enter(TAB_table t, void *key, void *value) {
 	int idx = (unsigned int)key %TABSIZE;
 	binder tmp = checked_malloc(sizeof(*tmp));
 	tmp->key = key;
-	tmp->pretop = top;
+	tmp->pretop = t->top;
 	tmp->value = value;
 	tmp->next = t->table[idx];
 	t->table[idx] = tmp;
-	top = key;
+	t->top = key;
 }
 
 void *TAB_look(TAB_table t, void *key) {

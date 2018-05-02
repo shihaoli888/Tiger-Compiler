@@ -24,4 +24,6 @@ Ty_ty actual_ty(Ty_ty typ);
 
 Ty_tyList make_forml_tylist(S_table tenv, A_fieldList alist);
 
+void SEM_transProg(A_exp exp);
+
 #endif // !SEMANT_H
