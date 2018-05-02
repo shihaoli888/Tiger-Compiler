@@ -1,32 +1,6 @@
-let type ty1 = int
-    type ty2 = ty1
-    type ty3 = array of ty2
-    type ty4 = {}
-    type ty5 = {ty4:ty4}
-    type ty6 = {ty4:ty4,ty4:ty4}
-
-    var v1 := "a string"
-    var v2 : ty1 := 8
-
-    type ty6 = {ty4:ty4,ty4:ty4}
-
-    var v3 : ty6 := ty6{ty4= v1}
-    var v4:= ty3[v5]of 0
-    
-    function fun1() = 
-        (if v1 = nil then 0;
-        if v2 = "value" then 0 else 1;
-        v3[v10]:="value";
-        v1 | v2 &(v1; v2) | v1 + v2 * v3 <= v5)
-
-    function fun2(a1: ty1, a2: ty2):ty1= 
-        -v1+800/v3 <> (v3 <= (v3 >= (v3  < (g > j))))
-        
-    
-    in print(v);
-        fun1(fun2(v1),(v1;v2), v3);
-        fun1(fun2(v1), (v1; v2), v3[v4.v1]);
-        while v1 < 1 do ();
-        for v1 := 5 to 7 do (fun2());
-        let var v := 7 in print(v)end
+/* error : variable not array */
+let 
+	var d:=0
+in
+	d[3]
 end
