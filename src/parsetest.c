@@ -27,7 +27,7 @@ int main(int argc, char **argv)
     fprintf(stderr, "usage: a.out filename\n");
     exit(1);
   }*/
-  parse("testcases/test9.tig");
+  parse("testcases/test51.tig");
   printf("Helloworld");
   return 0;
 }
