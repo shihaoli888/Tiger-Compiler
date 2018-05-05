@@ -17,3 +17,10 @@ void *checked_malloc(int n) {
 	}
 	return p;
 }
+
+U_boolList U_BoolList(bool head, U_boolList tail) {
+	U_boolList tmp = checked_malloc(sizeof(*tmp));
+	tmp->head = head;
+	tmp->tail = tail;
+	return tmp;
+}
