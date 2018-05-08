@@ -23,7 +23,7 @@ Temp_tempList Temp_TempList(Temp_temp h, Temp_tempList t) {
 Temp_label Temp_newlabel(void) {
 	char buf[100];
 	sprintf(buf, "L%d", labels++);
-	return Temp_namedlabel(buf);
+	return Temp_namedlabel(String(buf));
 }
 Temp_label Temp_namedlabel(string name) {
 	return S_Symbol(name);
@@ -37,3 +37,11 @@ Temp_labelList Temp_LabelList(Temp_label h, Temp_labelList t) {
 	tmp->tail = t;
 	return tmp;
 }
+
+#ifdef _DEBUG
+
+int getTmpnum(Temp_temp t) {
+	return t->num;
+}
+
+#endif // _DEBUG

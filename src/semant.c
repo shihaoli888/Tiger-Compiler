@@ -545,5 +545,6 @@ F_fragList SEM_transProg(A_exp exp) {
 	Tr_level level = Tr_outmost();
 	Tr_exp breakk = Tr_doneExp();
 	struct expty e = transExp(level, venv, tenv, exp,breakk);
+	Tr_progEntryExit(level, e.exp, NULL);
 	return Tr_getResult();
 }

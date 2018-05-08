@@ -372,7 +372,7 @@ Tr_exp Tr_recordExp(Tr_expList exps, int offsets[], int n) {
 	T_exp mmalloc = F_externalCall(String("malloc"),T_ExpList(T_Const(n*get_wordsize()), NULL));
 	T_stm mov = T_Move(T_Temp(r), mmalloc);
 	int i = 0;
-	for (; exps; exps = exps->tail) {
+	for (; exps; exps = exps->tail,i++) {
 		mov = T_Seq(mov, T_Move(T_Mem(T_Binop(T_plus, T_Temp(r), T_Const(offsets[i] * get_wordsize()))), unEx(exps->head)));
 	}
 	return Tr_Ex(T_Eseq(mov, T_Temp(r)));
@@ -485,6 +485,9 @@ Tr_exp Tr_stringExp(string s) {
 }
 
 Tr_exp Tr_seqExp(Tr_expList seq) {
+	if (seq == NULL) {
+		return Tr_Nx(T_Exp(T_Const(0)));
+	}
 	T_exp h = unEx(seq->head);
 	for (seq = seq->tail; seq; seq = seq->tail) {
 		h = T_Eseq(T_Exp(h), unEx(seq->head));

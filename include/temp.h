@@ -16,4 +16,10 @@ string Temp_labelstring(Temp_label s);
 typedef struct Temp_labelList_ *Temp_labelList;
 struct Temp_labelList_ { Temp_label head; Temp_labelList tail; };
 Temp_labelList Temp_LabelList(Temp_label h, Temp_labelList t);
+
+#ifdef _DEBUG
+int getTmpnum(Temp_temp);
+#endif // _DEBUG
+
+
 #endif // !TEMP_H
