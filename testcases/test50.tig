@@ -1,0 +1,5 @@
+/*correct break*/
+for i:=10 to 20 do (
+	i := i - 1;
+	break
+	)

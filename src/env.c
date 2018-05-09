@@ -1,18 +1,21 @@
 #include "env.h"
 #include "util.h"
 
-E_enventry E_VarEntry(Ty_ty ty) {
+E_enventry E_VarEntry(Tr_access access ,Ty_ty ty) {
 	E_enventry tmp = checked_malloc(sizeof(*tmp));
 	tmp->kind = E_varEntry;
 	tmp->u.var.ty = ty;
+	tmp->u.var.access = access;
 	return tmp;
 }
 
-E_enventry E_FunEntry(Ty_tyList formals, Ty_ty result) {
+E_enventry E_FunEntry(Tr_level level, Temp_label label, Ty_tyList formals, Ty_ty result) {
 	E_enventry tmp = checked_malloc(sizeof(*tmp));
 	tmp->kind = E_funEntry;
 	tmp->u.fun.formals = formals;
 	tmp->u.fun.result = result;
+	tmp->u.fun.label = label;
+	tmp->u.fun.level = level;
 	return tmp;
 }
 

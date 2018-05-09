@@ -6,3 +6,4 @@ unistd.h
 tigerdebug.*
 main.c
 Debug
+/debug_tree.txt
