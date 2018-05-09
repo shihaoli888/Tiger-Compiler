@@ -112,6 +112,7 @@ void parse(string fname)
   EM_reset(fname);
   if (yyparse() == 0) /* parsing worked */{
     fprintf(stderr, "Parsing successful!\n");
+#ifdef _DEBUG
 	F_fragList res = SEM_transProg(absyn_root);
 	F_fragList tmp = res;
 	T_stmList show = NULL;
@@ -122,6 +123,8 @@ void parse(string fname)
 	}
 	FILE* fp = fopen("debug_tree.txt", "w");
 	printStmList(fp, show);
+
+#endif // _DEBUG
   }
   else {
     fprintf(stderr, "Parsing failed\n");
