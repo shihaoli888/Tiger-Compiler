@@ -5,7 +5,7 @@ LEX_FLAGS = -osrc/lex.yy.c
 CC = gcc
 CPP_FLAGS = -I include
 VPATH = src include
-OBJS = parsetest.o errormsg.o util.o symbol.o absyn.o table.o y.tab.o lex.yy.o
+OBJS = parsetest.o errormsg.o util.o symbol.o absyn.o table.o y.tab.o lex.yy.o env.o semant.o types.o 
 
 .PHONY: all
 all: parsetest
