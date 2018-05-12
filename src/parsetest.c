@@ -138,7 +138,9 @@ int main(int argc, char **argv)
     fprintf(stderr, "usage: a.out filename\n");
     exit(1);
   }*/
-  parse("testcases/queens.tig");
-  printf("Helloworld");
+//  parse("testcases/queens.tig");
+//  parse("customtests/func.tig");
+  parse("testcases/test1.tig");
+  printf("Done//:~");
   return 0;
 }

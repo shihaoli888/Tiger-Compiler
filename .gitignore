@@ -1,6 +1,7 @@
 .vs
 .vscode
 .idea
+cmake-build-debug
 *.o
 *.out
 *.d

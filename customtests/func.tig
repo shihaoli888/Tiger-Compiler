@@ -1,0 +1,6 @@
+/* simple func test */
+let
+  function f(a : int) : int = a
+in
+  f(3)
+end
