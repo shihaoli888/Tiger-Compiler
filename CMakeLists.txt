@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.9)
-project(LJZ_TC)
+project(LJZ_TC C)
 
 #set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D_DEBUG")
 
 include_directories(include)
@@ -36,4 +37,4 @@ add_executable(LJZ_TC
         src/y.tab.c
 
         src/parsetest.c
-        )
+        include/canon.h src/canon.c)
