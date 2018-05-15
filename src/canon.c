@@ -2,7 +2,8 @@
 // Created by Zhao Xiaodong on 2018/5/14.
 //
 
-#include <tree.h>
+#include "temp.h"
+#include "tree.h"
 #include "canon.h"
 
 typedef struct expRefList_ *expRefList;
@@ -18,6 +19,7 @@ expRefList ExpRefList(T_exp *exp, expRefList tail) {
     expRefList res = (expRefList) checked_malloc(sizeof(*res));
     res->head = exp;
     res->tail = tail;
+    return res;
 }
 
 struct stmExp {
@@ -75,6 +77,7 @@ static expRefList get_call_reflist(T_exp callExp) {
     while (p_args) {
         p->tail = ExpRefList(&p_args->head, NULL);
         p_args = p_args->tail;
+        p = p->tail;
     }
     return res;
 }
@@ -150,7 +153,7 @@ static struct stmExp do_exp(T_exp exp) {
                     ),
                     exp
             );
-        case T_ESEQ:
+        case T_ESEQ: {
             struct stmExp x = do_exp(exp->u.ESEQ.exp); // 拿到eseq的exp进行转换
             return StmExp(
                     // 新的stm包含了原来的和eseq的stm中的内容
@@ -158,8 +161,9 @@ static struct stmExp do_exp(T_exp exp) {
                             do_stm(exp->u.ESEQ.stm),
                             x.stm
                     ),
-                    exp->u.ESEQ.exp
+                    x.exp
             );
+        }
         case T_CALL:
             return StmExp(
                     reorder(get_call_reflist(exp)),
@@ -239,7 +243,7 @@ static T_stmList linear(T_stm stm, T_stmList right) {
     if (stm->kind == T_SEQ) {
         return linear(stm->u.SEQ.left, linear(stm->u.SEQ.right, right));
     } else {
-        return T_StmList(stm, NULL);
+        return T_StmList(stm, right);
     }
 }
 
