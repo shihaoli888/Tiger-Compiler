@@ -1,0 +1,15 @@
+ EXP(
+  CALL(
+   NAME L2,
+    TEMP t100,
+    CONST 3))
+
+
+ MOVE(
+  TEMP t101,
+  MEM(
+   BINOP(PLUS,
+    TEMP t100,
+    CONST -4)))
+
+

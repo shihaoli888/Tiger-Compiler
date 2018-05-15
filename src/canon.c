@@ -53,6 +53,10 @@ static T_stmList linear(T_stm stm, T_stmList right);
 
 static expRefList get_call_reflist(T_exp callExp);
 
+static C_stmListList start_block(T_stmList stmList, Temp_label done);
+
+static C_stmListList end_block_and_gen_others(T_stmList prevStmList, T_stmList currStmList, Temp_label done);
+
 /*
  * 判断是不是Nop
  */
@@ -247,6 +251,85 @@ static T_stmList linear(T_stm stm, T_stmList right) {
     }
 }
 
+/*
+ * constructor of C_stmListList
+ */
+static C_stmListList C_StmListList(T_stmList head, C_stmListList tail) {
+    C_stmListList res = (C_stmListList) checked_malloc(sizeof(*res));
+    res->head = head;
+    res->tail = tail;
+    return res;
+}
+
+static C_stmListList end_block_and_gen_others(T_stmList prevStmList, T_stmList currStmList, Temp_label done) {
+    if (!currStmList) {
+        // 结束，添加到done的JUMP
+        T_stmList stmList = T_StmList(T_Jump(T_Name(done), Temp_LabelList(done, NULL)), NULL);
+        return end_block_and_gen_others(prevStmList, stmList, done);
+    }
+    if (currStmList->head->kind == T_JUMP || currStmList->head->kind == T_CJUMP) {
+        // 正常的block，结束
+        T_stmList newStmList = currStmList->tail;
+        prevStmList->tail = currStmList;
+        currStmList->tail = NULL;
+
+        // 生成其它的blocks
+        return start_block(newStmList, done);
+    } else if (currStmList->head->kind == T_LABEL) {
+        // 需要结束，但需要添加JUMP语句
+        T_stm jump_stm = T_Jump(
+                T_Name(currStmList->head->u.LABEL),
+                Temp_LabelList(currStmList->head->u.LABEL, NULL)
+        );
+        prevStmList->tail = T_StmList(jump_stm, NULL);
+
+        // 生成其它的blocks
+        return start_block(currStmList, done);
+    } else {
+        // 普通语句 advance
+        prevStmList->tail = currStmList;
+
+        return end_block_and_gen_others(currStmList, currStmList->tail, done);
+    }
+}
+
+static C_stmListList start_block(T_stmList stmList, Temp_label done) {
+    if (!stmList)
+        return NULL;
+    T_stm head = stmList->head;
+    if (head->kind == T_LABEL) {
+        return C_StmListList(stmList, end_block_and_gen_others(stmList, stmList->tail, done));
+    } else {
+        // 如果一开始不是label，那就建一个重新来过
+        Temp_label label = Temp_newlabel();
+        T_stmList newStmList = T_StmList(T_Label(label), stmList);
+        return start_block(newStmList, done);
+    }
+}
+
+/*
+static C_stmListList gen_block(T_stmList stmList, Temp_label done) {
+    if (!stmList)
+        return NULL;
+    C_stmListList stmListList;
+    C_stmListList curr_stmListList = stmListList;
+    T_stm curr_stm = stmList->head;
+    while (curr_stm) {
+        if (curr_stm->kind == T_LABEL) {
+            curr_stmListList =
+        }
+    }
+}
+ */
+
 T_stmList C_linearize(T_stm stm) {
     return linear(do_stm(stm), NULL);
+}
+
+struct C_block C_basicBlocks(T_stmList stmList) {
+    struct C_block res;
+    Temp_label done = Temp_newlabel(); // fake done label for end
+    res.label = done;
+    res.stmLists = start_block(stmList, done);
+    return res;
 }
