@@ -142,6 +142,7 @@ void doProc(FILE *file, F_frame frame, T_stm stm) {
     T_stmList stmList = C_linearize(stm);
     printStmList(file, stmList);
     struct C_block block = C_basicBlocks(stmList);
+    T_stmList tracedStmList = C_traceSchedule(block);
 }
 
 #endif // _DEBUG

@@ -307,20 +307,71 @@ static C_stmListList start_block(T_stmList stmList, Temp_label done) {
     }
 }
 
-/*
-static C_stmListList gen_block(T_stmList stmList, Temp_label done) {
-    if (!stmList)
-        return NULL;
-    C_stmListList stmListList;
-    C_stmListList curr_stmListList = stmListList;
-    T_stm curr_stm = stmList->head;
-    while (curr_stm) {
-        if (curr_stm->kind == T_LABEL) {
-            curr_stmListList =
-        }
+static S_table table;
+
+static void initTable(C_stmListList stmListList) {
+    table = S_empty();
+    C_stmListList curr = stmListList;
+    while (curr) {
+        S_enter(table, curr->head->head->u.LABEL, curr->head);
+        curr = curr->tail;
     }
 }
- */
+
+static T_stmList gen_trace(T_stmList head_stmList) {
+    // remove record of this block (marked as used)
+    S_enter(table, head_stmList->head->u.LABEL, NULL);
+
+    T_stmList second_last_stmList = head_stmList;
+    while (second_last_stmList->tail->tail)
+        second_last_stmList = second_last_stmList->tail;
+    T_stmList last_stmList = second_last_stmList->tail;
+    T_stm last_stm = second_last_stmList->tail->head;
+
+    if (last_stm->kind == T_JUMP) {
+        T_stmList dst = (T_stmList) S_look(table, last_stm->u.JUMP.jumps->head);
+        if (dst) { // todo:...
+            // 删掉多余的JUMP
+            second_last_stmList->tail = gen_trace(dst);
+        } else {
+            // 不能删
+            last_stmList->tail = NULL;
+        }
+    } else if (last_stm->kind == T_JUMP) {
+        T_stmList true_dst = (T_stmList) S_look(table, last_stm->u.CJUMP.true);
+        T_stmList false_dst = (T_stmList) S_look(table, last_stm->u.CJUMP.false);
+
+        if (false_dst) {
+            // 不用做额外的操作
+            last_stmList->tail = gen_trace(false_dst);
+        } else if (true_dst) {
+            // 把条件和跳转反一下
+            T_stm flipped_jump = T_Cjump(T_notRel(last_stm->u.CJUMP.op),
+                                         last_stm->u.CJUMP.left,
+                                         last_stm->u.CJUMP.right,
+                                         last_stm->u.CJUMP.false,
+                                         last_stm->u.CJUMP.true
+            );
+            last_stmList->head = flipped_jump;
+            last_stmList->tail = gen_trace(true_dst);
+        } else {
+            // 手动添加false跳转
+            Temp_label false_label = Temp_newlabel();
+            last_stmList->head = T_Cjump(last_stm->u.CJUMP.op,
+                                         last_stm->u.CJUMP.left,
+                                         last_stm->u.CJUMP.right,
+                                         last_stm->u.CJUMP.true,
+                                         false_label
+            );
+            last_stmList->tail = T_StmList(T_Label(false_label), NULL);
+        }
+    }
+
+    return head_stmList;
+}
+
+
+////////////////// interface function implementation ////////////////
 
 T_stmList C_linearize(T_stm stm) {
     return linear(do_stm(stm), NULL);
@@ -332,4 +383,25 @@ struct C_block C_basicBlocks(T_stmList stmList) {
     res.label = done;
     res.stmLists = start_block(stmList, done);
     return res;
+}
+
+T_stmList C_traceSchedule(struct C_block b) {
+    initTable(b.stmLists);
+
+    T_stmList dummy_head_res = T_StmList(NULL, NULL); // todo: little trick, not good
+    T_stmList p_stmList = dummy_head_res;
+    C_stmListList curr_stmListList = b.stmLists;
+
+    while (curr_stmListList) {
+        if (S_look(table, curr_stmListList->head->head->u.LABEL)) {
+            p_stmList->tail = gen_trace(curr_stmListList->head);
+//            p_stmList = p_stmList->tail;
+            while (p_stmList->tail)
+                p_stmList = p_stmList->tail;
+        } else {
+            curr_stmListList = curr_stmListList->tail;
+        }
+    }
+
+    return dummy_head_res->tail;
 }
