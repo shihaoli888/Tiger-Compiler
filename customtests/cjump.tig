@@ -1,0 +1,11 @@
+/* cjump test */
+
+let
+    var a:int := 33
+in
+    if(7 > 4)
+    then
+        a = 77
+    else
+        a = 44
+end

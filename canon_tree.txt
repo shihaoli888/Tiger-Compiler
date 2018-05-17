@@ -1,15 +1,63 @@
- EXP(
-  CALL(
-   NAME L2,
-    TEMP t100,
-    CONST 3))
+ LABEL L8
+
+
+ MOVE(
+  TEMP t100,
+  CONST 1)
+
+
+ CJUMP(GT,
+  CONST 10,
+  CONST 20,
+  L2,L3)
+
+
+ LABEL L3
+
+
+ MOVE(
+  TEMP t100,
+  CONST 0)
+
+
+ LABEL L2
+
+
+ CJUMP(NE,
+  CONST 0,
+  TEMP t100,
+  L4,L5)
+
+
+ LABEL L4
 
 
  MOVE(
   TEMP t101,
-  MEM(
-   BINOP(PLUS,
-    TEMP t100,
-    CONST -4)))
+  CONST 30)
+
+
+ LABEL L6
+
+
+ MOVE(
+  TEMP t102,
+  TEMP t101)
+
+
+ JUMP(
+  NAME L7)
+
+
+ LABEL L5
+
+
+ MOVE(
+  TEMP t101,
+  CONST 40)
+
+
+ JUMP(
+  NAME L6)
 
 

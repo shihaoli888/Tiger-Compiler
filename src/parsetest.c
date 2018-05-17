@@ -140,9 +140,14 @@ void printStmList(FILE *out, T_stmList stmList) {
 
 void doProc(FILE *file, F_frame frame, T_stm stm) {
     T_stmList stmList = C_linearize(stm);
-    printStmList(file, stmList);
+
+    FILE *linearBlockFile = fopen("linear_tree.txt", "w");
+    printStmList(linearBlockFile, stmList);
+    fclose(linearBlockFile);
+
     struct C_block block = C_basicBlocks(stmList);
     T_stmList tracedStmList = C_traceSchedule(block);
+    printStmList(file, tracedStmList);
 }
 
 #endif // _DEBUG
@@ -186,8 +191,11 @@ int main(int argc, char **argv) {
       exit(1);
     }*/
 //  parse("testcases/queens.tig");
-    parse("customtests/func.tig");
+//    parse("customtests/func.tig");
+//    parse("customtests/cjump.tig");
 //    parse("testcases/test1.tig");
+//    parse("testcases/test4.tig"); // not verified
+    parse("testcases/test8.tig"); // verified
     printf("Done//:~");
     return 0;
 }
