@@ -18,6 +18,10 @@ struct Temp_labelList_ { Temp_label head; Temp_labelList tail; };
 Temp_labelList Temp_LabelList(Temp_label h, Temp_labelList t);
 
 #ifdef _DEBUG
+//defined to test instruction selection. 
+typedef struct Temp_map_ *Temp_map;
+struct Temp_map_ {TAB_table tab; Temp_map under;};
+
 int getTmpnum(Temp_temp);
 #endif // _DEBUG
 

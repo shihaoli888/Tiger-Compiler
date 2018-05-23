@@ -13,5 +13,6 @@ struct U_boolList_ { bool head; U_boolList tail; };
 
 U_boolList U_BoolList(bool head, U_boolList tail);
 void *checked_malloc(int n);
+string FormatString(string s, ...);
 
 #endif
