@@ -194,8 +194,8 @@ int main(int argc, char **argv) {
 //    parse("customtests/func.tig");
 //    parse("customtests/cjump.tig");
 //    parse("testcases/test1.tig");
-//    parse("testcases/test4.tig"); // not verified
-    parse("testcases/test8.tig"); // verified
+    parse("testcases/test4.tig"); // not verified
+//    parse("testcases/test8.tig"); // verified
     printf("Done//:~");
     return 0;
 }
