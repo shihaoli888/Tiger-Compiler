@@ -219,22 +219,12 @@ int main(int argc, char **argv)
       fprintf(stderr, "usage: a.out filename\n");
       exit(1);
     }*/
-        //parse("customtests/func.tig");
-        //parse("customtests/cjump.tig");
-        //parse("testcases/test1.tig");
-        //parse("testcases/test2.tig");
-        parse("testcases/test4.tig");
-        //parse("testcases/test4.tig");
-        //parse("testcases/test5.tig");
-        //parse("testcases/test6.tig");
-        //parse("testcases/test7.tig");
-        //parse("testcases/test8.tig");
-        //parse("testcases/test9.tig");
-        //parse("testcases/test10.tig");
-        //parse("testcases/test11.tig");
-        //parse("testcases/test12.tig");
-    //    parse("testcases/test4.tig"); // not verified
-    //parse("testcases/test8.tig"); // verified
+//  parse("testcases/queens.tig");
+//    parse("customtests/func.tig");
+//    parse("customtests/cjump.tig");
+//    parse("testcases/test1.tig");
+    parse("testcases/test4.tig"); // not verified
+//    parse("testcases/test8.tig"); // verified
     printf("Done//:~");
     return 0;
 }

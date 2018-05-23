@@ -337,7 +337,7 @@ static T_stmList gen_trace(T_stmList head_stmList) {
             // 不能删
             last_stmList->tail = NULL;
         }
-    } else if (last_stm->kind == T_JUMP) {
+    } else if (last_stm->kind == T_CJUMP) {
         T_stmList true_dst = (T_stmList) S_look(table, last_stm->u.CJUMP.true);
         T_stmList false_dst = (T_stmList) S_look(table, last_stm->u.CJUMP.false);
 

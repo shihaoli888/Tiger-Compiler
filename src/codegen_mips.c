@@ -297,8 +297,7 @@ static Temp_temp munchExp(T_exp e) {
     {
         //TODO:
         Temp_temp d = Temp_newtemp();
-        Temp_label label = Temp_namedlabel(e->u.CALL.fun);
-        emit(AS_Oper(FormatString("j %s\n", Temp_labelstring(e->u.CALL.fun->u.NAME)), NULL, NULL, NULL));
+        emit(AS_Oper(FormatString("jal %s\n", Temp_labelstring(e->u.CALL.fun->u.NAME)), NULL, NULL, NULL));
         emit(AS_Oper("nop\n", NULL, NULL, NULL));
         return d;
     }

@@ -1,20 +1,3 @@
- LABEL L7
-
-
- EXP(
-  CALL(
-   NAME L2,
-    TEMP t100,
-    CONST 10))
-
-
- JUMP(
-  NAME L6)
-
-
- LABEL L9
-
-
  CJUMP(EQ,
   MEM(
    BINOP(PLUS,
@@ -22,6 +5,18 @@
     CONST -4)),
   CONST 0,
   L3,L4)
+
+
+ LABEL L3
+
+
+ MOVE(
+  TEMP t101,
+  CONST 1)
+
+
+ JUMP(
+  NAME L5)
 
 
  LABEL L4
@@ -64,21 +59,5 @@
  MOVE(
   TEMP t102,
   TEMP t101)
-
-
- JUMP(
-  NAME L8)
-
-
- LABEL L3
-
-
- MOVE(
-  TEMP t101,
-  CONST 1)
-
-
- JUMP(
-  NAME L5)
 
 
