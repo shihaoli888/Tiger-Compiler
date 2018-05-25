@@ -1,0 +1,9 @@
+let
+	var a:=0
+	var b:=0
+	var c:=0
+in
+	while a<100 do(
+		a:=a+1
+	)
+end

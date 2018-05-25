@@ -1,0 +1,57 @@
+ SEQ(
+  SEQ(
+   SEQ(
+    MOVE(
+     MEM(
+      BINOP(PLUS,
+       TEMP t100,
+       CONST -4)),
+     CONST 0),
+    MOVE(
+     MEM(
+      BINOP(PLUS,
+       TEMP t100,
+       CONST -8)),
+     CONST 0)),
+   MOVE(
+    MEM(
+     BINOP(PLUS,
+      TEMP t100,
+      CONST -12)),
+    CONST 0)),
+  EXP(
+   ESEQ(
+    SEQ(
+     LABEL L3,
+     SEQ(
+      CJUMP(LT,
+       MEM(
+        BINOP(PLUS,
+         TEMP t100,
+         CONST -4)),
+       CONST 100,
+       L4,L2),
+      SEQ(
+       LABEL L4,
+       SEQ(
+        EXP(
+         ESEQ(
+          MOVE(
+           MEM(
+            BINOP(PLUS,
+             TEMP t100,
+             CONST -4)),
+           BINOP(PLUS,
+            MEM(
+             BINOP(PLUS,
+              TEMP t100,
+              CONST -4)),
+            CONST 1)),
+          CONST 0)),
+        SEQ(
+         JUMP(
+          NAME L3),
+         LABEL L2))))),
+    CONST 0)))
+
+

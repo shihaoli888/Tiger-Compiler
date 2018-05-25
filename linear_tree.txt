@@ -1,63 +1,59 @@
- CJUMP(EQ,
+ MOVE(
   MEM(
    BINOP(PLUS,
     TEMP t100,
     CONST -4)),
-  CONST 0,
-  L3,L4)
+  CONST 0)
+
+
+ MOVE(
+  MEM(
+   BINOP(PLUS,
+    TEMP t100,
+    CONST -8)),
+  CONST 0)
+
+
+ MOVE(
+  MEM(
+   BINOP(PLUS,
+    TEMP t100,
+    CONST -12)),
+  CONST 0)
 
 
  LABEL L3
 
 
- MOVE(
-  TEMP t101,
-  CONST 1)
-
-
- JUMP(
-  NAME L5)
+ CJUMP(LT,
+  MEM(
+   BINOP(PLUS,
+    TEMP t100,
+    CONST -4)),
+  CONST 100,
+  L4,L2)
 
 
  LABEL L4
 
 
  MOVE(
-  TEMP t104,
   MEM(
    BINOP(PLUS,
     TEMP t100,
-    CONST -4)))
+    CONST -4)),
+  BINOP(PLUS,
+   MEM(
+    BINOP(PLUS,
+     TEMP t100,
+     CONST -4)),
+   CONST 1))
 
 
- MOVE(
-  TEMP t103,
-  CALL(
-   NAME L2,
-    MEM(
-     BINOP(PLUS,
-      TEMP t100,
-      CONST 8)),
-    BINOP(MINUS,
-     MEM(
-      BINOP(PLUS,
-       TEMP t100,
-       CONST -4)),
-     CONST 1)))
+ JUMP(
+  NAME L3)
 
 
- MOVE(
-  TEMP t101,
-  BINOP(TIMES,
-   TEMP t104,
-   TEMP t103))
-
-
- LABEL L5
-
-
- MOVE(
-  TEMP t102,
-  TEMP t101)
+ LABEL L2
 
 
