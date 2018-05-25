@@ -29,7 +29,7 @@ static void munchStm(T_stm s) {
 		return;
 	case T_JUMP:
 		assert(s->u.JUMP.exp->kind == T_NAME);
-		emit(AS_Oper(FormatString("j %s\n", Temp_labelstring(s->u.JUMP.exp->u.NAME)), NULL, NULL, AS_Targets(s->u.JUMP.jumps)));
+		emit(AS_Oper(FormatString("j %s\n", Temp_labelstring(s->u.JUMP.exp->u.NAME)), NULL, NULL, AS_Targets(Temp_LabelList(s->u.JUMP.jumps, NULL))));
 		// emit(AS_Oper("j `j0\n", NULL, NULL, AS_Targets(Temp_LabelList(s->u.JUMP.exp->u.NAME, NULL))));
 		emit(AS_Oper("nop\n", NULL, NULL, NULL));
 		return;
@@ -54,22 +54,22 @@ static void munchStm(T_stm s) {
 			return;
 		case T_lt:
 			emit(AS_Oper("slt $at, `s0, `s1\n", NULL, Temp_TempList(left, Temp_TempList(right, NULL)), NULL));
-			emit(AS_Oper(FormatString("bne $at, $zero, %s\n", labelStr), NULL, NULL, NULL));
+			emit(AS_Oper(FormatString("bne $at, $zero, %s\n", labelStr), NULL, NULL, targets));
 			emit(AS_Oper("nop\n", NULL, NULL, NULL));
 			return;
 		case T_gt:
 			emit(AS_Oper("slt $at, `s0, `s1\n", NULL, Temp_TempList(right, Temp_TempList(left, NULL)), NULL));
-			emit(AS_Oper(FormatString("bne $at, $zero, %s\n", labelStr), NULL, NULL, NULL));
+			emit(AS_Oper(FormatString("bne $at, $zero, %s\n", labelStr), NULL, NULL, targets));
 			emit(AS_Oper("nop\n", NULL, NULL, NULL));
 			return;
 		case T_le:
 			emit(AS_Oper("slt $at, `s0, `s1\n", NULL, Temp_TempList(right, Temp_TempList(left, NULL)), NULL));
-			emit(AS_Oper(FormatString("beq $at, $zero, %s\n", labelStr), NULL, NULL, NULL));
+			emit(AS_Oper(FormatString("beq $at, $zero, %s\n", labelStr), NULL, NULL, targets));
 			emit(AS_Oper("nop\n", NULL, NULL, NULL));
 			return;
 		case T_ge:
 			emit(AS_Oper("slt $at, `s0, `s1\n", NULL, Temp_TempList(left, Temp_TempList(right, NULL)), NULL));
-			emit(AS_Oper(FormatString("beq $at, $zero, %s\n", labelStr), NULL, NULL, NULL));
+			emit(AS_Oper(FormatString("beq $at, $zero, %s\n", labelStr), NULL, NULL, targets));
 			emit(AS_Oper("nop\n", NULL, NULL, NULL));
 			return;
 		default:
@@ -302,7 +302,8 @@ static Temp_temp munchExp(T_exp e) {
 		//TODO: 参数处理，返回值处理
 		Temp_temp d = Temp_newtemp();
 		Temp_tempList args = munchArgs(e->u.CALL.args);
-		emit(AS_Oper(FormatString("jal %s\n", Temp_labelstring(e->u.CALL.fun->u.NAME)), NULL, NULL, NULL));
+		AS_targets targets = AS_Targets(Temp_LabelList(e->u.CALL.fun->u.NAME, NULL));
+		emit(AS_Oper(FormatString("jal %s\n", Temp_labelstring(e->u.CALL.fun->u.NAME)), NULL, NULL, targets));
 		emit(AS_Oper("nop\n", NULL, NULL, NULL));
 		return d;
 	}
