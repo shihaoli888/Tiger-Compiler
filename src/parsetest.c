@@ -9,6 +9,9 @@
 #include "frame.h"
 #include "assem.h"
 #include "codegen.h"
+#include "flowgraph.h"
+#include "liveness.h"
+
 
 extern int yyparse(void);
 
@@ -152,6 +155,10 @@ void printStmList(FILE *out, T_stmList stmList)
     }
 }
 
+void show_nodeinfo(FILE* out, void* info) {
+	fprintf(out,"t%d\t",getTmpnum(info));
+}
+
 void doProc(FILE *file, F_frame frame, T_stm stm)
 {
     T_stmList stmList = C_linearize(stm);
@@ -166,7 +173,19 @@ void doProc(FILE *file, F_frame frame, T_stm stm)
 
 	AS_instrList instrList = F_codegen(frame, tracedStmList);
 	AS_printInstrList(file, instrList, NULL);
-
+	
+	fprintf(file, "\n\n\nliveness\n\n");
+	//fclose(file);
+	G_graph flowgraph = FG_AssemFlowGraph(instrList);
+	struct Live_graph lg = Live_liveness(flowgraph);
+	G_show(file, G_nodes(lg.graph), show_nodeinfo);
+	Live_moveList livelist = lg.moves;
+	for (; livelist; livelist = livelist->tail) {
+		show_nodeinfo(file, G_nodeInfo(livelist->dst));
+		fprintf(file, "\t");
+		show_nodeinfo(file, G_nodeInfo(livelist->src));
+		fprintf(file, "\n");
+	}
 }
 
 #endif // _DEBUG
@@ -212,6 +231,8 @@ void parse(string fname)
     }
 }
 
+
+
 int main(int argc, char **argv)
 {
     /*if (argc != 2)
@@ -222,7 +243,8 @@ int main(int argc, char **argv)
 //  parse("testcases/queens.tig");
     //parse("customtests/func.tig");
     //parse("customtests/cjump.tig");
-    parse("testcases/test51.tig"); 
+    //parse("testcases/test51.tig"); 
+    parse("customtests/sum.tig"); 
     printf("Done//:~");
     return 0;
 }
