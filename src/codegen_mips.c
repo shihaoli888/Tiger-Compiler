@@ -146,7 +146,7 @@ static void munchStm(T_stm s) {
 		}
 		else if (s->u.MOVE.src->kind == T_CONST) {
 			emit(AS_Oper(FormatString("li `d0, %d\n", s->u.MOVE.src->u.CONST),
-				Temp_TempList(munchExp(s->u.MOVE.dst), NULL), NULL));
+				Temp_TempList(munchExp(s->u.MOVE.dst), NULL), NULL, NULL));
 		}
 		else {
 			// emit(AS_Move("move `d0, `s0\n", Temp_TempList(munchExp(s->u.MOVE.dst), NULL), Temp_TempList(munchExp(s->u.MOVE.src), NULL), NULL));
