@@ -1,24 +1,15 @@
  MOVE(
-  MEM(
-   BINOP(PLUS,
-    TEMP t100,
-    CONST -4)),
+  TEMP t100,
   CONST 0)
 
 
  MOVE(
-  MEM(
-   BINOP(PLUS,
-    TEMP t100,
-    CONST -8)),
+  TEMP t102,
   CONST 0)
 
 
  MOVE(
-  MEM(
-   BINOP(PLUS,
-    TEMP t100,
-    CONST -12)),
+  TEMP t103,
   CONST 0)
 
 
@@ -26,10 +17,7 @@
 
 
  CJUMP(LT,
-  MEM(
-   BINOP(PLUS,
-    TEMP t100,
-    CONST -4)),
+  TEMP t100,
   CONST 100,
   L4,L2)
 
@@ -38,27 +26,15 @@
 
 
  MOVE(
-  MEM(
-   BINOP(PLUS,
-    TEMP t100,
-    CONST -4)),
+  TEMP t100,
   BINOP(PLUS,
-   MEM(
-    BINOP(PLUS,
-     TEMP t100,
-     CONST -4)),
+   TEMP t100,
    CONST 1))
 
 
  MOVE(
-  MEM(
-   BINOP(PLUS,
-    TEMP t100,
-    CONST -8)),
-  MEM(
-   BINOP(PLUS,
-    TEMP t100,
-    CONST -4)))
+  TEMP t102,
+  TEMP t100)
 
 
  JUMP(

@@ -2,26 +2,17 @@
 
 
  MOVE(
-  MEM(
-   BINOP(PLUS,
-    TEMP t100,
-    CONST -4)),
+  TEMP t100,
   CONST 0)
 
 
  MOVE(
-  MEM(
-   BINOP(PLUS,
-    TEMP t100,
-    CONST -8)),
+  TEMP t102,
   CONST 0)
 
 
  MOVE(
-  MEM(
-   BINOP(PLUS,
-    TEMP t100,
-    CONST -12)),
+  TEMP t103,
   CONST 0)
 
 
@@ -29,10 +20,7 @@
 
 
  CJUMP(LT,
-  MEM(
-   BINOP(PLUS,
-    TEMP t100,
-    CONST -4)),
+  TEMP t100,
   CONST 100,
   L4,L2)
 
@@ -48,27 +36,15 @@
 
 
  MOVE(
-  MEM(
-   BINOP(PLUS,
-    TEMP t100,
-    CONST -4)),
+  TEMP t100,
   BINOP(PLUS,
-   MEM(
-    BINOP(PLUS,
-     TEMP t100,
-     CONST -4)),
+   TEMP t100,
    CONST 1))
 
 
  MOVE(
-  MEM(
-   BINOP(PLUS,
-    TEMP t100,
-    CONST -8)),
-  MEM(
-   BINOP(PLUS,
-    TEMP t100,
-    CONST -4)))
+  TEMP t102,
+  TEMP t100)
 
 
  JUMP(
@@ -76,27 +52,20 @@
 
 
 L6:
-li r101, 0
-sw r101, -4(r100)
+li r100, 0
 li r102, 0
-sw r102, -8(r100)
 li r103, 0
-sw r103, -12(r100)
 L3:
-lw r104, -4(r100)
-li r105, 100
-slt $at, r104, r105
+li r104, 100
+slt $at, r100, r104
 bne $at, $zero, L4
 nop
 L2:
 j L5
 nop
 L4:
-lw r107, -4(r100)
-addi r106, r107, 1
-sw r106, -4(r100)
-lw r108, -4(r100)
-sw r108, -8(r100)
+addi r100, r100, 1
+move r102, r100
 j L3
 nop
 
@@ -105,21 +74,12 @@ nop
 
 liveness
 
- 8 :
-t101	follow: 1
- 7 :
-t102	follow: 1
- 6 :
-t103	follow: 1
- 5 :
-t105	follow: 4 1
- 4 :
-t104	follow: 1 5
  3 :
-t107	follow: 1
+t103	follow: 1
  2 :
-t106	follow: 1
+t104	follow: 1
  1 :
-t100	follow: 8 7 6 4 5 3 2 0
+t100	follow: 0 3 2
  0 :
-t108	follow: 1
+t102	follow: 1
+t102		t100	
