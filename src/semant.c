@@ -3,6 +3,7 @@
 #include "semant.h"
 #include "env.h"
 #include "translate.h"
+#include "escape.h"
 
 static int loop_flag = 0;
 struct expty expTy(Tr_exp exp, Ty_ty ty) {
@@ -100,6 +101,7 @@ struct expty transExp(Tr_level level, S_table venv, S_table tenv, A_exp a, Tr_ex
 			}
 			count++;
 		}
+		Tr_setargnum(level, count);
 		E_enventry func = S_look(venv, a->u.call.func);
 		if (func == NULL) {
 			EM_error(a->pos, "function %s undefined", S_name(a->u.call.func));
@@ -259,7 +261,7 @@ struct expty transExp(Tr_level level, S_table venv, S_table tenv, A_exp a, Tr_ex
 		Tr_exp oldbreak = breakk;
 		breakk = Tr_doneExp();
 		S_beginScope(venv);
-		Tr_access i = Tr_allocLocal(level, TRUE);
+		Tr_access i = Tr_allocLocal(level, FALSE);
 		S_enter(venv, a->u.forr.var, E_VarEntry(i,Ty_Int()));
 		struct expty e1 = transExp(level, venv, tenv, a->u.forr.lo,breakk);
 		struct expty e2 = transExp(level, venv, tenv, a->u.forr.hi,breakk);
@@ -346,7 +348,7 @@ Tr_exp transDec(Tr_level level, S_table venv, S_table tenv, A_dec d, Tr_exp brea
 				EM_error(d->pos, "type and init mismatch");
 			}
 		}
-		Tr_access acc = Tr_allocLocal(level, TRUE);
+		Tr_access acc = Tr_allocLocal(level, d->u.var.escape);
 		S_enter(venv, d->u.var.var, E_VarEntry(acc,e.ty));
 		Tr_exp lve = Tr_simpleVar(acc, level);
 		return Tr_assignExp(lve,e.exp);
@@ -526,11 +528,11 @@ U_boolList make_forml_boolist(A_fieldList alist) {
 	U_boolList ret = NULL,retp;
 	for (; alist; alist = alist->tail) {
 		if (ret == NULL) {
-			ret = U_BoolList(TRUE, NULL);
+			ret = U_BoolList(alist->head->escape, NULL);
 			retp = ret;
 		}
 		else {
-			retp->tail = U_BoolList(TRUE, NULL);
+			retp->tail = U_BoolList(alist->head->escape, NULL);
 			retp = retp->tail;
 		}
 	}
@@ -539,6 +541,7 @@ U_boolList make_forml_boolist(A_fieldList alist) {
 
 
 F_fragList SEM_transProg(A_exp exp) {
+	Esc_findescape(exp);
 	S_table venv = E_base_venv();
 	S_table tenv = E_base_tenv();
 	loop_flag = 0;

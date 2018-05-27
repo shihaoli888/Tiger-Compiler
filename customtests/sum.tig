@@ -4,6 +4,7 @@ let
 	var c:=0
 in
 	while a<100 do(
-		a:=a+1
+		a:=a+1;
+		b:=a
 	)
 end

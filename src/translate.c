@@ -521,4 +521,8 @@ F_fragList Tr_getResult(void){
 	}
 }
 
+void Tr_setargnum(Tr_level level, int n) {
+	F_set_maxarg(level->frame, n + 1);
+}
+
 

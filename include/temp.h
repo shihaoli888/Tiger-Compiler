@@ -17,13 +17,19 @@ typedef struct Temp_labelList_ *Temp_labelList;
 struct Temp_labelList_ { Temp_label head; Temp_labelList tail; };
 Temp_labelList Temp_LabelList(Temp_label h, Temp_labelList t);
 
-#ifdef _DEBUG
-//defined to test instruction selection. 
+
+
 typedef struct Temp_map_ *Temp_map;
-struct Temp_map_ {TAB_table tab; Temp_map under;};
+Temp_map Temp_empty(void);
+Temp_map Temp_Map(TAB_table tab, Temp_map under);
+Temp_map Temp_layerMap(Temp_map over, Temp_map under);
+void Temp_enter(Temp_map m, Temp_temp t, string s);
+string Temp_look(Temp_map m, Temp_temp t);
+
+Temp_map Temp_name(void);
 
 int getTmpnum(Temp_temp);
-#endif // _DEBUG
+
 
 
 #endif // !TEMP_H

@@ -27,6 +27,7 @@ S_table E_base_tenv(void) {
 	S_enter(tmp, S_Symbol(String("string")), Ty_String());
 	return tmp;
 }
+
 S_table E_base_venv(void) {
 	S_table tmp = S_empty();
 	S_beginScope(tmp);

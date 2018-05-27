@@ -61,5 +61,6 @@ Tr_exp Tr_seqExp(Tr_expList seq);
 void Tr_progEntryExit(Tr_level level, Tr_exp body, Tr_accessList formals);
 
 F_fragList Tr_getResult(void);
+void Tr_setargnum(Tr_level level, int n);
 
 #endif // !TRANSLATE_H

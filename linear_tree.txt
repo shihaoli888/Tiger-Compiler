@@ -50,6 +50,17 @@
    CONST 1))
 
 
+ MOVE(
+  MEM(
+   BINOP(PLUS,
+    TEMP t100,
+    CONST -8)),
+  MEM(
+   BINOP(PLUS,
+    TEMP t100,
+    CONST -4)))
+
+
  JUMP(
   NAME L3)
 
