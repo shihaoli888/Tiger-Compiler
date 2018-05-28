@@ -32,7 +32,7 @@ static void munchStm(T_stm s)
 	switch (s->kind)
 	{
 	case T_LABEL:
-		emit(AS_Label(FormatString("%s:\n", Temp_labelstring(s->u.LABEL)), s->u.LABEL));
+		emit(AS_Label(FormatString("\n%s:\n", Temp_labelstring(s->u.LABEL)), s->u.LABEL));
 		return;
 	case T_JUMP:
 		assert(s->u.JUMP.exp->kind == T_NAME);
