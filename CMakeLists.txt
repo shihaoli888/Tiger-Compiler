@@ -21,10 +21,16 @@ add_executable(LJZ_TC
         include/types.h
         include/util.h
         include/y.tab.h
+        include/liveness.h
+        include/graph.h
+        include/codegen.h
+        include/assem.h
+        include/flowgraph.h
+        include/escape.h
         src/absyn.c
         src/env.c
         src/errormsg.c
-        src/frame_x86.c
+        src/frame_mips.c
         src/lex.yy.c
         src/semant.c
         src/symbol.c
@@ -35,6 +41,12 @@ add_executable(LJZ_TC
         src/types.c
         src/util.c
         src/y.tab.c
+        src/liveness.c
+        src/graph.c
+        src/codegen_mips.c
+        src/assem.c
+        src/flowgraph.c
+        src/escape.c
 
         src/parsetest.c
         include/canon.h src/canon.c)
