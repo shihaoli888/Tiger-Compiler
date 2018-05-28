@@ -14,7 +14,7 @@ struct F_frame_ {
 	unsigned int frame_size;
 	unsigned int max_argnum;
 	F_accessList formals;
-	/*ÔİÊ±ºöÂÔÊÓ½ÇÎ»ÒÆ*/
+	/*??????????ï¿½ï¿½??*/
 };
 
 void F_set_maxarg(F_frame f, int n) {
