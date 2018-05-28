@@ -188,11 +188,11 @@ void doProc(FILE *file, F_frame frame, T_stm stm)
 		fprintf(file, "\n");
 	}
 
-// 	// coloring
-//    G_graph ig = lg.graph;
-// 	Temp_map initial = F_get_tempmap();
-//    Temp_tempList registers = F_registers();
-//    COL_color(ig, initial, registers);
+ 	// coloring
+    G_graph ig = lg.graph;
+ 	Temp_map initial = F_get_tempmap();
+    Temp_tempList registers = F_registers();
+    COL_color(ig, initial, registers);
 }
 
 #endif // _DEBUG
