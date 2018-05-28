@@ -14,7 +14,7 @@ struct F_frame_ {
 	unsigned int frame_size;
 	unsigned int max_argnum;
 	F_accessList formals;
-	/*ÔÝÊ±ºöÂÔÊÓ½ÇÎ»ÒÆ*/
+	/*??????????ï¿½ï¿½??*/
 };
 
 void F_set_maxarg(F_frame f, int n) {
@@ -208,10 +208,10 @@ Temp_tempList F_argregs(void) {
 		Temp_temp a2 = Temp_newtemp();
 		Temp_temp a3 = Temp_newtemp();
 		argregs =
-			Temp_TempList(a3,
-				Temp_TempList(a2,
-					Temp_TempList(a1,
-						Temp_TempList(a0, NULL))));
+			Temp_TempList(a0,
+				Temp_TempList(a1,
+					Temp_TempList(a2,
+						Temp_TempList(a3, NULL))));
 		Temp_map m = F_get_tempmap_();
 		Temp_enter(m, a0, String("$a0"));
 		Temp_enter(m, a1, String("$a1"));
@@ -227,7 +227,7 @@ Temp_tempList F_calleesaves(void) {
 		Temp_temp t[10];
 		int i;
 		for (i = 0; i < 10; i++) t[i] = Temp_newtemp();
-		for (i = 9; i >= 0; i--) calleesaves = Temp_TempList(t[i], calleesaves);
+		for (i = 0; i < 10; i++) calleesaves = Temp_TempList(t[i], calleesaves);
 		Temp_map m = F_get_tempmap_();
 		Temp_enter(m, t[0], String("$t0"));
 		Temp_enter(m, t[1], String("$t1"));
@@ -249,7 +249,7 @@ Temp_tempList F_callersaves(void) {
 		Temp_temp s[8];
 		int i;
 		for (i = 0; i < 8; i++) s[i] = Temp_newtemp();
-		for (i = 7; i >= 0; i--) callersaves = Temp_TempList(s[i], callersaves);
+		for (i = 0; i < 8; i++) callersaves = Temp_TempList(s[i], callersaves);
 		Temp_map m = F_get_tempmap_();
 		Temp_enter(m, s[0], String("$s0"));
 		Temp_enter(m, s[1], String("$s1"));
