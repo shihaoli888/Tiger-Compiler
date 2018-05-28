@@ -112,7 +112,7 @@ static void format(char *result, string assem,
                 //i += strlen(s);
                 char tmp[20] = "r";
                 if (!m) {
-                    sprintf(tmp+1, "%d", getTmpnum(nthTemp(src, n)));
+                    sprintf(tmp+1, "%d", getTmpnum(nthTemp(dst, n)));
                     strcpy(result + i, tmp);
                     i += strlen(tmp);
                 }
