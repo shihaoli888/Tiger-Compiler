@@ -99,7 +99,7 @@ static void format(char *result, string assem,
                 //i += strlen(s);
                 char tmp[20] = "r";
                 if (!m) {
-                    itoa(getTmpnum(nthTemp(src, n)), tmp+1, 10);
+                    sprintf(tmp+1, "%d", getTmpnum(nthTemp(src, n)));
                     strcpy(result + i, tmp);
                     i += strlen(tmp);
                 }
@@ -112,7 +112,7 @@ static void format(char *result, string assem,
                 //i += strlen(s);
                 char tmp[20] = "r";
                 if (!m) {
-                    itoa(getTmpnum(nthTemp(dst, n)), tmp+1, 10);
+                    sprintf(tmp+1, "%d", getTmpnum(nthTemp(src, n)));
                     strcpy(result + i, tmp);
                     i += strlen(tmp);
                 }

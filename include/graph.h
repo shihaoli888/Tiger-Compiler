@@ -22,7 +22,7 @@ void G_addEdge(G_node from, G_node to);
 
 void G_rmEdge(G_node from, G_node to);
 
-void G_show(FILE *out, G_nodeList p, void showInfo(void *));
+void G_show(FILE *out, G_nodeList p, void showInfo(FILE* out, void *));
 
 G_nodeList G_succ(G_node n);
 

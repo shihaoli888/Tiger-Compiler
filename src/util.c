@@ -14,7 +14,7 @@ string FormatString(string s, ...){
 	va_list ap;
 	char tmp[50];
 	va_start(ap, s);
-	int len = _vsnprintf(tmp, 50, s, ap);
+	int len = vsnprintf(tmp, 50, s, ap);
 	va_end(ap);
 	string res = checked_malloc(len+1);
 	strcpy(res, tmp);
