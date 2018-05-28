@@ -1,72 +1,24 @@
- LABEL L6
+ LABEL L5
 
 
- MOVE(
-  TEMP t100,
-  CONST 0)
-
-
- MOVE(
-  TEMP t102,
-  CONST 0)
-
-
- MOVE(
-  TEMP t103,
-  CONST 0)
-
-
- LABEL L3
-
-
- CJUMP(LT,
-  TEMP t100,
-  CONST 100,
-  L4,L2)
-
-
- LABEL L2
+ EXP(
+  CALL(
+   NAME do_nothing1,
+    TEMP t105,
+    CONST 0,
+    NAME L3))
 
 
  JUMP(
-  NAME L5)
+  NAME L4)
 
 
- LABEL L4
-
-
- MOVE(
-  TEMP t100,
-  BINOP(PLUS,
-   TEMP t100,
-   CONST 1))
-
-
- MOVE(
-  TEMP t102,
-  TEMP t100)
-
-
- JUMP(
-  NAME L3)
-
-
-L6:
-li r100, 0
-li r102, 0
-li r103, 0
-L3:
-li r104, 100
-slt $at, r100, r104
-bne $at, $zero, L4
+L5:
+li r109, 0
+la r110, L3
+jal do_nothing1
 nop
-L2:
-j L5
-nop
-L4:
-addi r100, r100, 1
-move r102, r100
-j L3
+j L4
 nop
 
 
@@ -74,12 +26,98 @@ nop
 
 liveness
 
- 3 :
-t103	follow: 1
- 2 :
-t104	follow: 1
  1 :
-t100	follow: 0 3 2
+t109	follow:
  0 :
-t102	follow: 1
-t102		t100	
+t110	follow:
+ LABEL L7
+
+
+ MOVE(
+  TEMP t106,
+  CALL(
+   NAME do_nothing1,
+    MEM(
+     BINOP(PLUS,
+      TEMP t105,
+      CONST 0)),
+    TEMP t107,
+    NAME L2))
+
+
+ JUMP(
+  NAME L6)
+
+
+L7:
+lw r137, 0(r105)
+la r138, L2
+jal do_nothing1
+nop
+move r106, r136
+j L6
+nop
+
+
+
+
+liveness
+
+ 4 :
+t105	follow:
+ 3 :
+t137	follow:
+ 2 :
+t138	follow:
+ 1 :
+t136	follow:
+ 0 :
+t106	follow:
+t106		t136	
+ LABEL L9
+
+
+ MOVE(
+  TEMP t106,
+  CALL(
+   NAME do_nothing2,
+    MEM(
+     BINOP(PLUS,
+      TEMP t105,
+      CONST 0)),
+    BINOP(PLUS,
+     TEMP t103,
+     CONST 1)))
+
+
+ JUMP(
+  NAME L8)
+
+
+L9:
+lw r140, 0(r105)
+addi r141, r103, 1
+jal do_nothing2
+nop
+move r106, r139
+j L8
+nop
+
+
+
+
+liveness
+
+ 5 :
+t105	follow:
+ 4 :
+t140	follow: 3
+ 3 :
+t103	follow: 4
+ 2 :
+t141	follow:
+ 1 :
+t139	follow:
+ 0 :
+t106	follow:
+t106		t139	

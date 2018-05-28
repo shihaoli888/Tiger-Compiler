@@ -414,7 +414,7 @@ Tr_exp transDec(Tr_level level, S_table venv, S_table tenv, A_dec d, Tr_exp brea
 			else;
 			Ty_tyList formalTys = make_forml_tylist(tenv, f->params);
 			U_boolList formalBools = make_forml_boolist(f->params);
-			Tr_level newlevel = Tr_newLevel(level, Temp_newlabel(), formalBools);
+			Tr_level newlevel = Tr_newLevel(level, Temp_namedlabel(S_name(f->name)), formalBools);
 			if (levell==NULL) {
 				levell = Tr_LevelList(newlevel, NULL);
 				pp = levell;
