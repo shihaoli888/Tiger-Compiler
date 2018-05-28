@@ -1,46 +1,36 @@
+ MOVE(
+  TEMP t106,
+  CALL(
+   NAME do_nothing2,
+    MEM(
+     BINOP(PLUS,
+      TEMP t105,
+      CONST 0)),
+    BINOP(PLUS,
+     TEMP t103,
+     CONST 1)))
+
+
+ MOVE(
+  TEMP t106,
+  CALL(
+   NAME do_nothing1,
+    MEM(
+     BINOP(PLUS,
+      TEMP t105,
+      CONST 0)),
+    TEMP t107,
+    NAME L2))
+
+
  SEQ(
-  SEQ(
-   SEQ(
-    MOVE(
-     TEMP t100,
-     CONST 0),
-    MOVE(
-     TEMP t102,
-     CONST 0)),
-   MOVE(
-    TEMP t103,
-    CONST 0)),
   EXP(
-   ESEQ(
-    SEQ(
-     LABEL L3,
-     SEQ(
-      CJUMP(LT,
-       TEMP t100,
-       CONST 100,
-       L4,L2),
-      SEQ(
-       LABEL L4,
-       SEQ(
-        EXP(
-         ESEQ(
-          EXP(
-           ESEQ(
-            MOVE(
-             TEMP t100,
-             BINOP(PLUS,
-              TEMP t100,
-              CONST 1)),
-            CONST 0)),
-          ESEQ(
-           MOVE(
-            TEMP t102,
-            TEMP t100),
-           CONST 0))),
-        SEQ(
-         JUMP(
-          NAME L3),
-         LABEL L2))))),
-    CONST 0)))
+   CONST 0),
+  EXP(
+   CALL(
+    NAME do_nothing1,
+     TEMP t105,
+     CONST 0,
+     NAME L3)))
 
 
