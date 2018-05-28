@@ -136,7 +136,7 @@ G_table G_empty(void) {
 }
 
 void G_enter(G_table t, G_node n, void *v) {
-	return TAB_enter(t, n, v);
+	 TAB_enter(t, n, v);
 }
 
 void *G_look(G_table t, G_node n) {

@@ -166,6 +166,15 @@ Temp_temp F_ZERO(void) {
 	return zero;
 }
 
+static Temp_map tempMap = NULL;
+
+static Temp_map F_get_tempmap_() {
+	if (!tempMap) {
+		tempMap = Temp_empty();
+	}
+	return tempMap;
+}
+
 static Temp_tempList specialregs = NULL;
 Temp_tempList F_specialregs(void) {
 	if (!specialregs) {
@@ -198,10 +207,10 @@ Temp_tempList F_argregs(void) {
 					Temp_TempList(a1,
 						Temp_TempList(a0, NULL))));
 		Temp_map m = F_get_tempmap();
-		TAB_enter(m, a0, "$a0");
-		TAB_enter(m, a1, "$a1");
-		TAB_enter(m, a2, "$a2");
-		TAB_enter(m, a3, "$a3");
+		Temp_enter(m, a0, "$a0");
+		Temp_enter(m, a1, "$a1");
+		Temp_enter(m, a2, "$a2");
+		Temp_enter(m, a3, "$a3");
 	}
 	return argregs;
 }
@@ -214,16 +223,16 @@ Temp_tempList F_calleesaves(void) {
 		for (i = 0; i < 10; i++) t[i] = Temp_newtemp();
 		for (i = 9; i >= 0; i--) calleesaves = Temp_TempList(t[i], calleesaves);
 		Temp_map m = F_get_tempmap();
-		TAB_enter(m, t[0], "$t0");
-		TAB_enter(m, t[1], "$t1");
-		TAB_enter(m, t[2], "$t2");
-		TAB_enter(m, t[3], "$t3");
-		TAB_enter(m, t[4], "$t4");
-		TAB_enter(m, t[5], "$t5");
-		TAB_enter(m, t[6], "$t6");
-		TAB_enter(m, t[7], "$t7");
-		TAB_enter(m, t[8], "$t8");
-		TAB_enter(m, t[9], "$t9");
+		Temp_enter(m, t[0], "$t0");
+		Temp_enter(m, t[1], "$t1");
+		Temp_enter(m, t[2], "$t2");
+		Temp_enter(m, t[3], "$t3");
+		Temp_enter(m, t[4], "$t4");
+		Temp_enter(m, t[5], "$t5");
+		Temp_enter(m, t[6], "$t6");
+		Temp_enter(m, t[7], "$t7");
+		Temp_enter(m, t[8], "$t8");
+		Temp_enter(m, t[9], "$t9");
 	}
 	return calleesaves;
 }
@@ -236,14 +245,14 @@ Temp_tempList F_callersaves(void) {
 		for (i = 0; i < 8; i++) s[i] = Temp_newtemp();
 		for (i = 7; i >= 0; i--) callersaves = Temp_TempList(s[i], callersaves);
 		Temp_map m = F_get_tempmap();
-		TAB_enter(m, s[0], "$s0");
-		TAB_enter(m, s[1], "$s1");
-		TAB_enter(m, s[2], "$s2");
-		TAB_enter(m, s[3], "$s3");
-		TAB_enter(m, s[4], "$s4");
-		TAB_enter(m, s[5], "$s5");
-		TAB_enter(m, s[6], "$s6");
-		TAB_enter(m, s[7], "$s7");
+		Temp_enter(m, s[0], "$s0");
+		Temp_enter(m, s[1], "$s1");
+		Temp_enter(m, s[2], "$s2");
+		Temp_enter(m, s[3], "$s3");
+		Temp_enter(m, s[4], "$s4");
+		Temp_enter(m, s[5], "$s5");
+		Temp_enter(m, s[6], "$s6");
+		Temp_enter(m, s[7], "$s7");
 	}
 	return callersaves;
 }
@@ -283,14 +292,17 @@ Temp_tempList F_registers(void) {
 	return registers;
 }
 
-static Temp_temp tempMap = NULL;
+
 Temp_map F_get_tempmap() {
-	if (!tempMap) {
-		tempMap = Temp_empty();
+	static int flag = 0;
+	Temp_map ret = F_get_tempmap_();
+	if (flag == 0) {
 		F_registers();
+		flag = 1;
 	}
-	return tempMap;
+	return ret;
 }
+
 
 T_stm F_progEntryExit1(F_frame frame, T_stm stm);
 
