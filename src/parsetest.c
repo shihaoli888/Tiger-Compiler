@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <frame.h>
-#include <canon.h>
+#include "frame.h"
+#include "canon.h"
+#include "color.h"
 #include "util.h"
 #include "errormsg.h"
 #include "absyn.h"
@@ -173,7 +174,7 @@ void doProc(FILE *file, F_frame frame, T_stm stm)
 
 	AS_instrList instrList = F_codegen(frame, tracedStmList);
 	AS_printInstrList(file, instrList, NULL);
-	
+
 	fprintf(file, "\n\n\nliveness\n\n");
 	//fclose(file);
 	G_graph flowgraph = FG_AssemFlowGraph(instrList);
@@ -186,6 +187,12 @@ void doProc(FILE *file, F_frame frame, T_stm stm)
 		show_nodeinfo(file, G_nodeInfo(livelist->src));
 		fprintf(file, "\n");
 	}
+
+	// coloring
+    G_graph ig = lg.graph;
+	Temp_map initial = F_get_tempmap();
+    Temp_tempList registers = F_registers();
+    COL_color(ig, initial, registers);
 }
 
 #endif // _DEBUG
@@ -222,7 +229,7 @@ void parse(string fname)
         //                fprintf(fp2, "%s\n", tmp->head->u.stringg.str);
         //fclose(fp2);
 	fclose(instrFp);
-		
+
 
 #endif // _DEBUG
     }
@@ -244,7 +251,7 @@ int main(int argc, char **argv)
     //parse("customtests/func.tig");
     //parse("customtests/cjump.tig");
     //parse("testcases/test51.tig"); 
-    parse("customtests/sum.tig"); 
+    parse("customtests/sum.tig");
     printf("Done//:~");
     return 0;
 }
