@@ -86,7 +86,7 @@ static void munchStm(T_stm s) {
 						NULL, Temp_TempList(munchExp(s->u.MOVE.src), Temp_TempList(munchExp(e->u.BINOP.right), NULL)), NULL
 					));
 				}
-				else if (e->u.BINOP.right->kind == T_CONST && e->u.BINOP.right->u.CONST <= IMM_MAX && e->u.BINOP.left->u.CONST >= IMM_MIN) {
+				else if (e->u.BINOP.right->kind == T_CONST && e->u.BINOP.right->u.CONST <= IMM_MAX && e->u.BINOP.right->u.CONST >= IMM_MIN) {
 					emit(AS_Oper(FormatString("sw `s0, %d(`s1)\n", e->u.BINOP.right->u.CONST),
 						NULL, Temp_TempList(munchExp(s->u.MOVE.src), Temp_TempList(munchExp(e->u.BINOP.left), NULL)), NULL
 					));
@@ -119,7 +119,7 @@ static void munchStm(T_stm s) {
 						Temp_TempList(munchExp(s->u.MOVE.dst), NULL), Temp_TempList(munchExp(e->u.BINOP.right), NULL), NULL
 					));
 				}
-				else if (e->u.BINOP.right->kind == T_CONST && e->u.BINOP.right->u.CONST <= IMM_MAX && e->u.BINOP.left->u.CONST >= IMM_MIN) {
+				else if (e->u.BINOP.right->kind == T_CONST && e->u.BINOP.right->u.CONST <= IMM_MAX && e->u.BINOP.right->u.CONST >= IMM_MIN) {
 					emit(AS_Oper(FormatString("lw `d0, %d(`s0)\n", e->u.BINOP.right->u.CONST),
 						Temp_TempList(munchExp(s->u.MOVE.dst), NULL), Temp_TempList(munchExp(e->u.BINOP.left), NULL), NULL
 					));
@@ -157,7 +157,7 @@ static void munchStm(T_stm s) {
 						Temp_TempList(munchExp(s->u.MOVE.dst), NULL), Temp_TempList(munchExp(e->u.BINOP.right), NULL), NULL
 					));
 				}
-				else if (e->u.BINOP.right->kind == T_CONST && e->u.BINOP.right->u.CONST <= IMM_MAX && e->u.BINOP.left->u.CONST >= IMM_MIN) {
+				else if (e->u.BINOP.right->kind == T_CONST && e->u.BINOP.right->u.CONST <= IMM_MAX && e->u.BINOP.right->u.CONST >= IMM_MIN) {
 					emit(AS_Oper(FormatString("addi `d0, `s0, %d\n", e->u.BINOP.right->u.CONST),
 						Temp_TempList(munchExp(s->u.MOVE.dst), NULL), Temp_TempList(munchExp(e->u.BINOP.left), NULL), NULL
 					));
