@@ -9,4 +9,5 @@ unistd.h
 tigerdebug.*
 main.c
 Debug
-/debug_tree.txt
+*_tree.txt
+instr_b4_allocation.txt
