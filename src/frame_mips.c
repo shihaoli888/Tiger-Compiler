@@ -176,27 +176,33 @@ static Temp_map F_get_tempmap_() {
 }
 
 static Temp_tempList specialregs = NULL;
+static Temp_tempList argregs = NULL;
+static Temp_tempList calleesaves = NULL;
+static Temp_tempList callersaves = NULL;
+static Temp_tempList registers = NULL;
+
 Temp_tempList F_specialregs(void) {
-	if (!specialregs) {
+	if (specialregs==NULL) {
 		specialregs =
 			Temp_TempList(F_FP(),
 				Temp_TempList(F_SP(),
 					Temp_TempList(F_RV(),
 						Temp_TempList(F_RA(),
 							Temp_TempList(F_ZERO(), NULL)))));
-		Temp_map m = F_get_tempmap();
-		TAB_enter(m, F_FP(), "$fp");
-		TAB_enter(m, F_SP(), "$sp");
-		TAB_enter(m, F_RV(), "$v0");
-		TAB_enter(m, F_RA(), "$ra");
-		TAB_enter(m, F_ZERO(), "$zero");
+		Temp_map m = F_get_tempmap_();
+		Temp_enter(m, F_FP(), String("$fp"));
+		Temp_enter(m, F_SP(), String("$sp"));
+		Temp_enter(m, F_RV(), String("$v0"));
+		Temp_enter(m, F_RA(), String("$ra"));
+		Temp_enter(m, F_ZERO(), String("$zero"));
 	}
 	return specialregs;
 }
 
-static Temp_tempList argregs = NULL;
+
+
 Temp_tempList F_argregs(void) {
-	if (!argregs) {
+	if (argregs==NULL) {
 		Temp_temp a0 = Temp_newtemp();
 		Temp_temp a1 = Temp_newtemp();
 		Temp_temp a2 = Temp_newtemp();
@@ -206,58 +212,58 @@ Temp_tempList F_argregs(void) {
 				Temp_TempList(a2,
 					Temp_TempList(a1,
 						Temp_TempList(a0, NULL))));
-		Temp_map m = F_get_tempmap();
-		Temp_enter(m, a0, "$a0");
-		Temp_enter(m, a1, "$a1");
-		Temp_enter(m, a2, "$a2");
-		Temp_enter(m, a3, "$a3");
+		Temp_map m = F_get_tempmap_();
+		Temp_enter(m, a0, String("$a0"));
+		Temp_enter(m, a1, String("$a1"));
+		Temp_enter(m, a2, String("$a2"));
+		Temp_enter(m, a3, String("$a3"));
 	}
 	return argregs;
 }
 
-static Temp_tempList calleesaves = NULL;
+
 Temp_tempList F_calleesaves(void) {
-	if (!calleesaves) {
+	if (calleesaves==NULL) {
 		Temp_temp t[10];
 		int i;
 		for (i = 0; i < 10; i++) t[i] = Temp_newtemp();
 		for (i = 9; i >= 0; i--) calleesaves = Temp_TempList(t[i], calleesaves);
-		Temp_map m = F_get_tempmap();
-		Temp_enter(m, t[0], "$t0");
-		Temp_enter(m, t[1], "$t1");
-		Temp_enter(m, t[2], "$t2");
-		Temp_enter(m, t[3], "$t3");
-		Temp_enter(m, t[4], "$t4");
-		Temp_enter(m, t[5], "$t5");
-		Temp_enter(m, t[6], "$t6");
-		Temp_enter(m, t[7], "$t7");
-		Temp_enter(m, t[8], "$t8");
-		Temp_enter(m, t[9], "$t9");
+		Temp_map m = F_get_tempmap_();
+		Temp_enter(m, t[0], String("$t0"));
+		Temp_enter(m, t[1], String("$t1"));
+		Temp_enter(m, t[2], String( "$t2"));
+		Temp_enter(m, t[3], String("$t3"));
+		Temp_enter(m, t[4], String("$t4"));
+		Temp_enter(m, t[5], String("$t5"));
+		Temp_enter(m, t[6], String("$t6"));
+		Temp_enter(m, t[7], String("$t7"));
+		Temp_enter(m, t[8], String("$t8"));
+		Temp_enter(m, t[9], String("$t9"));
 	}
 	return calleesaves;
 }
 
-static Temp_tempList callersaves = NULL;
+
 Temp_tempList F_callersaves(void) {
-	if (!callersaves) {
+	if (callersaves==NULL) {
 		Temp_temp s[8];
 		int i;
 		for (i = 0; i < 8; i++) s[i] = Temp_newtemp();
 		for (i = 7; i >= 0; i--) callersaves = Temp_TempList(s[i], callersaves);
-		Temp_map m = F_get_tempmap();
-		Temp_enter(m, s[0], "$s0");
-		Temp_enter(m, s[1], "$s1");
-		Temp_enter(m, s[2], "$s2");
-		Temp_enter(m, s[3], "$s3");
-		Temp_enter(m, s[4], "$s4");
-		Temp_enter(m, s[5], "$s5");
-		Temp_enter(m, s[6], "$s6");
-		Temp_enter(m, s[7], "$s7");
+		Temp_map m = F_get_tempmap_();
+		Temp_enter(m, s[0], String("$s0"));
+		Temp_enter(m, s[1], String("$s1"));
+		Temp_enter(m, s[2], String("$s2"));
+		Temp_enter(m, s[3], String("$s3"));
+		Temp_enter(m, s[4], String("$s4"));
+		Temp_enter(m, s[5], String("$s5"));
+		Temp_enter(m, s[6], String("$s6"));
+		Temp_enter(m, s[7], String("$s7"));
 	}
 	return callersaves;
 }
 
-static Temp_tempList registers = NULL;
+
 Temp_tempList F_registers(void) {
 	if (!registers) {
 		Temp_tempList special = F_specialregs();
