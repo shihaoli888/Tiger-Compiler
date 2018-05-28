@@ -250,7 +250,7 @@ int main(int argc, char **argv)
 //  parse("testcases/queens.tig");
     //parse("customtests/func.tig");
     //parse("customtests/cjump.tig");
-    parse("testcases/test7.tig"); 
+    parse("testcases/test8.tig"); 
     //parse("customtests/sum.tig");
     printf("Done//:~");
     return 0;
