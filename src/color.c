@@ -61,7 +61,7 @@ static void MakeWorkList() {
     while (curr) {
         initial = Diff_tempList(initial, curr->head);
         curr = curr->tail;
-        if G_degree()
+//        if G_degree()
     }
 }
 
@@ -105,5 +105,7 @@ static void Main() {
 struct COL_result COL_color(G_graph ig, Temp_map initial, Temp_tempList regs) {
     printf("coloring..");
     struct COL_result res; // todo: temp return for compile
+    res.coloring = NULL;
+    res.spills = NULL;
     return res;
 }
