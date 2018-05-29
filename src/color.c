@@ -5,6 +5,8 @@
 #include <assem.h>
 #include "color.h"
 
+#define DEBUG_IT 1
+
 static enum COL_nodeType {
     COL_NODE_PRECOLORED,
     COL_NODE_INITIAL,
@@ -17,15 +19,22 @@ static enum COL_nodeType {
     COL_NODE_SELECTSTACK
 };
 
-static Temp_map precolored; // todo: temp_map使用
-static Temp_tempList initial; // todo: templist使用
-static Temp_tempList simplifyWorklist = NULL;
-static Temp_tempList freezeWorklist = NULL;
-static Temp_tempList spillWorklist = NULL;
-static Temp_tempList spilledNodes = NULL;
-static Temp_tempList coalesedNodes = NULL;
-static Temp_tempList coloredNodes = NULL;
-static Temp_tempList selectStack = NULL;
+static struct Global {
+    Temp_map precolored; // todo: temp_map使用
+    G_graph graph;
+    G_table degrees;
+    G_nodeList initial;
+    G_nodeList simplifyWorklist;
+    G_nodeList freezeWorklist;
+    G_nodeList spillWorklist;
+    G_nodeList spilledNodes;
+    G_nodeList coalesedNodes;
+    G_nodeList coloredNodes;
+    G_nodeList selectStack;
+    int K;
+};
+
+static struct Global global;
 
 static enum COL_moveType {
     COL_MOVE_COALESED,
@@ -41,12 +50,12 @@ static AS_instrList frozenMoves = NULL;
 static AS_instrList worklistMoves = NULL;
 static AS_instrList activeMoves = NULL;
 
-static Temp_tempList Diff_tempList(Temp_tempList list, Temp_temp x) {
+static G_nodeList diff_G_nodeList(G_nodeList list, G_node x) {
     if (!list)
         return NULL;
     if (list->head == x)
         return list->tail;
-    Temp_tempList p = list;
+    G_nodeList p = list; // todo: changed original structure
     while (p->tail) {
         if (p->tail->head == x) {
             p->tail = p->tail->tail; // todo: not free memory
@@ -55,18 +64,74 @@ static Temp_tempList Diff_tempList(Temp_tempList list, Temp_temp x) {
     }
 }
 
+static G_nodeList union_G_nodeList(G_nodeList list, G_node x) {
+    G_nodeList p = list;
+    while (p) {
+        if (p->head == x)
+            return list;
+        p = p->tail;
+    }
+    return G_NodeList(x, list);
+}
+
+static bool MoveRelated(G_node node) {
+    return FALSE; // todo: not consider move and coalescing
+}
+
 static void MakeWorkList() {
     // todo: ...
-    Temp_tempList curr = initial;
+    G_nodeList curr = global.initial;
     while (curr) {
-        initial = Diff_tempList(initial, curr->head);
+        global.initial = diff_G_nodeList(global.initial, curr->head);
+#if DEBUG_IT
+        printf("degree: %d\n", G_degree(curr->head));
+#endif
+        if (G_degree(curr->head) >= global.K) {
+            global.spillWorklist = union_G_nodeList(global.spillWorklist, curr->head);
+        } else if (MoveRelated(curr->head)) {
+            // todo: not consider move and coalescing
+        } else {
+            global.simplifyWorklist = union_G_nodeList(global.simplifyWorklist, curr->head);
+        }
         curr = curr->tail;
-//        if G_degree()
     }
 }
 
-static void Simplify() {
+void decrementDegree(G_node node) {
+    int d = (int) G_look(global.degrees, node);
+    d--;
+    G_enter(global.degrees, node, (void *) d);
+    if (d == global.K) {
+        // todo: without considering move related
+        global.spillWorklist = diff_G_nodeList(global.spillWorklist, node);
+        global.simplifyWorklist = union_G_nodeList(global.simplifyWorklist, node);
+    }
+}
 
+void selectStack_Push(G_node node) {
+    global.selectStack = G_NodeList(node, global.selectStack);
+}
+
+G_node selectStack_Pop() {
+    assert(global.selectStack);
+    G_node res = global.selectStack->head;
+    global.selectStack = global.selectStack->tail;
+}
+
+static void Simplify() {
+    G_nodeList p = global.simplifyWorklist;
+    while (p) {
+        G_node curr = p->head;
+        global.simplifyWorklist = diff_G_nodeList(global.simplifyWorklist, curr);
+        selectStack_Push(curr);
+        G_nodeList adjacentNodes = G_adj(curr);
+        G_nodeList pAdjacent = adjacentNodes;
+        while (pAdjacent) {
+            decrementDegree(pAdjacent->head);
+            pAdjacent = pAdjacent->tail;
+        }
+        p = p->tail;
+    }
 }
 
 static void Coalesce() {
@@ -77,33 +142,62 @@ static void Freeze() {
 
 }
 
-static void Selectspill() {
+static void SelectSpill() {
 
+}
+
+static int countRegs(Temp_tempList regs) {
+    int res = 0;
+    Temp_tempList p = regs;
+    while (p) {
+        res++;
+        p = p->tail;
+    }
+    return res;
+}
+
+static void Init(G_graph ig, Temp_map initial, Temp_tempList regs) {
+    // todo: init all global variable
+    global.initial = G_nodes(ig); // todo: shallow copy, may need deep copy
+    global.precolored = initial;
+    global.degrees = G_empty();
+    global.K = countRegs(regs);
+
+    // init degree
+    G_nodeList p_nodeList = G_nodes(ig);
+    while (p_nodeList) {
+        G_enter(global.degrees, p_nodeList->head, (void *) G_degree(p_nodeList->head));
+        p_nodeList = p_nodeList->tail;
+    }
 }
 
 static void Main() {
     // todo: liveness analysis
     MakeWorkList();
 
-    while (simplifyWorklist != NULL || worklistMoves != NULL || freezeWorklist != NULL || spillWorklist != NULL) {
-        if (simplifyWorklist)
+    while (global.simplifyWorklist != NULL || worklistMoves != NULL || global.freezeWorklist != NULL ||
+           global.spillWorklist != NULL) {
+        if (global.simplifyWorklist)
             Simplify();
         else if (worklistMoves)
-            Coalesce();
-        else if (freezeWorklist)
-            Freeze();
-        else if (spillWorklist)
-            Selectspill();
+            Coalesce(); // todo: never reach
+        else if (global.freezeWorklist)
+            Freeze(); // todo: never reach
+        else if (global.spillWorklist)
+            SelectSpill();
     }
 
-    if (spilledNodes) {
+    if (global.spilledNodes) {
         // todo: deal with spill
         fprintf(stderr, "spill happen, not supported till now..\n");
+        assert(0);
     }
 }
 
 struct COL_result COL_color(G_graph ig, Temp_map initial, Temp_tempList regs) {
     printf("coloring..");
+    Init(ig, initial, regs);
+    Main();
     struct COL_result res; // todo: temp return for compile
     res.coloring = NULL;
     res.spills = NULL;
