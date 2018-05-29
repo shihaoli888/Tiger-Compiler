@@ -173,7 +173,7 @@ void doProc(FILE *file, F_frame frame, T_stm stm)
     printStmList(file, tracedStmList);
 
 	AS_instrList instrList = F_codegen(frame, tracedStmList);
-	AS_printInstrList(file, instrList, NULL);
+	AS_printInstrList(file, instrList, F_get_tempmap());
 
 	fprintf(file, "\n\n\nliveness\n\n");
 	//fclose(file);
@@ -250,7 +250,7 @@ int main(int argc, char **argv)
 //  parse("testcases/queens.tig");
     //parse("customtests/func.tig");
     //parse("customtests/cjump.tig");
-    //parse("testcases/test51.tig"); 
+    //parse("testcases/test1.tig"); 
     parse("customtests/sum.tig");
     printf("Done//:~");
     return 0;
