@@ -63,6 +63,7 @@ static G_nodeList diff_G_nodeList(G_nodeList list, G_node x) {
             p->tail = p->tail->tail; // todo: not free memory
             return list;
         }
+        p = p->tail;
     }
 }
 
@@ -86,7 +87,7 @@ static void MakeWorkList() {
     while (curr) {
         global.initial = diff_G_nodeList(global.initial, curr->head);
 #if DEBUG_IT
-//        printf("degree: %d\n", G_degree(curr->head));
+        printf("degree: %d\n", G_degree(curr->head));
 #endif
         if (G_degree(curr->head) >= global.K) {
             global.spillWorklist = union_G_nodeList(global.spillWorklist, curr->head);
@@ -144,6 +145,19 @@ static void Freeze() {
 
 }
 
+static void PotentialSpill() {
+    // todo: consider spill priority
+    G_node node = global.spillWorklist->head;
+    global.spillWorklist = diff_G_nodeList(global.spillWorklist, node);
+    selectStack_Push(node);
+    G_nodeList adjacentNodes = G_adj(node);
+    G_nodeList pAdjacent = adjacentNodes;
+    while (pAdjacent) {
+        decrementDegree(pAdjacent->head);
+        pAdjacent = pAdjacent->tail;
+    }
+}
+
 static void SelectSpill() {
 
 }
@@ -185,8 +199,10 @@ static void Main() {
             Coalesce(); // todo: never reach
         else if (global.freezeWorklist)
             Freeze(); // todo: never reach
-        else if (global.spillWorklist)
-            SelectSpill();
+        else if (global.spillWorklist) {
+            PotentialSpill();
+//            SelectSpill();
+        }
     }
 
     if (global.spilledNodes) {
