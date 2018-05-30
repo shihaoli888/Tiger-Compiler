@@ -31,7 +31,7 @@ unsigned char *allocRecord(int size)
     return (unsigned char *)malloc(sizeof(int) * size);
 }
 
-void print(string str)
+void printStr(string str)
 {
     int len = str->len;
     int i;
@@ -42,14 +42,17 @@ void print(string str)
     putchar('\n');
 }
 
+void printInt(int i)
+{
+    printf("%d\n", i);
+}
+
 void flush()
 {
     fflush(stdout);
 }
 
-#ifdef getchar
-#undef getchar
-string getchar()
+string tigerGetchar()
 {
     int ch;
     if ((ch = getc(stdin)) == EOF)
@@ -58,7 +61,6 @@ string getchar()
     }
     return constchar[ch];
 }
-#endif
 
 int ord(string str)
 {
@@ -131,12 +133,6 @@ int main()
     emptychar = (string)malloc(sizeof(struct String));
     emptychar->len = emptychar->content[0] = 0;
 
-    // // test
-    // string s = chr('a');
-    // putchar(ord(s));
-    // string ss = concat(s, chr('b'));
-    // print(ss);
-    // print(substring(ss, 1, 1));
     tigerMain();
     return 0;
 }
