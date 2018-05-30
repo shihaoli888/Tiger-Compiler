@@ -1,6 +1,59 @@
  LABEL L5
 
 
+ MOVE(
+  TEMP t139,
+  TEMP t110)
+
+
+ MOVE(
+  MEM(
+   BINOP(PLUS,
+    TEMP t105,
+    CONST 0)),
+  TEMP t106)
+
+
+ MOVE(
+  TEMP t140,
+  TEMP t119)
+
+
+ MOVE(
+  TEMP t141,
+  TEMP t118)
+
+
+ MOVE(
+  TEMP t142,
+  TEMP t117)
+
+
+ MOVE(
+  TEMP t143,
+  TEMP t116)
+
+
+ MOVE(
+  TEMP t144,
+  TEMP t115)
+
+
+ MOVE(
+  TEMP t145,
+  TEMP t114)
+
+
+ MOVE(
+  TEMP t146,
+  TEMP t113)
+
+
+ MOVE(
+  TEMP t147,
+  TEMP t112)
+
+
  EXP(
   CALL(
    NAME do_nothing1,
@@ -9,40 +62,272 @@
     NAME L3))
 
 
+ MOVE(
+  TEMP t128,
+  CONST 0)
+
+
+ MOVE(
+  TEMP t119,
+  TEMP t140)
+
+
+ MOVE(
+  TEMP t118,
+  TEMP t141)
+
+
+ MOVE(
+  TEMP t117,
+  TEMP t142)
+
+
+ MOVE(
+  TEMP t116,
+  TEMP t143)
+
+
+ MOVE(
+  TEMP t115,
+  TEMP t144)
+
+
+ MOVE(
+  TEMP t114,
+  TEMP t145)
+
+
+ MOVE(
+  TEMP t113,
+  TEMP t146)
+
+
+ MOVE(
+  TEMP t112,
+  TEMP t147)
+
+
  JUMP(
   NAME L4)
 
 
 L5:
-li r109, 0
-la r110, L3
+move r139, $ra
+sw $a0, 0+L0_FRAMESIZE($sp)
+move r140, $s7
+move r141, $s6
+move r142, $s5
+move r143, $s4
+move r144, $s3
+move r145, $s2
+move r146, $s1
+move r147, $s0
+la r150, L3
+move $a0, $fp
+move $a1, $zero
+move $a2, r150
 jal do_nothing1
-nop
+li $v0, 0
+move $s7, r140
+move $s6, r141
+move $s5, r142
+move $s4, r143
+move $s3, r144
+move $s2, r145
+move $s1, r146
+move $s0, r147
 j L4
-nop
 
 
 
 
 liveness
 
- 1 :
-t109	follow:
- 0 :
+ 26 :
 t110	follow:
+ 25 :
+t139	follow: 24 23 19 18 17 14 12 10 8 6 4 2 0
+ 24 :
+t105	follow: 25 15 13 11 9 7 5 3 1 22
+ 23 :
+t149	follow: 25 15 13 11 9 7 5 3 1 22 19
+ 22 :
+t150	follow: 24 23 18 17 15 13 11 9 7 5 3 1 19 20
+ 21 :
+t108	follow: 20 19 18 17 15 13 11 9 7 5 3 1
+ 20 :
+t107	follow: 22 19 18 17 15 13 11 9 7 5 3 1 21
+ 19 :
+t106	follow: 25 23 22 18 17 15 13 11 9 7 5 3 1 20 21
+ 18 :
+t46997048	follow: 25 15 13 11 9 7 5 3 1 22 19 20 21
+ 17 :
+t148	follow: 25 15 13 11 9 7 5 3 1 22 19 20 21
+ 16 :
+t128	follow: 15 13 11 9 7 5 3 1
+ 15 :
+t140	follow: 24 23 18 17 12 10 8 6 4 2 0 13 11 9 7 5 3 1 22 19 20 21 16
+ 14 :
+t119	follow: 25 13 11 9 7 5 3 1
+ 13 :
+t141	follow: 24 23 18 17 15 10 8 6 4 2 0 11 9 7 5 3 1 22 19 20 21 16 14
+ 12 :
+t118	follow: 25 15 11 9 7 5 3 1
+ 11 :
+t142	follow: 24 23 18 17 15 13 8 6 4 2 0 9 7 5 3 1 22 19 20 21 16 14 12
+ 10 :
+t117	follow: 25 15 13 9 7 5 3 1
+ 9 :
+t143	follow: 24 23 18 17 15 13 11 6 4 2 0 7 5 3 1 22 19 20 21 16 14 12 10
+ 8 :
+t116	follow: 25 15 13 11 7 5 3 1
+ 7 :
+t144	follow: 24 23 18 17 15 13 11 9 4 2 0 5 3 1 22 19 20 21 16 14 12 10 8
+ 6 :
+t115	follow: 25 15 13 11 9 5 3 1
+ 5 :
+t145	follow: 24 23 18 17 15 13 11 9 7 2 0 3 1 22 19 20 21 16 14 12 10 8 6
+ 4 :
+t114	follow: 25 15 13 11 9 7 3 1
+ 3 :
+t146	follow: 24 23 18 17 15 13 11 9 7 5 0 1 22 19 20 21 16 14 12 10 8 6 4
+ 2 :
+t113	follow: 25 15 13 11 9 7 5 1
+ 1 :
+t147	follow: 24 23 18 17 15 13 11 9 7 5 3 22 19 20 21 16 14 12 10 8 6 4 2
+ 0 :
+t112	follow: 25 15 13 11 9 7 5 3
+t139		t110	
+t140		t119	
+t141		t118	
+t142		t117	
+t143		t116	
+t144		t115	
+t145		t114	
+t146		t113	
+t147		t112	
+t106		t105	
+t107		t149	
+t108		t150	
+t119		t140	
+t118		t141	
+t117		t142	
+t116		t143	
+t115		t144	
+t114		t145	
+t113		t146	
+t112		t147	
  LABEL L7
 
 
  MOVE(
-  TEMP t106,
+  TEMP t130,
+  TEMP t110)
+
+
+ MOVE(
+  MEM(
+   BINOP(PLUS,
+    TEMP t105,
+    CONST 0)),
+  TEMP t106)
+
+
+ MOVE(
+  TEMP t102,
+  TEMP t107)
+
+
+ MOVE(
+  TEMP t131,
+  TEMP t119)
+
+
+ MOVE(
+  TEMP t132,
+  TEMP t118)
+
+
+ MOVE(
+  TEMP t133,
+  TEMP t117)
+
+
+ MOVE(
+  TEMP t134,
+  TEMP t116)
+
+
+ MOVE(
+  TEMP t135,
+  TEMP t115)
+
+
+ MOVE(
+  TEMP t136,
+  TEMP t114)
+
+
+ MOVE(
+  TEMP t137,
+  TEMP t113)
+
+
+ MOVE(
+  TEMP t138,
+  TEMP t112)
+
+
+ MOVE(
+  TEMP t128,
   CALL(
    NAME do_nothing1,
     MEM(
      BINOP(PLUS,
       TEMP t105,
       CONST 0)),
-    TEMP t107,
+    TEMP t129,
     NAME L2))
+
+
+ MOVE(
+  TEMP t119,
+  TEMP t131)
+
+
+ MOVE(
+  TEMP t118,
+  TEMP t132)
+
+
+ MOVE(
+  TEMP t117,
+  TEMP t133)
+
+
+ MOVE(
+  TEMP t116,
+  TEMP t134)
+
+
+ MOVE(
+  TEMP t115,
+  TEMP t135)
+
+
+ MOVE(
+  TEMP t114,
+  TEMP t136)
+
+
+ MOVE(
+  TEMP t113,
+  TEMP t137)
+
+
+ MOVE(
+  TEMP t112,
+  TEMP t138)
 
 
  JUMP(
@@ -50,35 +335,185 @@ t110	follow:
 
 
 L7:
-lw r137, 0(r105)
-la r138, L2
+move r130, $ra
+sw $a0, 0+do_nothing2_FRAMESIZE($sp)
+move r102, $a1
+move r131, $s7
+move r132, $s6
+move r133, $s5
+move r134, $s4
+move r135, $s3
+move r136, $s2
+move r137, $s1
+move r138, $s0
+lw r161, 0+do_nothing2_FRAMESIZE($sp)
+la r162, L2
+move $a0, r161
+move $a1, r129
+move $a2, r162
 jal do_nothing1
-nop
-move r106, r136
+move $v0, $v0
+move $s7, r131
+move $s6, r132
+move $s5, r133
+move $s4, r134
+move $s3, r135
+move $s2, r136
+move $s1, r137
+move $s0, r138
 j L6
-nop
 
 
 
 
 liveness
 
+ 27 :
+t110	follow:
+ 26 :
+t130	follow: 23 20 19 18 17 14 12 10 8 6 4 2 0
+ 25 :
+t102	follow: 23 18 17 14 12 10 8 6 4 2 0
+ 24 :
+t161	follow: 23 18 17 15 13 11 9 7 5 3 1 22
+ 23 :
+t129	follow: 26 25 15 13 11 9 7 5 3 1 24 22 19
+ 22 :
+t162	follow: 24 23 18 17 15 13 11 9 7 5 3 1 19 20
+ 21 :
+t108	follow: 20 19 18 17 15 13 11 9 7 5 3 1
+ 20 :
+t107	follow: 26 22 19 18 17 15 13 11 9 7 5 3 1 21
+ 19 :
+t106	follow: 26 23 22 18 17 15 13 11 9 7 5 3 1 20 21
+ 18 :
+t46997048	follow: 26 25 15 13 11 9 7 5 3 1 24 22 19 20 21
+ 17 :
+t148	follow: 26 25 15 13 11 9 7 5 3 1 24 22 19 20 21
+ 16 :
+t128	follow: 15 13 11 9 7 5 3 1
+ 15 :
+t131	follow: 23 18 17 12 10 8 6 4 2 0 13 11 9 7 5 3 1 24 22 19 20 21 16
+ 14 :
+t119	follow: 26 25 13 11 9 7 5 3 1
+ 13 :
+t132	follow: 23 18 17 15 10 8 6 4 2 0 11 9 7 5 3 1 24 22 19 20 21 16 14
+ 12 :
+t118	follow: 26 25 15 11 9 7 5 3 1
+ 11 :
+t133	follow: 23 18 17 15 13 8 6 4 2 0 9 7 5 3 1 24 22 19 20 21 16 14 12
+ 10 :
+t117	follow: 26 25 15 13 9 7 5 3 1
+ 9 :
+t134	follow: 23 18 17 15 13 11 6 4 2 0 7 5 3 1 24 22 19 20 21 16 14 12 10
+ 8 :
+t116	follow: 26 25 15 13 11 7 5 3 1
+ 7 :
+t135	follow: 23 18 17 15 13 11 9 4 2 0 5 3 1 24 22 19 20 21 16 14 12 10 8
+ 6 :
+t115	follow: 26 25 15 13 11 9 5 3 1
+ 5 :
+t136	follow: 23 18 17 15 13 11 9 7 2 0 3 1 24 22 19 20 21 16 14 12 10 8 6
  4 :
-t105	follow:
+t114	follow: 26 25 15 13 11 9 7 3 1
  3 :
-t137	follow:
+t137	follow: 23 18 17 15 13 11 9 7 5 0 1 24 22 19 20 21 16 14 12 10 8 6 4
  2 :
-t138	follow:
+t113	follow: 26 25 15 13 11 9 7 5 1
  1 :
-t136	follow:
+t138	follow: 23 18 17 15 13 11 9 7 5 3 24 22 19 20 21 16 14 12 10 8 6 4 2
  0 :
-t106	follow:
-t106		t136	
+t112	follow: 26 25 15 13 11 9 7 5 3
+t130		t110	
+t102		t107	
+t131		t119	
+t132		t118	
+t133		t117	
+t134		t116	
+t135		t115	
+t136		t114	
+t137		t113	
+t138		t112	
+t106		t161	
+t107		t129	
+t108		t162	
+t128		t128	
+t119		t131	
+t118		t132	
+t117		t133	
+t116		t134	
+t115		t135	
+t114		t136	
+t113		t137	
+t112		t138	
  LABEL L9
 
 
  MOVE(
-  TEMP t106,
+  TEMP t111,
+  TEMP t110)
+
+
+ MOVE(
+  MEM(
+   BINOP(PLUS,
+    TEMP t105,
+    CONST 0)),
+  TEMP t106)
+
+
+ MOVE(
+  TEMP t100,
+  TEMP t107)
+
+
+ MOVE(
+  TEMP t101,
+  TEMP t108)
+
+
+ MOVE(
+  TEMP t120,
+  TEMP t119)
+
+
+ MOVE(
+  TEMP t121,
+  TEMP t118)
+
+
+ MOVE(
+  TEMP t122,
+  TEMP t117)
+
+
+ MOVE(
+  TEMP t123,
+  TEMP t116)
+
+
+ MOVE(
+  TEMP t124,
+  TEMP t115)
+
+
+ MOVE(
+  TEMP t125,
+  TEMP t114)
+
+
+ MOVE(
+  TEMP t126,
+  TEMP t113)
+
+
+ MOVE(
+  TEMP t127,
+  TEMP t112)
+
+
+ MOVE(
+  TEMP t128,
   CALL(
    NAME do_nothing2,
     MEM(
@@ -90,34 +525,161 @@ t106		t136
      CONST 1)))
 
 
+ MOVE(
+  TEMP t119,
+  TEMP t120)
+
+
+ MOVE(
+  TEMP t118,
+  TEMP t121)
+
+
+ MOVE(
+  TEMP t117,
+  TEMP t122)
+
+
+ MOVE(
+  TEMP t116,
+  TEMP t123)
+
+
+ MOVE(
+  TEMP t115,
+  TEMP t124)
+
+
+ MOVE(
+  TEMP t114,
+  TEMP t125)
+
+
+ MOVE(
+  TEMP t113,
+  TEMP t126)
+
+
+ MOVE(
+  TEMP t112,
+  TEMP t127)
+
+
  JUMP(
   NAME L8)
 
 
 L9:
-lw r140, 0(r105)
-addi r141, r103, 1
+move r111, $ra
+sw $a0, 0+do_nothing1_FRAMESIZE($sp)
+move r100, $a1
+move r101, $a2
+move r120, $s7
+move r121, $s6
+move r122, $s5
+move r123, $s4
+move r124, $s3
+move r125, $s2
+move r126, $s1
+move r127, $s0
+lw r163, 0+do_nothing1_FRAMESIZE($sp)
+addi r164, r103, 1
+move $a0, r163
+move $a1, r164
 jal do_nothing2
-nop
-move r106, r139
+move $v0, $v0
+move $s7, r120
+move $s6, r121
+move $s5, r122
+move $s4, r123
+move $s3, r124
+move $s2, r125
+move $s1, r126
+move $s0, r127
 j L8
-nop
 
 
 
 
 liveness
 
+ 28 :
+t110	follow:
+ 27 :
+t111	follow: 25 23 20 19 18 17 14 12 10 8 6 4 2 0
+ 26 :
+t100	follow: 25 23 18 17 14 12 10 8 6 4 2 0
+ 25 :
+t108	follow: 27 26
+ 24 :
+t101	follow: 23 18 17 14 12 10 8 6 4 2 0
+ 23 :
+t103	follow: 27 26 24 15 13 11 9 7 5 3 1 22
+ 22 :
+t163	follow: 23 18 17 15 13 11 9 7 5 3 1 21
+ 21 :
+t164	follow: 22 18 17 15 13 11 9 7 5 3 1 19
+ 20 :
+t107	follow: 27 19 18 17 15 13 11 9 7 5 3 1
+ 19 :
+t106	follow: 27 21 18 17 15 13 11 9 7 5 3 1 20
+ 18 :
+t46997048	follow: 27 26 24 15 13 11 9 7 5 3 1 22 21 19 20
+ 17 :
+t148	follow: 27 26 24 15 13 11 9 7 5 3 1 22 21 19 20
+ 16 :
+t128	follow: 15 13 11 9 7 5 3 1
+ 15 :
+t120	follow: 23 18 17 12 10 8 6 4 2 0 13 11 9 7 5 3 1 22 21 19 20 16
+ 14 :
+t119	follow: 27 26 24 13 11 9 7 5 3 1
+ 13 :
+t121	follow: 23 18 17 15 10 8 6 4 2 0 11 9 7 5 3 1 22 21 19 20 16 14
+ 12 :
+t118	follow: 27 26 24 15 11 9 7 5 3 1
+ 11 :
+t122	follow: 23 18 17 15 13 8 6 4 2 0 9 7 5 3 1 22 21 19 20 16 14 12
+ 10 :
+t117	follow: 27 26 24 15 13 9 7 5 3 1
+ 9 :
+t123	follow: 23 18 17 15 13 11 6 4 2 0 7 5 3 1 22 21 19 20 16 14 12 10
+ 8 :
+t116	follow: 27 26 24 15 13 11 7 5 3 1
+ 7 :
+t124	follow: 23 18 17 15 13 11 9 4 2 0 5 3 1 22 21 19 20 16 14 12 10 8
+ 6 :
+t115	follow: 27 26 24 15 13 11 9 5 3 1
  5 :
-t105	follow:
+t125	follow: 23 18 17 15 13 11 9 7 2 0 3 1 22 21 19 20 16 14 12 10 8 6
  4 :
-t140	follow: 3
+t114	follow: 27 26 24 15 13 11 9 7 3 1
  3 :
-t103	follow: 4
+t126	follow: 23 18 17 15 13 11 9 7 5 0 1 22 21 19 20 16 14 12 10 8 6 4
  2 :
-t141	follow:
+t113	follow: 27 26 24 15 13 11 9 7 5 1
  1 :
-t139	follow:
+t127	follow: 23 18 17 15 13 11 9 7 5 3 22 21 19 20 16 14 12 10 8 6 4 2
  0 :
-t106	follow:
-t106		t139	
+t112	follow: 27 26 24 15 13 11 9 7 5 3
+t111		t110	
+t100		t107	
+t101		t108	
+t120		t119	
+t121		t118	
+t122		t117	
+t123		t116	
+t124		t115	
+t125		t114	
+t126		t113	
+t127		t112	
+t106		t163	
+t107		t164	
+t128		t128	
+t119		t120	
+t118		t121	
+t117		t122	
+t116		t123	
+t115		t124	
+t114		t125	
+t113		t126	
+t112		t127	
