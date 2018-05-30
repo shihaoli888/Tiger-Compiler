@@ -14,7 +14,7 @@ struct F_frame_ {
 	unsigned int frame_size;
 	unsigned int max_argnum;
 	F_accessList formals;
-	/*??????????��??*/
+
 };
 
 void F_set_maxarg(F_frame f, int n) {
@@ -136,31 +136,35 @@ F_fragList F_FragList(F_frag head, F_fragList tail) {
 	return tmp;
 }
 
+
+static Temp_temp zero = NULL;
+static Temp_temp ra = NULL;
+static Temp_temp fp = NULL;
+static Temp_temp sp = NULL;
 static Temp_temp rv = NULL;
+
+
 Temp_temp F_RV(void) {
 	if (!rv) rv = Temp_newtemp();
 	return rv;
 }
 
-static Temp_temp sp = NULL;
 Temp_temp F_SP(void) {
 	if (!sp) sp = Temp_newtemp();
 	return sp;
 }
 
-static Temp_temp fp = NULL;
 Temp_temp F_FP(void) {
 	if (!fp) fp = Temp_newtemp();
 	return fp;
 }
 
-static Temp_temp ra = NULL;
 Temp_temp F_RA(void) {
 	if (!ra) ra = Temp_newtemp();
 	return ra;
 }
 
-static Temp_temp zero = NULL;
+
 Temp_temp F_ZERO(void) {
 	if (!zero) zero = Temp_newtemp();
 	return zero;
@@ -231,7 +235,7 @@ Temp_tempList F_calleesaves(void) {
 		Temp_map m = F_get_tempmap_();
 		Temp_enter(m, t[0], String("$t0"));
 		Temp_enter(m, t[1], String("$t1"));
-		Temp_enter(m, t[2], String( "$t2"));
+		Temp_enter(m, t[2], String("$t2"));
 		Temp_enter(m, t[3], String("$t3"));
 		Temp_enter(m, t[4], String("$t4"));
 		Temp_enter(m, t[5], String("$t5"));
@@ -354,13 +358,19 @@ AS_instrList F_progEntryExit2(AS_instrList body) {
 	return AS_splice(body, AS_InstrList(AS_Oper("", NULL, returnSink, NULL), NULL));
 }
 
-AS_proc F_progEntryExit3(F_frame frame, AS_instrList body) {
+AS_proc F_progEntryExit3(F_frame frame, AS_instrList body, Temp_label done) {
 	int framesize = frame->frame_size + frame->max_argnum;
 	framesize *= get_wordsize();
 	char buffer[100];
-	sprintf(buffer, "%s_FRAMESIZE = %d\n addi $sp,$sp,%d", Temp_labelstring(frame->name), framesize,-framesize);
+	sprintf(buffer, 
+		"%s:\n"
+		"%s_FRAMESIZE = %d\n"
+		"addi $sp,$sp,%d\n", 
+		Temp_labelstring(frame->name),Temp_labelstring(frame->name), framesize,-framesize);
 	string prolog = String(buffer);
-	sprintf(buffer, "addi $sp,$sp,%d\n jr $ra", framesize);
+	sprintf(buffer, "%s:\n"
+		"addi $sp,$sp,%d\n"
+		"jr $ra\n", Temp_labelstring(done),framesize);
 	string epilog = String(buffer);
 	return AS_Proc(prolog, body, epilog);
 }

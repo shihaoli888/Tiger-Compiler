@@ -157,7 +157,12 @@ void printStmList(FILE *out, T_stmList stmList)
 }
 
 void show_nodeinfo(FILE* out, void* info) {
-	fprintf(out,"t%d\t",getTmpnum(info));
+	Temp_map m = F_get_tempmap();
+	string name = Temp_look(m, (Temp_temp)info);
+	if(name == NULL) 
+	fprintf(out,"t%d\t",getTmpnum((Temp_temp)info));
+	else fprintf(out, "%s\t", name);
+	
 }
 
 void doProc(FILE *file, F_frame frame, T_stm stm)
@@ -169,12 +174,20 @@ void doProc(FILE *file, F_frame frame, T_stm stm)
     fclose(linearBlockFile);
 
     struct C_block block = C_basicBlocks(stmList);
+	Temp_label done = block.label;
     T_stmList tracedStmList = C_traceSchedule(block);
     printStmList(file, tracedStmList);
 
+	/***可以是一个函数***/
 	AS_instrList instrList = F_codegen(frame, tracedStmList);
+	instrList = F_progEntryExit2(instrList);
+	AS_proc proc = F_progEntryExit3(frame, instrList, done);
+	/******/
+	/***合并成一个打印函数***/
+	fprintf(file, "%s", proc->prolog);
 	AS_printInstrList(file, instrList, F_get_tempmap());
-
+	fprintf(file, "%s", proc->epilog);
+	/******/
 	fprintf(file, "\n\n\nliveness\n\n");
 	//fclose(file);
 	G_graph flowgraph = FG_AssemFlowGraph(instrList);
@@ -251,7 +264,7 @@ int main(int argc, char **argv)
     //parse("customtests/func.tig");
     //parse("customtests/cjump.tig");
     //parse("testcases/test1.tig"); 
-    parse("customtests/sum.tig");
+    parse("customtests/factorial.tig");
     printf("Done//:~");
     return 0;
 }
