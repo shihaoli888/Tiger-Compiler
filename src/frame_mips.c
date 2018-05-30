@@ -310,7 +310,41 @@ Temp_map F_get_tempmap() {
 }
 
 
-T_stm F_progEntryExit1(F_frame frame, T_stm stm);
+T_stm F_progEntryExit1(F_frame frame, T_exp body) {
+	F_accessList args = frame->formals;
+	Temp_tempList as = F_argregs();
+	int i = 0;
+	T_stm stm = T_Move(T_Temp(Temp_newtemp()), T_Temp(F_RA()));
+	for (i = 0; args&&i < 4; i++,args=args->tail,as=as->tail) {
+		stm = T_Seq(stm,T_Move(F_Exp(args->head, T_Temp(F_FP())), T_Temp(as->head)));
+	} 
+	while (args) {
+		stm = T_Seq(stm,T_Move(F_Exp(args->head, T_Temp(F_FP())),
+			T_Mem(T_Binop(T_plus, T_Temp(F_FP()), T_Const(i*get_wordsize())))));
+		args = args->tail;
+	}
+	Temp_tempList callersaves = F_callersaves();
+	Temp_tempList callersaves_tmp = NULL,cp;
+	for (; callersaves; callersaves = callersaves->tail) {
+		Temp_tempList t = Temp_TempList(Temp_newtemp(),NULL);
+		if (callersaves_tmp == NULL) {
+			callersaves_tmp = t;
+			cp = callersaves_tmp;
+		}
+		else {
+			cp->tail = t;
+			cp = cp->tail;
+		}
+		stm = T_Seq(stm, T_Move(T_Temp(t->head), T_Temp(callersaves->head)));
+	}
+	T_stm pro = stm;
+	T_stm epi = T_Move(T_Temp(F_RV()), body);
+	callersaves = F_callersaves();
+	for (; callersaves; callersaves = callersaves->tail,callersaves_tmp = callersaves_tmp->tail) {
+		epi = T_Seq(epi, T_Move(T_Temp(callersaves->head), T_Temp(callersaves_tmp->head)));
+	}
+	return T_Seq(pro, epi);
+}
 
 static Temp_tempList returnSink = NULL;
 AS_instrList F_progEntryExit2(AS_instrList body) {
@@ -320,4 +354,13 @@ AS_instrList F_progEntryExit2(AS_instrList body) {
 	return AS_splice(body, AS_InstrList(AS_Oper("", NULL, returnSink, NULL), NULL));
 }
 
-AS_proc F_progEntryExit3(F_frame frame, AS_instrList body);
+AS_proc F_progEntryExit3(F_frame frame, AS_instrList body) {
+	int framesize = frame->frame_size + frame->max_argnum;
+	framesize *= get_wordsize();
+	char buffer[100];
+	sprintf(buffer, "%s_FRAMESIZE = %d\n addi $sp,$sp,%d", Temp_labelstring(frame->name), framesize,-framesize);
+	string prolog = String(buffer);
+	sprintf(buffer, "addi $sp,$sp,%d\n jr $ra", framesize);
+	string epilog = String(buffer);
+	return AS_Proc(prolog, body, epilog);
+}

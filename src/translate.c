@@ -498,16 +498,17 @@ Tr_exp Tr_seqExp(Tr_expList seq) {
 static F_fragList prog_frags = NULL;
 
 void Tr_progEntryExit(Tr_level level, Tr_exp body, Tr_accessList formals) {
-	/*缺很多，F_progEntryExit1 3*/
-	T_stm progbody = NULL;
-	if (body->kind == Tr_ex) {
-		//带返回值
-		Temp_temp rv = F_RV();
-		progbody = T_Move(T_Temp(rv), unEx(body));
-	}
-	else {
-		progbody = unNx(body);
-	}
+	///*缺很多，F_progEntryExit1 3*/
+	//T_stm progbody = NULL;
+	//if (body->kind == Tr_ex) {
+	//	//带返回值
+	//	Temp_temp rv = F_RV();
+	//	progbody = T_Move(T_Temp(rv), unEx(body));
+	//}
+	//else {
+	//	progbody = unNx(body);
+	//}
+	T_stm progbody = F_progEntryExit1(level->frame, unEx(body));
 	prog_frags = F_FragList(F_ProcFrag(progbody, level->frame),prog_frags);
 }
 
