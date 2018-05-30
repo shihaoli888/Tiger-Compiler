@@ -1,0 +1,25 @@
+/* 外部函数测试 */
+
+let
+    var str: string := "Hello, "
+    var buffer := getchar()
+    var newstr:= str
+    var len:=0
+in
+    /* 连接str与输入 */
+    newstr:= concat(str, buffer);
+    print(newstr);
+    print("\n");
+    /* 从第三个字符开始输出新字符串 */
+    len:= size(newstr);
+    print(substring(newstr, 3, len-3));
+    print("\n");
+    /* 输出第一个字符 */
+    print(chr(ord(str)));
+    print("\n")
+
+end
+
+
+
+

@@ -1,0 +1,14 @@
+/* 局部重声明; 操作符; 多参数 */
+let
+    var v:= 1
+    var res:int := 0
+    function fun(a0: int, a1: int, a2:int, a3:int, a4:int, a5: int, a6: int) = 
+    let
+        var v:= 2
+    in
+        res := v + a0 * a1 - a2 / (a3 = a4 & a5 <= a6)
+    end
+in
+    fun(2,3,4,5,6,7,8)
+    /* 4 */
+end

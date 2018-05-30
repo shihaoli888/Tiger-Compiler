@@ -32,7 +32,7 @@ static void munchStm(T_stm s)
 	switch (s->kind)
 	{
 	case T_LABEL:
-		emit(AS_Label(FormatString("%s:\n", Temp_labelstring(s->u.LABEL)), s->u.LABEL));
+		emit(AS_Label(FormatString("\n%s:\n", Temp_labelstring(s->u.LABEL)), s->u.LABEL));
 		return;
 	case T_JUMP:
 		assert(s->u.JUMP.exp->kind == T_NAME);
@@ -58,25 +58,25 @@ static void munchStm(T_stm s)
 			// emit(AS_Oper("nop\n", NULL, NULL, NULL));
 			return;
 		case T_lt:
-			emit(AS_Oper(FormatString("blt `s0, `s1, %s", labelStr), NULL, Temp_TempList(left, Temp_TempList(right, NULL)), targets));
+			emit(AS_Oper(FormatString("blt `s0, `s1, %s\n", labelStr), NULL, Temp_TempList(left, Temp_TempList(right, NULL)), targets));
 			// emit(AS_Oper("slt $at, `s0, `s1\n", NULL, Temp_TempList(left, Temp_TempList(right, NULL)), NULL));
 			// emit(AS_Oper(FormatString("bne $at, $zero, %s\n", labelStr), NULL, NULL, targets));
 			// emit(AS_Oper("nop\n", NULL, NULL, NULL));
 			return;
 		case T_gt:
-			emit(AS_Oper(FormatString("bgt `s0, `s1, %s", labelStr), NULL, Temp_TempList(left, Temp_TempList(right, NULL)), targets));
+			emit(AS_Oper(FormatString("bgt `s0, `s1, %s\n", labelStr), NULL, Temp_TempList(left, Temp_TempList(right, NULL)), targets));
 			// emit(AS_Oper("slt $at, `s0, `s1\n", NULL, Temp_TempList(right, Temp_TempList(left, NULL)), NULL));
 			// emit(AS_Oper(FormatString("bne $at, $zero, %s\n", labelStr), NULL, NULL, targets));
 			// emit(AS_Oper("nop\n", NULL, NULL, NULL));
 			return;
 		case T_le:
-			emit(AS_Oper(FormatString("ble `s0, `s1, %s", labelStr), NULL, Temp_TempList(left, Temp_TempList(right, NULL)), targets));
+			emit(AS_Oper(FormatString("ble `s0, `s1, %s\n", labelStr), NULL, Temp_TempList(left, Temp_TempList(right, NULL)), targets));
 			// emit(AS_Oper("slt $at, `s0, `s1\n", NULL, Temp_TempList(right, Temp_TempList(left, NULL)), NULL));
 			// emit(AS_Oper(FormatString("beq $at, $zero, %s\n", labelStr), NULL, NULL, targets));
 			// emit(AS_Oper("nop\n", NULL, NULL, NULL));
 			return;
 		case T_ge:
-			emit(AS_Oper(FormatString("bge `s0, `s1, %s", labelStr), NULL, Temp_TempList(left, Temp_TempList(right, NULL)), targets));
+			emit(AS_Oper(FormatString("bge `s0, `s1, %s\n", labelStr), NULL, Temp_TempList(left, Temp_TempList(right, NULL)), targets));
 			// emit(AS_Oper("slt $at, `s0, `s1\n", NULL, Temp_TempList(left, Temp_TempList(right, NULL)), NULL));
 			// emit(AS_Oper(FormatString("beq $at, $zero, %s\n", labelStr), NULL, NULL, targets));
 			// emit(AS_Oper("nop\n", NULL, NULL, NULL));
