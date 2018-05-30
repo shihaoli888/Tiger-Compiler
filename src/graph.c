@@ -19,6 +19,52 @@ G_graph G_Graph(void) {
 	return g;
 }
 
+G_graph G_copyGraph(G_graph g) {
+	G_graph res = G_Graph();
+	G_nodeList tmp = g->glist;
+	for (; tmp; tmp = tmp->tail) {
+		G_Node(res, tmp->head->info);
+	}
+	tmp = g->glist;
+	for (; tmp; tmp = tmp->tail) {
+		G_node n;
+		G_nodeList tt = res->glist;
+		for (; tt; tt = tt->tail) {
+			if (tt->head->info == tmp->head->info) {
+				n = tt->head;
+				break;
+			}
+		}
+		G_nodeList succ = tmp->head->succ;
+		for (; succ; succ = succ->tail) {
+			for (tt = res->glist; tt; tt = tt->tail) {
+				if (tt->head->info == succ->head->info) {
+					G_addEdge(n, tt->head);
+					break;
+				}
+			}
+		}
+	}
+	return res;
+}
+
+G_node G_rmNode(G_graph g, G_node n) {
+	G_nodeList tmp = g->glist;
+	if (tmp == NULL) return NULL;
+	if (tmp->head == n) {
+		g->glist = tmp->tail;
+		return n;
+	}
+	for (; tmp->tail; tmp = tmp->tail) {
+		if (tmp->tail->head == n) {
+			tmp->tail = tmp->tail->tail;
+			return n;
+		}
+	}
+	return NULL;
+}
+
+
 G_node G_Node(G_graph g, void *info) {
 	G_node n = checked_malloc(sizeof(*n));
 	n->id = g->num++;
@@ -80,12 +126,11 @@ void G_rmEdge(G_node from, G_node to) {
 
 void G_show(FILE *out, G_nodeList p, void showInfo(FILE* out, void *)) {
 	for (; p; p = p->tail) {
-		fprintf(out, " %d :\n", p->head->id);
 		showInfo(out, p->head->info);
-		fprintf(out, "follow:");
+		fprintf(out, "\tconflict:\t");
 		G_nodeList t = p->head->succ;
 		for (; t; t = t->tail)
-			fprintf(out, " %d", t->head->id);
+			showInfo(out, t->head->info);
 		fprintf(out, "\n");
 	}
 }

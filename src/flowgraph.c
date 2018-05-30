@@ -64,7 +64,8 @@ G_graph FG_AssemFlowGraph(AS_instrList il) {
 	for (; glist; glist = glist->tail) {
 		G_node n = glist->head;
 		AS_instr ins = G_nodeInfo(n);
-		if (ins->kind == I_OPER && ins->u.OPER.jumps) {
+		//branch
+		if (ins->kind == I_OPER && ins->u.OPER.jumps&&ins->u.OPER.dst==NULL) {
 			Temp_label label = (ins->u.OPER.jumps)->labels->head;
 			G_node label_node = TAB_look(label_table, label);
 			if (label_node) {
