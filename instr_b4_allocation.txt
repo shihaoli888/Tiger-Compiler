@@ -120,6 +120,7 @@ li r136, 8
 move $a0, $fp
 move $a1, r136
 jal factorial
+nop
 li $v0, 0
 move $s7, r128
 move $s6, r129
@@ -130,6 +131,7 @@ move $s2, r133
 move $s1, r134
 move $s0, r135
 j L4
+nop
 
 L4:
 addi $sp,$sp,8
@@ -139,28 +141,27 @@ jr $ra
 
 liveness
 
-t127		conflict:	$fp	t52791688	$s7	$s6	$s5	$s4	$s3	$s2	$s1	$s0	$sp	
+t127		conflict:	$fp	$s7	$s6	$s5	$s4	$s3	$s2	$s1	$s0	
 $fp		conflict:	t127	t128	t129	t130	t131	t132	t133	t134	t135	t136	
-t136		conflict:	$fp	t52791688	t128	t129	t130	t131	t132	t133	t134	t135	$sp	$a0	
-$a1		conflict:	$a0	t52791688	t128	t129	t130	t131	t132	t133	t134	t135	$sp	
-$a0		conflict:	t136	t52791688	t128	t129	t130	t131	t132	t133	t134	t135	$sp	$a1	
-t52791688		conflict:	t127	t128	t129	t130	t131	t132	t133	t134	t135	t136	$a0	$a1	
+t136		conflict:	$fp	t128	t129	t130	t131	t132	t133	t134	t135	$a0	
+$a1		conflict:	$a0	t128	t129	t130	t131	t132	t133	t134	t135	
+$a0		conflict:	t136	t128	t129	t130	t131	t132	t133	t134	t135	$a1	
 $v0		conflict:	t128	t129	t130	t131	t132	t133	t134	t135	
-t128		conflict:	$fp	t52791688	$s6	$s5	$s4	$s3	$s2	$s1	$s0	$sp	t129	t130	t131	t132	t133	t134	t135	t136	$a0	$a1	$v0	
+t128		conflict:	$fp	$s6	$s5	$s4	$s3	$s2	$s1	$s0	t129	t130	t131	t132	t133	t134	t135	t136	$a0	$a1	$ra	$v0	
 $s7		conflict:	t127	t129	t130	t131	t132	t133	t134	t135	
-t129		conflict:	$fp	t52791688	t128	$s5	$s4	$s3	$s2	$s1	$s0	$sp	t130	t131	t132	t133	t134	t135	t136	$a0	$a1	$v0	$s7	
+t129		conflict:	$fp	t128	$s5	$s4	$s3	$s2	$s1	$s0	t130	t131	t132	t133	t134	t135	t136	$a0	$a1	$ra	$v0	$s7	
 $s6		conflict:	t127	t128	t130	t131	t132	t133	t134	t135	
-t130		conflict:	$fp	t52791688	t128	t129	$s4	$s3	$s2	$s1	$s0	$sp	t131	t132	t133	t134	t135	t136	$a0	$a1	$v0	$s7	$s6	
+t130		conflict:	$fp	t128	t129	$s4	$s3	$s2	$s1	$s0	t131	t132	t133	t134	t135	t136	$a0	$a1	$ra	$v0	$s7	$s6	
 $s5		conflict:	t127	t128	t129	t131	t132	t133	t134	t135	
-t131		conflict:	$fp	t52791688	t128	t129	t130	$s3	$s2	$s1	$s0	$sp	t132	t133	t134	t135	t136	$a0	$a1	$v0	$s7	$s6	$s5	
+t131		conflict:	$fp	t128	t129	t130	$s3	$s2	$s1	$s0	t132	t133	t134	t135	t136	$a0	$a1	$ra	$v0	$s7	$s6	$s5	
 $s4		conflict:	t127	t128	t129	t130	t132	t133	t134	t135	
-t132		conflict:	$fp	t52791688	t128	t129	t130	t131	$s2	$s1	$s0	$sp	t133	t134	t135	t136	$a0	$a1	$v0	$s7	$s6	$s5	$s4	
+t132		conflict:	$fp	t128	t129	t130	t131	$s2	$s1	$s0	t133	t134	t135	t136	$a0	$a1	$ra	$v0	$s7	$s6	$s5	$s4	
 $s3		conflict:	t127	t128	t129	t130	t131	t133	t134	t135	
-t133		conflict:	$fp	t52791688	t128	t129	t130	t131	t132	$s1	$s0	$sp	t134	t135	t136	$a0	$a1	$v0	$s7	$s6	$s5	$s4	$s3	
+t133		conflict:	$fp	t128	t129	t130	t131	t132	$s1	$s0	t134	t135	t136	$a0	$a1	$ra	$v0	$s7	$s6	$s5	$s4	$s3	
 $s2		conflict:	t127	t128	t129	t130	t131	t132	t134	t135	
-t134		conflict:	$fp	t52791688	t128	t129	t130	t131	t132	t133	$s0	$sp	t135	t136	$a0	$a1	$v0	$s7	$s6	$s5	$s4	$s3	$s2	
+t134		conflict:	$fp	t128	t129	t130	t131	t132	t133	$s0	t135	t136	$a0	$a1	$ra	$v0	$s7	$s6	$s5	$s4	$s3	$s2	
 $s1		conflict:	t127	t128	t129	t130	t131	t132	t133	t135	
-t135		conflict:	$fp	t52791688	t128	t129	t130	t131	t132	t133	t134	$sp	t136	$a0	$a1	$v0	$s7	$s6	$s5	$s4	$s3	$s2	$s1	
+t135		conflict:	$fp	t128	t129	t130	t131	t132	t133	t134	t136	$a0	$a1	$ra	$v0	$s7	$s6	$s5	$s4	$s3	$s2	$s1	
 $s0		conflict:	t127	t128	t129	t130	t131	t132	t133	t134	
 $t0		conflict:	
 $t1		conflict:	
@@ -172,8 +173,8 @@ $t6		conflict:
 $t7		conflict:	
 $t8		conflict:	
 $t9		conflict:	
-$sp		conflict:	t127	t128	t129	t130	t131	t132	t133	t134	t135	t136	$a0	$a1	
-$ra		conflict:	
+$sp		conflict:	
+$ra		conflict:	t128	t129	t130	t131	t132	t133	t134	t135	
 $zero		conflict:	
 t127		$ra	
 t128		$s7	
@@ -372,6 +373,7 @@ move r123, $s2
 move r124, $s1
 move r125, $s0
 blt r101, $zero, L1
+nop
 
 L2:
 move r150, r101
@@ -380,6 +382,7 @@ addi r152, r101, -1
 move $a0, r151
 move $a1, r152
 jal factorial
+nop
 move r149, $v0
 mul r153, r150, r149
 move r103, r153
@@ -395,10 +398,12 @@ move $s2, r123
 move $s1, r124
 move $s0, r125
 j L6
+nop
 
 L1:
 addi r103, $zero, -1
 j L3
+nop
 
 L6:
 addi $sp,$sp,8
@@ -408,33 +413,32 @@ jr $ra
 
 liveness
 
-t109		conflict:	t101	$a1	$a0	t52791688	$s7	$s6	$s5	$s4	$s3	$s2	$s1	$s0	$sp	$zero	
-t100		conflict:	t101	t52791688	$s7	$s6	$s5	$s4	$s3	$s2	$s1	$s0	$sp	$zero	
+t109		conflict:	t101	$a1	$a0	$s7	$s6	$s5	$s4	$s3	$s2	$s1	$s0	$sp	$zero	
+t100		conflict:	t101	$s7	$s6	$s5	$s4	$s3	$s2	$s1	$s0	$sp	$zero	
 t101		conflict:	t109	t100	t118	t119	t120	t121	t122	t123	t124	t125	t151	
-t151		conflict:	t101	t52791688	t150	t118	t119	t120	t121	t122	t123	t124	t125	$sp	t152	
-t152		conflict:	t151	t52791688	t150	t118	t119	t120	t121	t122	t123	t124	t125	$sp	$a0	
-$a1		conflict:	t109	$a0	t52791688	t150	t118	t119	t120	t121	t122	t123	t124	t125	$sp	
-$a0		conflict:	t109	t152	t52791688	t150	t118	t119	t120	t121	t122	t123	t124	t125	$sp	$a1	
-t52791688		conflict:	t109	t100	t118	t119	t120	t121	t122	t123	t124	t125	t150	t151	t152	$a0	$a1	
+t151		conflict:	t101	t150	t118	t119	t120	t121	t122	t123	t124	t125	t152	
+t152		conflict:	t151	t150	t118	t119	t120	t121	t122	t123	t124	t125	$a0	
+$a1		conflict:	t109	$a0	t150	t118	t119	t120	t121	t122	t123	t124	t125	
+$a0		conflict:	t109	t152	t150	t118	t119	t120	t121	t122	t123	t124	t125	$a1	
 t149		conflict:	t150	t118	t119	t120	t121	t122	t123	t124	t125	
-t150		conflict:	t52791688	t118	t119	t120	t121	t122	t123	t124	t125	$sp	t151	t152	$a0	$a1	$v0	t149	
+t150		conflict:	t118	t119	t120	t121	t122	t123	t124	t125	$sp	t151	t152	$a0	$a1	$ra	t149	
 t153		conflict:	t118	t119	t120	t121	t122	t123	t124	t125	
-$v0		conflict:	t150	t118	t119	t120	t121	t122	t123	t124	t125	
-t118		conflict:	t101	t52791688	$s6	$s5	$s4	$s3	$s2	$s1	$s0	$sp	$zero	t119	t120	t121	t122	t123	t124	t125	t150	t151	t152	$a0	$a1	t149	t153	t103	$v0	
+$v0		conflict:	$ra	t118	t119	t120	t121	t122	t123	t124	t125	
+t118		conflict:	t101	$s6	$s5	$s4	$s3	$s2	$s1	$s0	$sp	$zero	t119	t120	t121	t122	t123	t124	t125	t150	t151	t152	$a0	$a1	$ra	t149	t153	t103	$v0	
 $s7		conflict:	t109	t100	t119	t120	t121	t122	t123	t124	t125	
-t119		conflict:	t101	t52791688	t118	$s5	$s4	$s3	$s2	$s1	$s0	$sp	$zero	t120	t121	t122	t123	t124	t125	t150	t151	t152	$a0	$a1	t149	t153	t103	$v0	$s7	
+t119		conflict:	t101	t118	$s5	$s4	$s3	$s2	$s1	$s0	$sp	$zero	t120	t121	t122	t123	t124	t125	t150	t151	t152	$a0	$a1	$ra	t149	t153	t103	$v0	$s7	
 $s6		conflict:	t109	t100	t118	t120	t121	t122	t123	t124	t125	
-t120		conflict:	t101	t52791688	t118	t119	$s4	$s3	$s2	$s1	$s0	$sp	$zero	t121	t122	t123	t124	t125	t150	t151	t152	$a0	$a1	t149	t153	t103	$v0	$s7	$s6	
+t120		conflict:	t101	t118	t119	$s4	$s3	$s2	$s1	$s0	$sp	$zero	t121	t122	t123	t124	t125	t150	t151	t152	$a0	$a1	$ra	t149	t153	t103	$v0	$s7	$s6	
 $s5		conflict:	t109	t100	t118	t119	t121	t122	t123	t124	t125	
-t121		conflict:	t101	t52791688	t118	t119	t120	$s3	$s2	$s1	$s0	$sp	$zero	t122	t123	t124	t125	t150	t151	t152	$a0	$a1	t149	t153	t103	$v0	$s7	$s6	$s5	
+t121		conflict:	t101	t118	t119	t120	$s3	$s2	$s1	$s0	$sp	$zero	t122	t123	t124	t125	t150	t151	t152	$a0	$a1	$ra	t149	t153	t103	$v0	$s7	$s6	$s5	
 $s4		conflict:	t109	t100	t118	t119	t120	t122	t123	t124	t125	
-t122		conflict:	t101	t52791688	t118	t119	t120	t121	$s2	$s1	$s0	$sp	$zero	t123	t124	t125	t150	t151	t152	$a0	$a1	t149	t153	t103	$v0	$s7	$s6	$s5	$s4	
+t122		conflict:	t101	t118	t119	t120	t121	$s2	$s1	$s0	$sp	$zero	t123	t124	t125	t150	t151	t152	$a0	$a1	$ra	t149	t153	t103	$v0	$s7	$s6	$s5	$s4	
 $s3		conflict:	t109	t100	t118	t119	t120	t121	t123	t124	t125	
-t123		conflict:	t101	t52791688	t118	t119	t120	t121	t122	$s1	$s0	$sp	$zero	t124	t125	t150	t151	t152	$a0	$a1	t149	t153	t103	$v0	$s7	$s6	$s5	$s4	$s3	
+t123		conflict:	t101	t118	t119	t120	t121	t122	$s1	$s0	$sp	$zero	t124	t125	t150	t151	t152	$a0	$a1	$ra	t149	t153	t103	$v0	$s7	$s6	$s5	$s4	$s3	
 $s2		conflict:	t109	t100	t118	t119	t120	t121	t122	t124	t125	
-t124		conflict:	t101	t52791688	t118	t119	t120	t121	t122	t123	$s0	$sp	$zero	t125	t150	t151	t152	$a0	$a1	t149	t153	t103	$v0	$s7	$s6	$s5	$s4	$s3	$s2	
+t124		conflict:	t101	t118	t119	t120	t121	t122	t123	$s0	$sp	$zero	t125	t150	t151	t152	$a0	$a1	$ra	t149	t153	t103	$v0	$s7	$s6	$s5	$s4	$s3	$s2	
 $s1		conflict:	t109	t100	t118	t119	t120	t121	t122	t123	t125	
-t125		conflict:	t101	t52791688	t118	t119	t120	t121	t122	t123	t124	$sp	$zero	t150	t151	t152	$a0	$a1	t149	t153	t103	$v0	$s7	$s6	$s5	$s4	$s3	$s2	$s1	
+t125		conflict:	t101	t118	t119	t120	t121	t122	t123	t124	$sp	$zero	t150	t151	t152	$a0	$a1	$ra	t149	t153	t103	$v0	$s7	$s6	$s5	$s4	$s3	$s2	$s1	
 $s0		conflict:	t109	t100	t118	t119	t120	t121	t122	t123	t124	
 t103		conflict:	t118	t119	t120	t121	t122	t123	t124	t125	
 $t0		conflict:	
@@ -447,8 +451,8 @@ $t6		conflict:
 $t7		conflict:	
 $t8		conflict:	
 $t9		conflict:	
-$sp		conflict:	t109	t100	t118	t119	t120	t121	t122	t123	t124	t125	t150	t151	t152	$a0	$a1	
-$ra		conflict:	
+$sp		conflict:	t109	t100	t118	t119	t120	t121	t122	t123	t124	t125	t150	
+$ra		conflict:	t150	$v0	t118	t119	t120	t121	t122	t123	t124	t125	
 $zero		conflict:	t109	t100	t118	t119	t120	t121	t122	t123	t124	t125	
 t109		$ra	
 t100		$a1	
