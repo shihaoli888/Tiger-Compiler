@@ -163,7 +163,11 @@ static Tr_level outmost = NULL;
 
 Tr_level Tr_outmost(void){
 	if (outmost == NULL) {
-		outmost = Tr_newLevel(NULL, Temp_newlabel(), NULL);
+		Tr_level level = checked_malloc(sizeof(*level));
+		level->parent =NULL;
+		level->frame = F_newFrame(Temp_namedlabel("tigerMain"), NULL);
+		level->formals = NULL;
+		outmost = level;
 	}
 	return outmost;
 }
@@ -369,7 +373,7 @@ Tr_exp Tr_iffExp(Tr_exp test, Tr_exp then, Tr_exp elsess) {
 
 Tr_exp Tr_recordExp(Tr_expList exps, int offsets[], int n) {
 	Temp_temp r = Temp_newtemp();
-	T_exp mmalloc = F_externalCall(String("malloc"),T_ExpList(T_Const(n*get_wordsize()), NULL));
+	T_exp mmalloc = F_externalCall(String("allocRecord"),T_ExpList(T_Const(n*get_wordsize()), NULL));
 	T_stm mov = T_Move(T_Temp(r), mmalloc);
 	int i = 0;
 	for (; exps; exps = exps->tail,i++) {

@@ -52,7 +52,7 @@ Temp_tempList F_callersaves(void);
 
 T_stm F_progEntryExit1(F_frame frame, T_exp stm);
 AS_instrList F_progEntryExit2(AS_instrList body);
-AS_proc F_progEntryExit3(F_frame frame, AS_instrList body);
+AS_proc F_progEntryExit3(F_frame frame, AS_instrList body,Temp_label done);
 
 
 #endif // !FRAME_H
