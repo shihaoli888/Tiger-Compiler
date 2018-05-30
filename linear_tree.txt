@@ -1,116 +1,144 @@
  MOVE(
-  TEMP t111,
-  TEMP t110)
+  TEMP t108,
+  TEMP t109)
 
 
  MOVE(
   MEM(
    BINOP(PLUS,
-    TEMP t105,
+    TEMP t101,
     CONST 0)),
-  TEMP t106)
-
-
- MOVE(
-  TEMP t100,
-  TEMP t107)
-
-
- MOVE(
-  TEMP t101,
-  TEMP t108)
-
-
- MOVE(
-  TEMP t120,
-  TEMP t119)
-
-
- MOVE(
-  TEMP t121,
-  TEMP t118)
-
-
- MOVE(
-  TEMP t122,
-  TEMP t117)
-
-
- MOVE(
-  TEMP t123,
-  TEMP t116)
-
-
- MOVE(
-  TEMP t124,
-  TEMP t115)
-
-
- MOVE(
-  TEMP t125,
-  TEMP t114)
-
-
- MOVE(
-  TEMP t126,
-  TEMP t113)
-
-
- MOVE(
-  TEMP t127,
-  TEMP t112)
-
-
- MOVE(
-  TEMP t128,
-  CALL(
-   NAME do_nothing2,
-    MEM(
-     BINOP(PLUS,
-      TEMP t105,
-      CONST 0)),
-    BINOP(PLUS,
-     TEMP t103,
-     CONST 1)))
-
-
- MOVE(
-  TEMP t119,
-  TEMP t120)
+  TEMP t104)
 
 
  MOVE(
   TEMP t118,
-  TEMP t121)
+  TEMP t117)
+
+
+ MOVE(
+  TEMP t119,
+  TEMP t116)
+
+
+ MOVE(
+  TEMP t120,
+  TEMP t115)
+
+
+ MOVE(
+  TEMP t121,
+  TEMP t114)
+
+
+ MOVE(
+  TEMP t122,
+  TEMP t113)
+
+
+ MOVE(
+  TEMP t123,
+  TEMP t112)
+
+
+ MOVE(
+  TEMP t124,
+  TEMP t111)
+
+
+ MOVE(
+  TEMP t125,
+  TEMP t110)
+
+
+ MOVE(
+  TEMP t100,
+  CONST 0)
+
+
+ MOVE(
+  TEMP t102,
+  CONST 0)
+
+
+ MOVE(
+  TEMP t103,
+  CONST 0)
+
+
+ LABEL L3
+
+
+ CJUMP(LT,
+  TEMP t100,
+  CONST 100,
+  L4,L2)
+
+
+ LABEL L4
+
+
+ MOVE(
+  TEMP t100,
+  BINOP(PLUS,
+   TEMP t100,
+   CONST 1))
+
+
+ MOVE(
+  TEMP t102,
+  TEMP t100)
+
+
+ JUMP(
+  NAME L3)
+
+
+ LABEL L2
+
+
+ MOVE(
+  TEMP t126,
+  CONST 0)
 
 
  MOVE(
   TEMP t117,
-  TEMP t122)
+  TEMP t118)
 
 
  MOVE(
   TEMP t116,
-  TEMP t123)
+  TEMP t119)
 
 
  MOVE(
   TEMP t115,
-  TEMP t124)
+  TEMP t120)
 
 
  MOVE(
   TEMP t114,
-  TEMP t125)
+  TEMP t121)
 
 
  MOVE(
   TEMP t113,
-  TEMP t126)
+  TEMP t122)
 
 
  MOVE(
   TEMP t112,
-  TEMP t127)
+  TEMP t123)
+
+
+ MOVE(
+  TEMP t111,
+  TEMP t124)
+
+
+ MOVE(
+  TEMP t110,
+  TEMP t125)
 
 

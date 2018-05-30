@@ -2,7 +2,9 @@
 // Created by Zhao Xiaodong on 2018/5/28.
 //
 
-#include <assem.h>
+#include "assem.h"
+#include "graph.h"
+#include "temp.h"
 #include "color.h"
 
 #define DEBUG_IT 1
@@ -84,7 +86,7 @@ static void MakeWorkList() {
     while (curr) {
         global.initial = diff_G_nodeList(global.initial, curr->head);
 #if DEBUG_IT
-        printf("degree: %d\n", G_degree(curr->head));
+//        printf("degree: %d\n", G_degree(curr->head));
 #endif
         if (G_degree(curr->head) >= global.K) {
             global.spillWorklist = union_G_nodeList(global.spillWorklist, curr->head);
@@ -195,7 +197,29 @@ static void Main() {
 }
 
 struct COL_result COL_color(G_graph ig, Temp_map initial, Temp_tempList regs) {
-    printf("coloring..");
+    printf("coloring..\n");
+#if DEBUG_IT
+    // show initial info
+    {
+        printf("initial test:\n");
+        G_nodeList nodes = G_nodes(ig);
+        while (nodes) {
+            G_node node = nodes->head;
+            Temp_temp t = (Temp_temp) G_nodeInfo(node);
+            string s = Temp_look(initial, t);
+            printf("%d - %s\n", getTmpnum(t), s);
+            nodes = nodes->tail;
+        }
+        printf("\n");
+        Temp_tempList temp_tempList = regs;
+        while (temp_tempList) {
+            int num = getTmpnum(temp_tempList->head);
+            printf("%d - %s\n", num, Temp_look(initial, temp_tempList->head));
+            temp_tempList = temp_tempList->tail;
+        }
+        printf("\n");
+    };
+#endif
     Init(ig, initial, regs);
     Main();
     struct COL_result res; // todo: temp return for compile

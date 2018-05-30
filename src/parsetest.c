@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include "frame.h"
 #include "canon.h"
-#include "color.h"
 #include "util.h"
 #include "errormsg.h"
 #include "absyn.h"
@@ -12,6 +11,7 @@
 #include "codegen.h"
 #include "flowgraph.h"
 #include "liveness.h"
+#include "color.h"
 
 
 extern int yyparse(void);
