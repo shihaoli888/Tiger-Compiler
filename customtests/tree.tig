@@ -1,0 +1,25 @@
+/* 相互递归 */
+let
+    type tree = {key: int, children: treelist}
+    type treelist = {hd: tree, tl: treelist}
+
+    var sum:=0
+    function treeLeaves(t: tree) : int =
+        if t=nil then 0
+        else t.key + treelistLeaves(t.children)
+
+    function treelistLeaves(L:treelist) : int = 
+        if L=nil then 0
+        else treeLeaves(L.hd) + treelistLeaves(L.tl)
+in
+    var leave1: tree:=tree {key: 1, children: nil};
+    var leave2: tree:=tree {key: 2, children: nil};
+    var leave3: tree:=tree {key: 3, children: nil};
+    var t: tree := tree {key: 1, children: nil };
+    var list3:= treelist{hd: leave3, tl:nil };
+    var list2:= treelist{hd: leave2, tl:list2 };
+    var list1:= treelist{hd: leave3, tl:list3 };
+
+    treeLeaves(t)
+    /* 7 */
+end

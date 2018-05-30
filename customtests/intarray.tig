@@ -1,0 +1,40 @@
+/* 数组; while, for 循环 break; */
+/* 计算0-4, 0-3, 0-2, 0-1, 0之和, 20 */
+
+let 
+    type intArray = array of int
+
+    var ans:=0
+    var N:=5
+    var nums := intArray [N] of 0
+
+    function sum(nums: intArray, size: int): int =
+    (
+        while 1 do
+        (
+            if size = 0
+            then break
+            else
+            ( 
+                for i:= 0 to 2 * size do
+                    if i = size
+                    then break
+                    else
+                        ans := ans + nums[i]
+                ;
+                size := size -1 
+            )
+        );
+        ans
+    )
+
+in
+    for i := 0 to 2 * N do
+    (
+        if i = N
+        then break
+        else
+            nums[i] := i
+    );
+    sum(nums, N)
+end

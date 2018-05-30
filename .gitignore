@@ -10,5 +10,6 @@ unistd.h
 tigerdebug.*
 main.c
 Debug
+Release
 *_tree.txt
 instr_b4_allocation.txt
