@@ -144,7 +144,7 @@ static void MakeWorkList() {
 
 static void decrementDegree(G_node node) {
     int d = (int) G_look(global.degrees, node);
-    G_enter(global.degrees, node, (void *) d - 1);
+    G_enter(global.degrees, node, (void *) (d - 1));
     if (d == global.K && !isPrecolored(node)) {
         // todo: without considering move related
         global.spillWorklist = diff_G_nodeList(global.spillWorklist, node);

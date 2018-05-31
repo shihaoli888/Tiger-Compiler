@@ -318,7 +318,8 @@ T_stm F_progEntryExit1(F_frame frame, T_exp body) {
 	F_accessList args = frame->formals;
 	Temp_tempList as = F_argregs();
 	int i = 0;
-	T_stm stm = T_Move(T_Temp(Temp_newtemp()), T_Temp(F_RA()));
+	Temp_temp ra_tmp = Temp_newtemp();
+	T_stm stm = T_Move(T_Temp(ra_tmp), T_Temp(F_RA()));
 	for (i = 0; args&&i < 4; i++,args=args->tail,as=as->tail) {
 		stm = T_Seq(stm,T_Move(F_Exp(args->head, T_Temp(F_FP())), T_Temp(as->head)));
 	} 
@@ -347,6 +348,7 @@ T_stm F_progEntryExit1(F_frame frame, T_exp body) {
 	for (; callersaves; callersaves = callersaves->tail,callersaves_tmp = callersaves_tmp->tail) {
 		epi = T_Seq(epi, T_Move(T_Temp(callersaves->head), T_Temp(callersaves_tmp->head)));
 	}
+	epi = T_Seq(epi, T_Move(T_Temp(F_RA()), T_Temp(ra_tmp)));
 	return T_Seq(pro, epi);
 }
 
