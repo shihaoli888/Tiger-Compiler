@@ -159,7 +159,9 @@ static void traverseVar(S_table env, int depth, A_var v) {
 	case A_simpleVar:
 	{
 		escape_entry x = S_look(env, v->u.simple);
-		if (depth > x->d) x->escape = TRUE;
+		if (x) {
+			if (depth > x->d) x->escape = TRUE;
+		}
 		return;
 	}
 	case A_fieldVar:

@@ -197,6 +197,7 @@ void doProc(FILE *file, FILE *assemFile, F_frame frame, T_stm stm) {
     fprintf(assemFile, "%s", proc->prolog);
     AS_printInstrList(assemFile, instrList, ra_result.coloring);
     fprintf(assemFile, "%s", proc->epilog);
+	fprintf(assemFile, "\n\n\n\n");
 }
 
 #endif // _DEBUG
@@ -223,6 +224,14 @@ void parse(string fname) {
 
         FILE *instrFp = fopen("instr_b4_allocation.txt", "w");
         FILE *assemFile = fopen("instructionAssem.s", "w");
+		tmp = res;
+		fprintf(assemFile, ".data\n");
+		for (; tmp; tmp = tmp->tail) {
+			if (tmp->head->kind == F_stringFrag) {
+				fprintf(assemFile, "%s", F_string(tmp->head));
+			}
+		}
+		fprintf(assemFile, ".text\n.globl tigerMain\n");
         tmp = res;
         for (; tmp; tmp = tmp->tail)
             if (tmp->head->kind == F_progFrag)
@@ -251,7 +260,7 @@ int main(int argc, char **argv) {
     //parse("customtests/func.tig");
     //parse("customtests/cjump.tig");
     //parse("testcases/test1.tig"); 
-    parse("customtests/factorial.tig");
+    parse("customtests/stdlib.tig");
     printf("Done//:~");
     return 0;
 }

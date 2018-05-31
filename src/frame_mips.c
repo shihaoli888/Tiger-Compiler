@@ -376,3 +376,13 @@ AS_proc F_progEntryExit3(F_frame frame, AS_instrList body, Temp_label done) {
 	string epilog = String(buffer);
 	return AS_Proc(prolog, body, epilog);
 }
+
+
+string F_string(F_frag str) {
+	char buffer[100];
+	string s = str->u.stringg.str;
+	int i=0;
+	for (; s[i]; i++);
+	sprintf(buffer, "%s:\n.word %d\n.ascii \"%s\"\n", Temp_labelstring(str->u.stringg.label), i, str->u.stringg.str);
+	return String(buffer);
+}
