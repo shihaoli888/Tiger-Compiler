@@ -15,67 +15,95 @@ $LC0:
 	# .ent	tigerMain
 	# .type	tigerMain, @function
 tigerMain:
-	# .frame	$fp,40,$31		# vars= 8, regs= 2/0, args= 16, gp= 8
+	# .frame	$fp,48,$31		# vars= 16, regs= 2/0, args= 16, gp= 8
 	# .mask	0xc0000000,-4
 	# .fmask	0x00000000,0
 	# .set	noreorder
 	# .set	nomacro
-	addiu	$sp,$sp,-40
-	sw	$31,36($sp)
-	sw	$fp,32($sp)
-	xxx = 8
+	addiu	$sp,$sp,-48
+	sw	$31,44($sp)
+	sw	$fp,40($sp)
 	move	$fp,$sp
-	lui  $2,%hi($LC0)
+	lui	$2,%hi($LC0)
 	addiu	$2,$2,%lo($LC0)
 	sw	$2,24($fp)
-	lui	$2,%hi(stdout)
-	lw	$2,%lo(stdout)($2)
-	li	$4,120+xxx-8			# 0x78
-	move	$5,$2
-	jal	_IO_putc
+	jal	tigerGetchar
 	nop
-	
+
+	sw	$2,28($fp)
 	li	$4,97			# 0x61
 	jal	chr
 	nop
 
-	sw	$2,28($fp)
-	lw	$4,28($fp)
-	jal	ord
-	nop
-
-	move	$4,$2
-	jal	putchar
-	nop
-
+	sw	$2,32($fp)
 	li	$4,98			# 0x62
 	jal	chr
 	nop
 
-	lw	$4,28($fp)
+	lw	$4,32($fp)
 	move	$5,$2
 	jal	concat
 	nop
 
-	sw	$2,32($fp)
-	lw	$4,32($fp)
-	jal	print
+	move	$4,$2
+	lw	$5,28($fp)
+	jal	concat
 	nop
 
-	lw	$4,32($fp)
+	sw	$2,36($fp)
+	lw	$4,36($fp)
+	jal	printStr
+	nop
+
+	jal	flush
+	nop
+
+	lw	$4,36($fp)
 	li	$5,1			# 0x1
 	li	$6,1			# 0x1
 	jal	substring
 	nop
 
 	move	$4,$2
-	jal	print
+	jal	printStr
+	nop
+
+	lw	$4,36($fp)
+	jal	size
+	nop
+
+	move	$4,$2
+	jal	printInt
+	nop
+
+	lw	$4,36($fp)
+	jal	size
+	nop
+
+	move	$4,$2
+	jal	not
+	nop
+
+	move	$4,$2
+	jal	printInt
+	nop
+
+	lw	$4,32($fp)
+	jal	ord
+	nop
+
+	move	$4,$2
+	jal	printInt
+	nop
+
+	li	$4,-1			# 0xffffffffffffffff
+	jal	tigerExit
 	nop
 
 	move	$sp,$fp
-	lw	$31,36($sp)
-	lw	$fp,32($sp)
-	addiu	$sp,$sp,40
+	lw	$31,44($sp)
+	lw	$fp,40($sp)
+	addiu	$sp,$sp,48
 	j	$31
 	nop
 

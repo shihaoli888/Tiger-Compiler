@@ -16,8 +16,8 @@ Make 	4.1
     - `tiger.lex` 
     - `tiger.y` 
   - `lib/`
-    - `libtiger.c` TIGER外部函数
-    - `libtiger.s` TIGER外部函数
+    - `libtiger.c` , `libtiger.s` TIGER外部函数
+    - `tigerMain.c`, `tigerMain.s` TIGER程序编译结果示例
   - `makefile`
   - `customtests/` 测试用例
   - `testcases/` 书本测试用例
@@ -40,7 +40,7 @@ Make 	4.1
 OS: Debian-MIPS
 
   `ssh root@106.14.177.227 -p 10022`
-  
+
   使用sftp交换文件
 
   ## 栈帧部分的寄存器相关函数可能有bug，还未调试

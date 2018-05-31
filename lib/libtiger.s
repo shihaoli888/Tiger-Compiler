@@ -100,11 +100,11 @@ allocRecord:
 	.end	allocRecord
 	.size	allocRecord, .-allocRecord
 	.align	2
-	.globl	print
+	.globl	printStr
 	.set	nomips16
-	.ent	print
-	.type	print, @function
-print:
+	.ent	printStr
+	.type	printStr, @function
+printStr:
 	.frame	$fp,40,$31		# vars= 8, regs= 2/0, args= 16, gp= 8
 	.mask	0xc0000000,-4
 	.fmask	0x00000000,0
@@ -154,8 +154,47 @@ $L6:
 
 	.set	macro
 	.set	reorder
-	.end	print
-	.size	print, .-print
+	.end	printStr
+	.size	printStr, .-printStr
+	.rdata
+	.align	2
+$LC0:
+	.ascii	"%d\012\000"
+	.text
+	.align	2
+	.globl	printInt
+	.set	nomips16
+	.ent	printInt
+	.type	printInt, @function
+printInt:
+	.frame	$fp,32,$31		# vars= 0, regs= 2/0, args= 16, gp= 8
+	.mask	0xc0000000,-4
+	.fmask	0x00000000,0
+	.set	noreorder
+	.set	nomacro
+	addiu	$sp,$sp,-32
+	sw	$31,28($sp)
+	sw	$fp,24($sp)
+	move	$fp,$sp
+	sw	$4,32($fp)
+	lui	$2,%hi($LC0)
+	addiu	$2,$2,%lo($LC0)
+	move	$4,$2
+	lw	$5,32($fp)
+	jal	printf
+	nop
+
+	move	$sp,$fp
+	lw	$31,28($sp)
+	lw	$fp,24($sp)
+	addiu	$sp,$sp,32
+	j	$31
+	nop
+
+	.set	macro
+	.set	reorder
+	.end	printInt
+	.size	printInt, .-printInt
 	.align	2
 	.globl	flush
 	.set	nomips16
@@ -189,6 +228,57 @@ flush:
 	.end	flush
 	.size	flush, .-flush
 	.align	2
+	.globl	tigerGetchar
+	.set	nomips16
+	.ent	tigerGetchar
+	.type	tigerGetchar, @function
+tigerGetchar:
+	.frame	$fp,40,$31		# vars= 8, regs= 2/0, args= 16, gp= 8
+	.mask	0xc0000000,-4
+	.fmask	0x00000000,0
+	.set	noreorder
+	.set	nomacro
+	addiu	$sp,$sp,-40
+	sw	$31,36($sp)
+	sw	$fp,32($sp)
+	move	$fp,$sp
+	lui	$2,%hi(stdin)
+	lw	$2,%lo(stdin)($2)
+	move	$4,$2
+	jal	_IO_getc
+	nop
+
+	sw	$2,24($fp)
+	lw	$3,24($fp)
+	li	$2,-1			# 0xffffffffffffffff
+	bne	$3,$2,$L11
+	nop
+
+	lui	$2,%hi(emptychar)
+	lw	$2,%lo(emptychar)($2)
+	j	$L12
+	nop
+
+$L11:
+	lui	$2,%hi(constchar)
+	lw	$3,24($fp)
+	sll	$3,$3,2
+	addiu	$2,$2,%lo(constchar)
+	addu	$2,$3,$2
+	lw	$2,0($2)
+$L12:
+	move	$sp,$fp
+	lw	$31,36($sp)
+	lw	$fp,32($sp)
+	addiu	$sp,$sp,40
+	j	$31
+	nop
+
+	.set	macro
+	.set	reorder
+	.end	tigerGetchar
+	.size	tigerGetchar, .-tigerGetchar
+	.align	2
 	.globl	ord
 	.set	nomips16
 	.ent	ord
@@ -205,17 +295,17 @@ ord:
 	sw	$4,8($fp)
 	lw	$2,8($fp)
 	lw	$2,0($2)
-	beq	$2,$0,$L10
+	beq	$2,$0,$L14
 	nop
 
 	lw	$2,8($fp)
 	lbu	$2,4($2)
-	j	$L11
+	j	$L15
 	nop
 
-$L10:
+$L14:
 	li	$2,-1			# 0xffffffffffffffff
-$L11:
+$L15:
 	move	$sp,$fp
 	lw	$fp,4($sp)
 	addiu	$sp,$sp,8
@@ -228,7 +318,7 @@ $L11:
 	.size	ord, .-ord
 	.rdata
 	.align	2
-$LC0:
+$LC1:
 	.ascii	"Error: function chr: ASCII value out of range\000"
 	.text
 	.align	2
@@ -248,17 +338,17 @@ chr:
 	move	$fp,$sp
 	sw	$4,32($fp)
 	lw	$2,32($fp)
-	bltz	$2,$L13
+	bltz	$2,$L17
 	nop
 
 	lw	$2,32($fp)
 	slt	$2,$2,256
-	bne	$2,$0,$L14
+	bne	$2,$0,$L18
 	nop
 
-$L13:
-	lui	$2,%hi($LC0)
-	addiu	$4,$2,%lo($LC0)
+$L17:
+	lui	$2,%hi($LC1)
+	addiu	$4,$2,%lo($LC1)
 	jal	puts
 	nop
 
@@ -266,7 +356,7 @@ $L13:
 	jal	exit
 	nop
 
-$L14:
+$L18:
 	lui	$2,%hi(constchar)
 	lw	$3,32($fp)
 	sll	$3,$3,2
@@ -313,7 +403,7 @@ size:
 	.size	size, .-size
 	.rdata
 	.align	2
-$LC1:
+$LC2:
 	.ascii	"Error: function substring: out of range\000"
 	.text
 	.align	2
@@ -340,11 +430,11 @@ substring:
 	lw	$2,40($fp)
 	lw	$2,0($2)
 	slt	$2,$2,$3
-	beq	$2,$0,$L17
+	beq	$2,$0,$L21
 	nop
 
-	lui	$2,%hi($LC1)
-	addiu	$4,$2,%lo($LC1)
+	lui	$2,%hi($LC2)
+	addiu	$4,$2,%lo($LC2)
 	jal	puts
 	nop
 
@@ -352,7 +442,7 @@ substring:
 	jal	exit
 	nop
 
-$L17:
+$L21:
 	lw	$2,48($fp)
 	addiu	$2,$2,1
 	sll	$2,$2,2
@@ -410,24 +500,24 @@ concat:
 	sw	$5,44($fp)
 	lw	$2,40($fp)
 	lw	$2,0($2)
-	bne	$2,$0,$L19
+	bne	$2,$0,$L23
 	nop
 
 	lw	$2,44($fp)
-	j	$L20
+	j	$L24
 	nop
 
-$L19:
+$L23:
 	lw	$2,44($fp)
 	lw	$2,0($2)
-	bne	$2,$0,$L21
+	bne	$2,$0,$L25
 	nop
 
 	lw	$2,40($fp)
-	j	$L20
+	j	$L24
 	nop
 
-$L21:
+$L25:
 	lw	$2,40($fp)
 	lw	$3,0($2)
 	lw	$2,44($fp)
@@ -477,7 +567,7 @@ $L21:
 	nop
 
 	lw	$2,28($fp)
-$L20:
+$L24:
 	move	$sp,$fp
 	lw	$31,36($sp)
 	lw	$fp,32($sp)
@@ -540,31 +630,26 @@ tigerExit:
 	.set	reorder
 	.end	tigerExit
 	.size	tigerExit, .-tigerExit
-	.rdata
-	.align	2
-$LC2:
-	.ascii	"end\000"
-	.text
 	.align	2
 	.globl	main
 	.set	nomips16
 	.ent	main
 	.type	main, @function
 main:
-	.frame	$fp,48,$31		# vars= 16, regs= 2/0, args= 16, gp= 8
+	.frame	$fp,40,$31		# vars= 8, regs= 2/0, args= 16, gp= 8
 	.mask	0xc0000000,-4
 	.fmask	0x00000000,0
 	.set	noreorder
 	.set	nomacro
-	addiu	$sp,$sp,-48
-	sw	$31,44($sp)
-	sw	$fp,40($sp)
+	addiu	$sp,$sp,-40
+	sw	$31,36($sp)
+	sw	$fp,32($sp)
 	move	$fp,$sp
 	sw	$0,24($fp)
-	j	$L25
+	j	$L29
 	nop
 
-$L26:
+$L30:
 	li	$4,8			# 0x8
 	jal	malloc
 	nop
@@ -596,10 +681,10 @@ $L26:
 	lw	$2,24($fp)
 	addiu	$2,$2,1
 	sw	$2,24($fp)
-$L25:
+$L29:
 	lw	$2,24($fp)
 	slt	$2,$2,256
-	bne	$2,$0,$L26
+	bne	$2,$0,$L30
 	nop
 
 	li	$4,8			# 0x8
@@ -615,56 +700,14 @@ $L25:
 	lui	$2,%hi(emptychar)
 	lw	$2,%lo(emptychar)($2)
 	sw	$0,0($2)
-	li	$4,97			# 0x61
-	jal	chr
-	nop
-
-	sw	$2,28($fp)
-	lw	$4,28($fp)
-	jal	ord
-	nop
-
-	move	$4,$2
-	jal	putchar
-	nop
-
-	li	$4,98			# 0x62
-	jal	chr
-	nop
-
-	lw	$4,28($fp)
-	move	$5,$2
-	jal	concat
-	nop
-
-	sw	$2,32($fp)
-	lw	$4,32($fp)
-	jal	print
-	nop
-
-	lw	$4,32($fp)
-	li	$5,1			# 0x1
-	li	$6,1			# 0x1
-	jal	substring
-	nop
-
-	move	$4,$2
-	jal	print
-	nop
-
 	jal	tigerMain
-	nop
-
-	lui	$2,%hi($LC2)
-	addiu	$4,$2,%lo($LC2)
-	jal	puts
 	nop
 
 	move	$2,$0
 	move	$sp,$fp
-	lw	$31,44($sp)
-	lw	$fp,40($sp)
-	addiu	$sp,$sp,48
+	lw	$31,36($sp)
+	lw	$fp,32($sp)
+	addiu	$sp,$sp,40
 	j	$31
 	nop
 

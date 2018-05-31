@@ -1,4 +1,4 @@
-#include <stdio.h>
+// #include <stdio.h>
 
 struct String
 {
@@ -8,13 +8,18 @@ struct String
 typedef struct String *string;
 
 void tigerMain(){
-    char *str = "test\n";
-    putc('x',stdout);
     // test
-    string s = chr('a');
-    putchar(ord(s));
-    string ss = concat(s, chr('b'));
-    print(ss);
-    print(substring(ss, 1, 1));
+    char *str = "test\n";
 
+    string ch = tigerGetchar();
+    
+    string s = chr('a');
+    string ss = concat(concat(s, chr('b')), ch);
+    printStr(ss);
+    flush();
+    printStr(substring(ss, 1, 1));
+    printInt(size(ss));
+    printInt(not(size(ss)));
+    printInt(ord(s));
+    tigerExit(-1);
 }
