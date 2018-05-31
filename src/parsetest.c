@@ -157,7 +157,7 @@ void show_nodeinfo(FILE *out, void *info) {
 
 }
 
-void doProc(FILE *file, F_frame frame, T_stm stm) {
+void doProc(FILE *file, FILE *assemFile, F_frame frame, T_stm stm) {
     T_stmList stmList = C_linearize(stm);
 
     FILE *linearBlockFile = fopen("linear_tree.txt", "w");
@@ -194,6 +194,9 @@ void doProc(FILE *file, F_frame frame, T_stm stm) {
 
     // coloring
     struct RA_result ra_result = RA_regAlloc(frame, instrList);
+    fprintf(assemFile, "%s", proc->prolog);
+    AS_printInstrList(assemFile, instrList, ra_result.coloring);
+    fprintf(assemFile, "%s", proc->epilog);
 }
 
 #endif // _DEBUG
@@ -219,14 +222,16 @@ void parse(string fname) {
         //FILE *fp2 = fopen("canon_tree.txt", "w");
 
         FILE *instrFp = fopen("instr_b4_allocation.txt", "w");
+        FILE *assemFile = fopen("instructionAssem.txt", "w");
         tmp = res;
         for (; tmp; tmp = tmp->tail)
             if (tmp->head->kind == F_progFrag)
-                doProc(instrFp, tmp->head->u.prog.frame, tmp->head->u.prog.body);
+                doProc(instrFp, assemFile, tmp->head->u.prog.frame, tmp->head->u.prog.body);
         //            else if (tmp->head->kind == F_stringFrag)
         //                fprintf(fp2, "%s\n", tmp->head->u.stringg.str);
         //fclose(fp2);
         fclose(instrFp);
+        fclose(assemFile);
 
 
 #endif // _DEBUG

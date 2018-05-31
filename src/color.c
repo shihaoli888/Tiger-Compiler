@@ -287,6 +287,7 @@ static void Init(G_graph ig, Temp_map initial, Temp_tempList regs) {
     for (G_nodeList p = G_nodes(ig); p; p = p->tail) {
         if (isPrecolored(p->head)) {
             global.precoloredNodes = union_G_nodeList(global.precoloredNodes, p->head);
+            Temp_enter(global.color, getNodeTemp(p->head), Temp_look(global.precolored, getNodeTemp(p->head)));
         }
     }
 }
@@ -433,8 +434,8 @@ struct COL_result COL_color(G_graph ig, Temp_map initial, Temp_tempList regs) {
 
     Init(ig, initial, regs);
     Main();
-    struct COL_result res; // todo: temp return for compile
-    res.coloring = NULL;
-    res.spills = NULL;
+    struct COL_result res;
+    res.coloring = global.color;
+    res.spills = NULL; // todo: spills
     return res;
 }
