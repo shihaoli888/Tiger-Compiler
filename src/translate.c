@@ -442,18 +442,37 @@ Tr_exp Tr_forExp(Tr_exp ii, Tr_exp lo, Tr_exp hi, Tr_exp body,Tr_exp breakk) {
 	);
 }
 
-Tr_exp Tr_callExp(Temp_label name, Tr_expList args, Tr_level calllevel, Tr_level funlevel) {
-	T_exp tmp = T_Temp(F_FP());
-	for (; calllevel != funlevel->parent; calllevel = calllevel->parent) {
-		tmp = F_Exp(F_formals(calllevel->frame)->head,tmp);
+Tr_exp Tr_callExp(Temp_label name, Tr_expList oargs, Tr_level calllevel, Tr_level funlevel) {
+	if (funlevel != NULL) {
+		T_exp tmp = T_Temp(F_FP());
+		for (; calllevel != funlevel->parent; calllevel = calllevel->parent) {
+			tmp = F_Exp(F_formals(calllevel->frame)->head, tmp);
+		}
+		T_expList slargs = T_ExpList(tmp, NULL);
+		T_expList p = slargs;
+		Tr_expList args = oargs;
+		for (; args; args = args->tail) {
+			p->tail = T_ExpList(unEx(args->head), NULL);
+			p = p->tail;
+		}
+		return Tr_Ex(T_Call(T_Name(name), slargs));
 	}
-	T_expList slargs = T_ExpList(tmp, NULL);
-	T_expList p = slargs;
-	for (; args; args = args->tail) {
-		p->tail = T_ExpList(unEx(args->head), NULL);
-		p = p->tail;
+	else {
+		T_expList slargs = NULL;
+		T_expList p = NULL;
+		Tr_expList args = oargs;
+		for (; args; args = args->tail) {
+			if (slargs == NULL) {
+				slargs = T_ExpList(unEx(args->head), NULL);
+				p = slargs;
+			}
+			else {
+				p->tail = T_ExpList(unEx(args->head), NULL);
+				p = p->tail;
+			}
+		}
+		return Tr_Ex(T_Call(T_Name(name), slargs));
 	}
-	return Tr_Ex(T_Call(T_Name(name), slargs));
 }
 
 Tr_exp Tr_letExp(Tr_expList lets) {
