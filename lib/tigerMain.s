@@ -4,7 +4,7 @@
 	# .gnu_attribute 4, 1
 	# .abicalls
 	# .option	pic0
-	.rdata
+	.data
 	# .align	2
 $LC0:
 	.ascii	"test\012\000"
@@ -24,8 +24,9 @@ tigerMain:
 	sw	$31,44($sp)
 	sw	$fp,40($sp)
 	move	$fp,$sp
-	lui	$2,%hi($LC0)
-	addiu	$2,$2,%lo($LC0)
+	# lui	$2,%hi($LC0)
+	# addiu	$2,$2,%lo($LC0)
+	la $2, $LC0
 	sw	$2,24($fp)
 	jal	tigerGetchar
 	nop
@@ -39,6 +40,7 @@ tigerMain:
 	li	$4,98			# 0x62
 	jal	chr
 	nop
+
 
 	lw	$4,32($fp)
 	move	$5,$2
@@ -95,6 +97,8 @@ tigerMain:
 	move	$4,$2
 	jal	printInt
 	nop
+
+	not $t0, $t1
 
 	li	$4,-1			# 0xffffffffffffffff
 	jal	tigerExit
