@@ -55,4 +55,7 @@ AS_instrList F_progEntryExit2(AS_instrList body);
 AS_proc F_progEntryExit3(F_frame frame, AS_instrList body,Temp_label done);
 
 
+string F_string(F_frag str);
+
+
 #endif // !FRAME_H
