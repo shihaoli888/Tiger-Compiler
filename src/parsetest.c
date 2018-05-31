@@ -222,7 +222,7 @@ void parse(string fname) {
         //FILE *fp2 = fopen("canon_tree.txt", "w");
 
         FILE *instrFp = fopen("instr_b4_allocation.txt", "w");
-        FILE *assemFile = fopen("instructionAssem.txt", "w");
+        FILE *assemFile = fopen("instructionAssem.s", "w");
         tmp = res;
         for (; tmp; tmp = tmp->tail)
             if (tmp->head->kind == F_progFrag)
