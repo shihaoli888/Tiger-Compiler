@@ -69,6 +69,7 @@ static Temp_tempList diff_Temp_tempList(Temp_tempList list, Temp_temp x) {
         }
         p = p->tail;
     }
+    return list;
 }
 
 static Temp_tempList union_Temp_tempList(Temp_tempList list, Temp_temp x) {
@@ -308,10 +309,10 @@ static void AssignColors() {
         while (pAdjacent) {
             G_node node = pAdjacent->head;
             if (checkIn_G_nodeList(global.coloredNodes, node)) {
-                string color = Temp_look(global.color, (Temp_temp) G_nodeInfo(node));
+                string color = Temp_look(global.color, getNodeTemp(node));
                 okColors = diff_Temp_tempList(okColors, getColorTemp(color));
             } else if (checkIn_G_nodeList(global.precoloredNodes, node)) {
-                string color = Temp_look(global.precolored, (Temp_temp) G_nodeInfo(node));
+                string color = Temp_look(global.precolored, getNodeTemp(node));
                 okColors = diff_Temp_tempList(okColors, getColorTemp(color));
             }
             pAdjacent = pAdjacent->tail;
@@ -322,7 +323,7 @@ static void AssignColors() {
             global.coloredNodes = union_G_nodeList(global.coloredNodes, top);
             Temp_temp colorTemp = okColors->head;
 #if DEBUG_IT
-            printf("color a node: %d - %s\n", getTmpnum(getNodeTemp(top)), getTempColor(colorTemp));
+            printf("color a node: %d - %s(%d)\n", getTmpnum(getNodeTemp(top)), getTempColor(colorTemp), getTmpnum(colorTemp));
 #endif
             Temp_enter(global.color, getNodeTemp(top), getTempColor(colorTemp));
         }
@@ -385,7 +386,7 @@ struct COL_result COL_color(G_graph ig, Temp_map initial, Temp_tempList regs) {
         printf("\n");
     };
 #endif
-#if DEBUG_IT
+#if 0
     Temp_temp r1 = Temp_newtemp();
     Temp_temp r2 = Temp_newtemp();
     Temp_temp r3 = Temp_newtemp();
