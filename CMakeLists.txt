@@ -49,4 +49,4 @@ add_executable(LJZ_TC
         src/escape.c
 
         src/parsetest.c
-        include/canon.h src/canon.c include/color.h src/color.c)
+        include/canon.h src/canon.c include/color.h src/color.c include/regalloc.h src/regalloc.c)
