@@ -434,12 +434,13 @@ Tr_exp transDec(Tr_level level, S_table venv, S_table tenv, A_dec d, Tr_exp brea
 				resultTy = Ty_Void();
 			}
 			Ty_tyList formalTys = make_forml_tylist(tenv, f->params);
-			U_boolList formalBools = make_forml_boolist(f->params);
+			//U_boolList formalBools = make_forml_boolist(f->params);
+			Tr_accessList accss = Tr_formals(pp->head);
 			S_beginScope(venv);
 			{
-				A_fieldList l; Ty_tyList t; U_boolList b;
-				for (l =f->params, t = formalTys,b=formalBools; l; l = l->tail, t = t->tail, b=b->tail) {
-					S_enter(venv, l->head->name, E_VarEntry(Tr_allocLocal(pp->head,b->head),t->head));
+				A_fieldList l; Ty_tyList t; Tr_accessList acc;
+				for (l =f->params, t = formalTys ,acc = accss; l; l = l->tail, t = t->tail, acc=acc->tail) {
+					S_enter(venv, l->head->name, E_VarEntry(acc->head,t->head));
 				}
 			}
 			struct expty body = transExp(pp->head, venv, tenv, f->body,breakk);

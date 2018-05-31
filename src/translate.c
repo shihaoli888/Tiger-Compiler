@@ -231,7 +231,7 @@ Tr_exp Tr_simpleVar(Tr_access acc, Tr_level lev) {
 	for (; lev; lev = lev->parent) {
 		if (lev == acc->level) {//ͬһǶ�ײ�
 			if (tmp == NULL) {
-				return Tr_Ex(F_Exp(acc->access, T_Temp(F_FP())));
+				return Tr_Ex( F_Exp(acc->access, T_Temp(F_FP())));
 			}
 			else {
 				return Tr_Ex(F_Exp(acc->access, tmp));
