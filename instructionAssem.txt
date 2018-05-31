@@ -1,10 +1,11 @@
 .data
+.align 2
 L1:
 .word 14
 .ascii "Hello World!\n"
 .text
-.globl tigerMain
-tigerMain:
+.align 2
+.globl tigerMaintigerMain:
 tigerMain_FRAMESIZE = 8
 addi $sp,$sp,-8
 

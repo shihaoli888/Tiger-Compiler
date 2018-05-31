@@ -1,5 +1,7 @@
 #include "frame.h"
 
+#define SPILL 0
+
 #define F_WORDSIZE 4
 struct F_access_ {
 	enum {inFrame,inReg} kind;
@@ -226,12 +228,12 @@ Temp_tempList F_argregs(void) {
 }
 
 
-Temp_tempList F_calleesaves(void) {
-	if (calleesaves==NULL) {
+Temp_tempList F_callersaves(void) {
+	if (callersaves==NULL) {
 		Temp_temp t[10];
 		int i;
 		for (i = 0; i < 10; i++) t[i] = Temp_newtemp();
-		for (i = 0; i < 10; i++) calleesaves = Temp_TempList(t[i], calleesaves);
+		for (i = 0; i < 10; i++) callersaves = Temp_TempList(t[i], callersaves);
 		Temp_map m = F_get_tempmap_();
 		Temp_enter(m, t[0], String("$t0"));
 		Temp_enter(m, t[1], String("$t1"));
@@ -244,16 +246,16 @@ Temp_tempList F_calleesaves(void) {
 		Temp_enter(m, t[8], String("$t8"));
 		Temp_enter(m, t[9], String("$t9"));
 	}
-	return calleesaves;
+	return callersaves;
 }
 
 
-Temp_tempList F_callersaves(void) {
-	if (callersaves==NULL) {
+Temp_tempList F_calleesaves(void) {
+	if (calleesaves==NULL) {
 		Temp_temp s[8];
 		int i;
 		for (i = 0; i < 8; i++) s[i] = Temp_newtemp();
-		for (i = 0; i < 8; i++) callersaves = Temp_TempList(s[i], callersaves);
+		for (i = 0; i < 8; i++) calleesaves = Temp_TempList(s[i], calleesaves);
 		Temp_map m = F_get_tempmap_();
 		Temp_enter(m, s[0], String("$s0"));
 		Temp_enter(m, s[1], String("$s1"));
@@ -264,7 +266,7 @@ Temp_tempList F_callersaves(void) {
 		Temp_enter(m, s[6], String("$s6"));
 		Temp_enter(m, s[7], String("$s7"));
 	}
-	return callersaves;
+	return calleesaves;
 }
 
 
@@ -318,8 +320,13 @@ T_stm F_progEntryExit1(F_frame frame, T_exp body) {
 	F_accessList args = frame->formals;
 	Temp_tempList as = F_argregs();
 	int i = 0;
+#if SPILL
 	Temp_temp ra_tmp = Temp_newtemp();
 	T_stm stm = T_Move(T_Temp(ra_tmp), T_Temp(F_RA()));
+#else
+	F_access ra_tmp = F_allocLocal(frame, TRUE);
+	T_stm stm = T_Move(F_Exp(ra_tmp, T_Temp(F_FP())), T_Temp(F_RA()));
+#endif
 	for (i = 0; args&&i < 4; i++,args=args->tail,as=as->tail) {
 		stm = T_Seq(stm,T_Move(F_Exp(args->head, T_Temp(F_FP())), T_Temp(as->head)));
 	} 
@@ -328,39 +335,62 @@ T_stm F_progEntryExit1(F_frame frame, T_exp body) {
 			T_Mem(T_Binop(T_plus, T_Temp(F_FP()), T_Const(i*get_wordsize())))));
 		args = args->tail;
 	}
-	Temp_tempList callersaves = F_callersaves();
-	Temp_tempList callersaves_tmp = NULL,cp;
-	for (; callersaves; callersaves = callersaves->tail) {
+	Temp_tempList calleesaves = F_calleesaves();
+#if SPILL
+	Temp_tempList calleesaves_tmp = NULL,cp;
+#else
+	F_accessList calleesaves_tmp = NULL, cp;
+#endif
+	for (; calleesaves; calleesaves = calleesaves->tail) {
+#if SPILL
 		Temp_tempList t = Temp_TempList(Temp_newtemp(),NULL);
-		if (callersaves_tmp == NULL) {
-			callersaves_tmp = t;
-			cp = callersaves_tmp;
+#else
+		F_accessList t = F_AccessList(F_allocLocal(frame, TRUE), NULL);
+#endif
+		if (calleesaves_tmp == NULL) {
+			calleesaves_tmp = t;
+			cp = calleesaves_tmp;
 		}
 		else {
 			cp->tail = t;
 			cp = cp->tail;
 		}
-		stm = T_Seq(stm, T_Move(T_Temp(t->head), T_Temp(callersaves->head)));
+#if SPILL
+		stm = T_Seq(stm, T_Move(T_Temp(t->head), T_Temp(calleesaves->head)));
+#else
+		stm = T_Seq(stm, T_Move(F_Exp(t->head, T_Temp(F_FP())), T_Temp(calleesaves->head)));
+#endif
 	}
 	T_stm pro = stm;
 	T_stm epi = T_Move(T_Temp(F_RV()), body);
-	callersaves = F_callersaves();
-	for (; callersaves; callersaves = callersaves->tail,callersaves_tmp = callersaves_tmp->tail) {
-		epi = T_Seq(epi, T_Move(T_Temp(callersaves->head), T_Temp(callersaves_tmp->head)));
+	calleesaves = F_calleesaves();
+	for (; calleesaves; calleesaves = calleesaves->tail,calleesaves_tmp = calleesaves_tmp->tail) {
+#if SPILL
+		epi = T_Seq(epi, T_Move(T_Temp(calleesaves->head), T_Temp(calleesaves_tmp->head)));
+#else
+		epi = T_Seq(epi, T_Move(T_Temp(calleesaves->head), F_Exp(calleesaves_tmp->head, T_Temp(F_FP()))));
+#endif
 	}
+#if SPILL
 	epi = T_Seq(epi, T_Move(T_Temp(F_RA()), T_Temp(ra_tmp)));
+#else
+	epi = T_Seq(epi, T_Move(T_Temp(F_RA()), F_Exp(ra_tmp, T_Temp(F_FP()))));
+#endif
 	return T_Seq(pro, epi);
 }
 
 static Temp_tempList returnSink = NULL;
-AS_instrList F_progEntryExit2(AS_instrList body) {
+AS_instrList F_progEntryExit2(AS_instrList body,Temp_label done) {
 	if (!returnSink) returnSink =
 		Temp_TempList(F_ZERO(), Temp_TempList(F_RA(), Temp_TempList(F_SP(), F_calleesaves())));
 	
-	return AS_splice(body, AS_InstrList(AS_Oper("", NULL, returnSink, NULL), NULL));
+	char buffer[100];
+	sprintf(buffer, "\n%s:\n", Temp_labelstring(done));
+	string donestr = String(buffer);
+	return AS_splice(body, AS_InstrList(AS_Label(donestr,done),AS_InstrList(AS_Oper("nop\n", NULL, returnSink, NULL), NULL)));
 }
 
-AS_proc F_progEntryExit3(F_frame frame, AS_instrList body, Temp_label done) {
+AS_proc F_progEntryExit3(F_frame frame, AS_instrList body) {
 	int framesize = frame->frame_size + frame->max_argnum;
 	framesize *= get_wordsize();
 	char buffer[100];
@@ -370,9 +400,8 @@ AS_proc F_progEntryExit3(F_frame frame, AS_instrList body, Temp_label done) {
 		"addi $sp,$sp,%d\n", 
 		Temp_labelstring(frame->name),Temp_labelstring(frame->name), framesize,-framesize);
 	string prolog = String(buffer);
-	sprintf(buffer, "%s:\n"
-		"addi $sp,$sp,%d\n"
-		"jr $ra\n", Temp_labelstring(done),framesize);
+	sprintf(buffer, "addi $sp,$sp,%d\n"
+							"jr $ra\n", framesize);
 	string epilog = String(buffer);
 	return AS_Proc(prolog, body, epilog);
 }
