@@ -2,6 +2,7 @@
 // Created by Zhao Xiaodong on 2018/5/28.
 //
 
+#include <string.h>
 #include "assem.h"
 #include "graph.h"
 #include "temp.h"
@@ -23,6 +24,7 @@ static enum COL_nodeType {
 
 static struct Global {
     Temp_map precolored; // todo: temp_map使用
+    Temp_map color;
     G_graph graph;
     G_table degrees;
     G_nodeList initial;
@@ -31,8 +33,10 @@ static struct Global {
     G_nodeList spillWorklist;
     G_nodeList spilledNodes;
     G_nodeList coalesedNodes;
+    G_nodeList precoloredNodes;
     G_nodeList coloredNodes;
     G_nodeList selectStack;
+    Temp_tempList registers;
     int K;
 };
 
@@ -51,6 +55,31 @@ static AS_instrList constrainedMoves = NULL;
 static AS_instrList frozenMoves = NULL;
 static AS_instrList worklistMoves = NULL;
 static AS_instrList activeMoves = NULL;
+
+static Temp_tempList diff_Temp_tempList(Temp_tempList list, Temp_temp x) {
+    if (!list)
+        return NULL;
+    if (list->head == x)
+        return list->tail;
+    Temp_tempList p = list; // todo: changed original structure
+    while (p->tail) {
+        if (p->tail->head == x) {
+            p->tail = p->tail->tail; // todo: not free memory
+            return list;
+        }
+        p = p->tail;
+    }
+}
+
+static Temp_tempList union_Temp_tempList(Temp_tempList list, Temp_temp x) {
+    Temp_tempList p = list;
+    while (p) {
+        if (p->head == x)
+            return list;
+        p = p->tail;
+    }
+    return Temp_TempList(x, list);
+}
 
 static G_nodeList diff_G_nodeList(G_nodeList list, G_node x) {
     if (!list)
@@ -77,48 +106,89 @@ static G_nodeList union_G_nodeList(G_nodeList list, G_node x) {
     return G_NodeList(x, list);
 }
 
+static bool checkIn_G_nodeList(G_nodeList list, G_node x) {
+    for (; list; list = list->tail) {
+        if (list->head == x)
+            return TRUE;
+    }
+    return FALSE;
+}
+
 static bool MoveRelated(G_node node) {
     return FALSE; // todo: not consider move and coalescing
 }
+
+static bool isPrecolored(G_node node);
 
 static void MakeWorkList() {
     // todo: ...
     G_nodeList curr = global.initial;
     while (curr) {
-        global.initial = diff_G_nodeList(global.initial, curr->head);
+//        global.initial = diff_G_nodeList(global.initial, curr->head);
 #if DEBUG_IT
-        printf("degree: %d\n", G_degree(curr->head));
+        printf("degree: %d\n", G_degree(curr->head) / 2);
 #endif
-        if (G_degree(curr->head) >= global.K) {
-            global.spillWorklist = union_G_nodeList(global.spillWorklist, curr->head);
-        } else if (MoveRelated(curr->head)) {
-            // todo: not consider move and coalescing
-        } else {
-            global.simplifyWorklist = union_G_nodeList(global.simplifyWorklist, curr->head);
+        if (!isPrecolored(curr->head)) {
+            if (G_degree(curr->head) / 2 >= global.K) {
+                global.spillWorklist = union_G_nodeList(global.spillWorklist, curr->head);
+            } else if (MoveRelated(curr->head)) {
+                // todo: not consider move and coalescing
+            } else {
+                global.simplifyWorklist = union_G_nodeList(global.simplifyWorklist, curr->head);
+            }
         }
         curr = curr->tail;
     }
 }
 
-void decrementDegree(G_node node) {
+static void decrementDegree(G_node node) {
     int d = (int) G_look(global.degrees, node);
-    d--;
-    G_enter(global.degrees, node, (void *) d);
-    if (d == global.K) {
+    G_enter(global.degrees, node, (void *) d - 1);
+    if (d == global.K && !isPrecolored(node)) {
         // todo: without considering move related
         global.spillWorklist = diff_G_nodeList(global.spillWorklist, node);
         global.simplifyWorklist = union_G_nodeList(global.simplifyWorklist, node);
     }
 }
 
-void selectStack_Push(G_node node) {
+static bool selectStack_Empty() {
+    return global.selectStack == NULL;
+}
+
+static void selectStack_Push(G_node node) {
     global.selectStack = G_NodeList(node, global.selectStack);
 }
 
-G_node selectStack_Pop() {
+static G_node selectStack_Pop() {
     assert(global.selectStack);
     G_node res = global.selectStack->head;
     global.selectStack = global.selectStack->tail;
+    return res;
+}
+
+static bool checkNodeInSelectStack(G_node node) {
+    G_nodeList p = global.selectStack;
+    while (p) {
+        if (p->head == node)
+            return TRUE;
+        p = p->tail;
+    }
+    return FALSE;
+}
+
+static bool checkNodeInCoalescedNodes(G_node node) {
+    // todo: check..
+    return FALSE;
+}
+
+static G_nodeList Adjacent(G_node node) {
+    G_nodeList res = NULL;
+    for (G_nodeList p = G_succ(node); p; p = p->tail) {
+        if (!checkNodeInSelectStack(p->head) && !checkNodeInCoalescedNodes(p->head)) {
+            res = G_NodeList(p->head, res);
+        }
+    }
+    return res;
 }
 
 static void Simplify() {
@@ -127,7 +197,7 @@ static void Simplify() {
         G_node curr = p->head;
         global.simplifyWorklist = diff_G_nodeList(global.simplifyWorklist, curr);
         selectStack_Push(curr);
-        G_nodeList adjacentNodes = G_adj(curr);
+        G_nodeList adjacentNodes = Adjacent(curr);
         G_nodeList pAdjacent = adjacentNodes;
         while (pAdjacent) {
             decrementDegree(pAdjacent->head);
@@ -150,7 +220,7 @@ static void PotentialSpill() {
     G_node node = global.spillWorklist->head;
     global.spillWorklist = diff_G_nodeList(global.spillWorklist, node);
     selectStack_Push(node);
-    G_nodeList adjacentNodes = G_adj(node);
+    G_nodeList adjacentNodes = G_succ(node);
     G_nodeList pAdjacent = adjacentNodes;
     while (pAdjacent) {
         decrementDegree(pAdjacent->head);
@@ -172,18 +242,90 @@ static int countRegs(Temp_tempList regs) {
     return res;
 }
 
+static string getTempColor(Temp_temp temp) {
+    return Temp_look(global.precolored, temp);
+}
+
+static Temp_temp getColorTemp(string color) {
+    Temp_tempList p = global.registers;
+    while (p) {
+        string col = Temp_look(global.precolored, p->head);
+        if (col && 0 == strcmp(col, color))
+            return p->head;
+        p = p->tail;
+    }
+    return NULL;
+}
+
+static Temp_temp getNodeTemp(G_node node) {
+    return (Temp_temp) G_nodeInfo(node);
+}
+
+static bool isPrecolored(G_node node) {
+    string col = Temp_look(global.precolored, getNodeTemp(node));
+    return col != NULL;
+}
+
 static void Init(G_graph ig, Temp_map initial, Temp_tempList regs) {
     // todo: init all global variable
     global.initial = G_nodes(ig); // todo: shallow copy, may need deep copy
     global.precolored = initial;
+    global.color = Temp_empty();
     global.degrees = G_empty();
+    global.registers = regs;
     global.K = countRegs(regs);
 
     // init degree
     G_nodeList p_nodeList = G_nodes(ig);
     while (p_nodeList) {
-        G_enter(global.degrees, p_nodeList->head, (void *) G_degree(p_nodeList->head));
+        G_enter(global.degrees, p_nodeList->head, (void *) (G_degree(p_nodeList->head) / 2));
         p_nodeList = p_nodeList->tail;
+    }
+
+    // 初始化precoloredNodes
+    for (G_nodeList p = G_nodes(ig); p; p = p->tail) {
+        if (isPrecolored(p->head)) {
+            global.precoloredNodes = union_G_nodeList(global.precoloredNodes, p->head);
+        }
+    }
+}
+
+static Temp_tempList getColors() {
+    Temp_tempList res = NULL;
+    for (Temp_tempList p = global.registers; p; p = p->tail) {
+        res = Temp_TempList(p->head, res);
+    }
+    return res;
+}
+
+static void AssignColors() {
+    while (!selectStack_Empty()) {
+        G_node top = selectStack_Pop();
+        Temp_tempList okColors = getColors();
+
+        G_nodeList adjacentNodes = Adjacent(top);
+        G_nodeList pAdjacent = adjacentNodes;
+        while (pAdjacent) {
+            G_node node = pAdjacent->head;
+            if (checkIn_G_nodeList(global.coloredNodes, node)) {
+                string color = Temp_look(global.color, (Temp_temp) G_nodeInfo(node));
+                okColors = diff_Temp_tempList(okColors, getColorTemp(color));
+            } else if (checkIn_G_nodeList(global.precoloredNodes, node)) {
+                string color = Temp_look(global.precolored, (Temp_temp) G_nodeInfo(node));
+                okColors = diff_Temp_tempList(okColors, getColorTemp(color));
+            }
+            pAdjacent = pAdjacent->tail;
+        }
+        if (!okColors) {
+            global.spilledNodes = union_G_nodeList(global.spilledNodes, top);
+        } else {
+            global.coloredNodes = union_G_nodeList(global.coloredNodes, top);
+            Temp_temp colorTemp = okColors->head;
+#if DEBUG_IT
+            printf("color a node: %d - %s\n", getTmpnum(getNodeTemp(top)), getTempColor(colorTemp));
+#endif
+            Temp_enter(global.color, getNodeTemp(top), getTempColor(colorTemp));
+        }
     }
 }
 
@@ -204,7 +346,14 @@ static void Main() {
 //            SelectSpill();
         }
     }
-
+    AssignColors();
+#if DEBUG_IT
+    printf("Assigned Color:\n");
+    for (G_nodeList p = global.initial; p; p = p->tail) {
+        if (!isPrecolored(p->head))
+            printf("%d - %s\n", getTmpnum(getNodeTemp(p->head)), Temp_look(global.color, getNodeTemp(p->head)));
+    }
+#endif
     if (global.spilledNodes) {
         // todo: deal with spill
         fprintf(stderr, "spill happen, not supported till now..\n");
@@ -214,7 +363,7 @@ static void Main() {
 
 struct COL_result COL_color(G_graph ig, Temp_map initial, Temp_tempList regs) {
     printf("coloring..\n");
-#if DEBUG_IT
+#if 0
     // show initial info
     {
         printf("initial test:\n");
@@ -236,6 +385,51 @@ struct COL_result COL_color(G_graph ig, Temp_map initial, Temp_tempList regs) {
         printf("\n");
     };
 #endif
+#if DEBUG_IT
+    Temp_temp r1 = Temp_newtemp();
+    Temp_temp r2 = Temp_newtemp();
+    Temp_temp r3 = Temp_newtemp();
+
+    regs = Temp_TempList(r1,
+                         Temp_TempList(r2,
+                                       Temp_TempList(r3, NULL)));
+    printf("registers: ");
+    for (Temp_tempList p = regs; p; p = p->tail) {
+        printf("%d ", getTmpnum(p->head));
+    }
+    printf("\n");
+
+    ig = G_Graph();
+    G_node n1 = G_Node(ig, (void *) (r1));
+    G_node n2 = G_Node(ig, (void *) (Temp_newtemp()));
+    G_node n3 = G_Node(ig, (void *) (Temp_newtemp()));
+    G_node n4 = G_Node(ig, (void *) (Temp_newtemp()));
+    G_addEdge(n1, n2);
+    G_addEdge(n2, n1);
+    G_addEdge(n1, n3);
+    G_addEdge(n3, n1);
+    G_addEdge(n1, n4);
+    G_addEdge(n4, n1);
+    G_addEdge(n2, n3);
+    G_addEdge(n3, n2);
+    G_addEdge(n3, n4);
+    G_addEdge(n4, n3);
+    G_addEdge(n2, n4);
+    G_addEdge(n4, n2);
+    G_nodeList nodes = G_nodes(ig);
+    printf("nodes: ");
+    for (G_nodeList p = nodes; p; p = p->tail) {
+        printf("%d ", getTmpnum((Temp_temp) G_nodeInfo(p->head)));
+    }
+    printf("\n");
+
+    initial = Temp_empty();
+    Temp_enter(initial, r1, "r1");
+    Temp_enter(initial, r2, "r2");
+    Temp_enter(initial, r3, "r3");
+    printf("\n");
+#endif
+
     Init(ig, initial, regs);
     Main();
     struct COL_result res; // todo: temp return for compile

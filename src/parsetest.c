@@ -176,7 +176,7 @@ void doProc(FILE *file, F_frame frame, T_stm stm)
     struct C_block block = C_basicBlocks(stmList);
 	Temp_label done = block.label;
     T_stmList tracedStmList = C_traceSchedule(block);
-    printStmList(file, tracedStmList);
+//    printStmList(file, tracedStmList);
 
 	/***可以是一个函数***/
 	AS_instrList instrList = F_codegen(frame, tracedStmList);
