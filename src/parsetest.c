@@ -169,12 +169,12 @@ void doProc(FILE *file, FILE *assemFile, F_frame frame, T_stm stm) {
     T_stmList tracedStmList = C_traceSchedule(block);
 //    printStmList(file, tracedStmList);
 
-    /***¿ÉÒÔÊÇÒ»¸öº¯Êý***/
+    /***ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½***/
     AS_instrList instrList = F_codegen(frame, tracedStmList);
-    instrList = F_progEntryExit2(instrList);
-    AS_proc proc = F_progEntryExit3(frame, instrList, done);
+    instrList = F_progEntryExit2(instrList,done);
+    AS_proc proc = F_progEntryExit3(frame, instrList);
     /******/
-    /***ºÏ²¢³ÉÒ»¸ö´òÓ¡º¯Êý***/
+    /***ï¿½Ï²ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Ó¡ï¿½ï¿½ï¿½ï¿½***/
     fprintf(file, "%s", proc->prolog);
     AS_printInstrList(file, instrList, F_get_tempmap());
     fprintf(file, "%s", proc->epilog);
@@ -194,6 +194,7 @@ void doProc(FILE *file, FILE *assemFile, F_frame frame, T_stm stm) {
 
     // coloring
     struct RA_result ra_result = RA_regAlloc(frame, instrList);
+    fprintf(assemFile,".text\n.align 2\n.globl %s\n",Temp_labelstring(F_name(frame)));
     fprintf(assemFile, "%s", proc->prolog);
     AS_printInstrList(assemFile, instrList, ra_result.coloring);
     fprintf(assemFile, "%s", proc->epilog);
@@ -223,15 +224,16 @@ void parse(string fname) {
         //FILE *fp2 = fopen("canon_tree.txt", "w");
 
         FILE *instrFp = fopen("instr_b4_allocation.txt", "w");
-        FILE *assemFile = fopen("instructionAssem.s", "w");
+        FILE *assemFile = fopen("tigerMain.s", "w");
 		tmp = res;
 		fprintf(assemFile, ".data\n");
 		for (; tmp; tmp = tmp->tail) {
 			if (tmp->head->kind == F_stringFrag) {
+                fprintf(assemFile,".align 2\n");
 				fprintf(assemFile, "%s", F_string(tmp->head));
 			}
 		}
-		fprintf(assemFile, ".text\n.globl tigerMain\n");
+		//fprintf(assemFile, ".text\n.globl tigerMain\n");
         tmp = res;
         for (; tmp; tmp = tmp->tail)
             if (tmp->head->kind == F_progFrag)

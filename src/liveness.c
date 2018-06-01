@@ -219,10 +219,14 @@ struct Live_graph Live_liveness(G_graph flow) {
 			}
 		}
 		else {
-			for (; outlist; outlist = outlist->tail) {
-				if (defnode != outlist->head) {
-					G_addEdge(defnode, outlist->head);
-					G_addEdge(outlist->head, defnode);
+			for (; def; def = def->tail) {
+				G_node defnode = get_node_temp(def->head, lg);
+				G_nodeList outlistp;
+				for (outlistp = outlist; outlistp; outlistp = outlistp->tail) {
+					if (defnode != outlistp->head) {
+						G_addEdge(defnode, outlistp->head);
+						G_addEdge(outlistp->head, defnode);
+					}
 				}
 			}
 		}

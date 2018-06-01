@@ -1,0 +1,114 @@
+tigerMain:
+tigerMain_FRAMESIZE = 8
+addi $sp,$sp,-8
+
+L6:
+move r109, $ra
+move r119, $s7
+move r120, $s6
+move r121, $s5
+move r122, $s4
+move r123, $s3
+move r124, $s2
+move r125, $s1
+move r126, $s0
+la r128, L1
+move r100, r128
+li r102, 3
+li r103, 0
+move r104, r102
+ble r103, r104, L3
+nop
+
+L2:
+li $v0, 0
+move $s7, r119
+move $s6, r120
+move $s5, r121
+move $s4, r122
+move $s3, r123
+move $s2, r124
+move $s1, r125
+move $s0, r126
+move $ra, r109
+j L5
+nop
+
+L3:
+move $a0, r100
+jal printStr
+nop
+bge r103, r104, L2
+nop
+
+L4:
+addi r103, r103, 1
+j L3
+nop
+
+L5:
+addi $sp,$sp,8
+jr $ra
+
+
+
+liveness
+
+t128		conflict:	t119	t120	t121	t122	t123	t124	t125	t126	t109	
+t102		conflict:	t119	t120	t121	t122	t123	t124	t125	t126	t109	t100	t103	
+t119		conflict:	t109	$s0	$s1	$s2	$s3	$s4	$s5	$s6	t120	t121	t122	t123	t124	t125	t126	t128	t100	t102	t103	t104	$v0	$a0	$ra	
+t120		conflict:	t119	t109	$s0	$s1	$s2	$s3	$s4	$s5	t121	t122	t123	t124	t125	t126	t128	t100	t102	t103	t104	$v0	$s7	$a0	$ra	
+t121		conflict:	t119	t120	t109	$s0	$s1	$s2	$s3	$s4	t122	t123	t124	t125	t126	t128	t100	t102	t103	t104	$v0	$s7	$s6	$a0	$ra	
+t122		conflict:	t119	t120	t121	t109	$s0	$s1	$s2	$s3	t123	t124	t125	t126	t128	t100	t102	t103	t104	$v0	$s7	$s6	$s5	$a0	$ra	
+t123		conflict:	t119	t120	t121	t122	t109	$s0	$s1	$s2	t124	t125	t126	t128	t100	t102	t103	t104	$v0	$s7	$s6	$s5	$s4	$a0	$ra	
+t124		conflict:	t119	t120	t121	t122	t123	t109	$s0	$s1	t125	t126	t128	t100	t102	t103	t104	$v0	$s7	$s6	$s5	$s4	$s3	$a0	$ra	
+t125		conflict:	t119	t120	t121	t122	t123	t124	t109	$s0	t126	t128	t100	t102	t103	t104	$v0	$s7	$s6	$s5	$s4	$s3	$s2	$a0	$ra	
+t126		conflict:	t119	t120	t121	t122	t123	t124	t125	t109	t128	t100	t102	t103	t104	$v0	$s7	$s6	$s5	$s4	$s3	$s2	$s1	$a0	$ra	
+t109		conflict:	t119	t120	t121	t122	t123	t124	t125	t126	t128	t100	t102	t103	t104	$v0	$s7	$s6	$s5	$s4	$s3	$s2	$s1	$s0	$a0	$ra	
+t100		conflict:	t119	t120	t121	t122	t123	t124	t125	t126	t109	t102	t103	t104	
+$a0		conflict:	t119	t120	t121	t122	t123	t124	t125	t126	t109	t104	t103	
+$t0		conflict:	
+$t1		conflict:	
+$t2		conflict:	
+$t3		conflict:	
+$t4		conflict:	
+$t5		conflict:	
+$t6		conflict:	
+$t7		conflict:	
+$t8		conflict:	
+$t9		conflict:	
+$v0		conflict:	t119	t120	t121	t122	t123	t124	t125	t126	t109	
+t104		conflict:	t119	t120	t121	t122	t123	t124	t125	t126	t109	t100	t103	$a0	$ra	
+t103		conflict:	t102	t119	t120	t121	t122	t123	t124	t125	t126	t109	t100	t104	$a0	$ra	
+$s0		conflict:	t119	t120	t121	t122	t123	t124	t125	t109	
+$s1		conflict:	t119	t120	t121	t122	t123	t124	t126	t109	
+$s2		conflict:	t119	t120	t121	t122	t123	t125	t126	t109	
+$s3		conflict:	t119	t120	t121	t122	t124	t125	t126	t109	
+$s4		conflict:	t119	t120	t121	t123	t124	t125	t126	t109	
+$s5		conflict:	t119	t120	t122	t123	t124	t125	t126	t109	
+$s6		conflict:	t119	t121	t122	t123	t124	t125	t126	t109	
+$s7		conflict:	t120	t121	t122	t123	t124	t125	t126	t109	
+$sp		conflict:	
+$ra		conflict:	t119	t120	t121	t122	t123	t124	t125	t126	t109	t104	t103	
+$zero		conflict:	
+t109		$ra	
+t119		$s7	
+t120		$s6	
+t121		$s5	
+t122		$s4	
+t123		$s3	
+t124		$s2	
+t125		$s1	
+t126		$s0	
+t100		t128	
+t104		t102	
+$s7		t119	
+$s6		t120	
+$s5		t121	
+$s4		t122	
+$s3		t123	
+$s2		t124	
+$s1		t125	
+$s0		t126	
+$ra		t109	
+$a0		t100	

@@ -36,7 +36,7 @@ static void munchStm(T_stm s)
 		return;
 	case T_JUMP:
 		assert(s->u.JUMP.exp->kind == T_NAME);
-		emit(AS_Oper(FormatString("j %s\n", Temp_labelstring(s->u.JUMP.exp->u.NAME)), NULL, NULL, AS_Targets(Temp_LabelList(s->u.JUMP.jumps, NULL))));
+		emit(AS_Oper(FormatString("j %s\n", Temp_labelstring(s->u.JUMP.exp->u.NAME)), NULL, NULL, AS_Targets(Temp_LabelList(s->u.JUMP.exp->u.NAME, NULL))));
 		emit(AS_Oper("nop\n", NULL, NULL, NULL));
 		return;
 	case T_CJUMP:
