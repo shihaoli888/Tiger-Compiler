@@ -38,7 +38,7 @@ struct RA_result RA_regAlloc(F_frame f, AS_instrList il) {
             fprintf(stderr, "spill not supported\n");
             assert(0);
         }
-    } while (!spilledNodes);
+    } while (spilledNodes);
 
     struct RA_result res;
     res.coloring = col_result.coloring;
