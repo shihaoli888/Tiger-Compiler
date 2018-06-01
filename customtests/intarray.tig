@@ -12,15 +12,20 @@ let
     (
         while 1 do
         (
+            printStr("\nsize: ");
+            printInt(size);
             if size = 0
             then break
             else
             ( 
-                for i:= 0 to 2 * size do
+                for i:= 0 to 2 * size do(
+                    printStr("\ni: ");
+                    printInt(i);
                     if i = size
                     then break
                     else
                         ans := ans + nums[i]
+                )
                 ;
                 size := size -1 
             )
@@ -36,5 +41,6 @@ in
         else
             nums[i] := i
     );
-    sum(nums, N)
+    printInt(sum(nums, N));
+    printStr("\n")
 end
