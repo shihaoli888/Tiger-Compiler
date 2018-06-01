@@ -263,8 +263,9 @@ int main(int argc, char **argv) {
     //parse("customtests/cjump.tig");
     //parse("testcases/test1.tig"); 
 //    parse("customtests/stdlib.tig");
-    parse("customtests/spill.tig");
+//    parse("customtests/spill.tig");
 //    parse("customtests/tree.tig");
+    parse("customtests/isprime.tig");
     printf("Done//:~");
     return 0;
 }
