@@ -141,10 +141,6 @@ $L6:
 	bne	$2,$0,$L7
 	nop
 
-	li	$4,10			# 0xa
-	jal	putchar
-	nop
-
 	move	$sp,$fp
 	lw	$31,36($sp)
 	lw	$fp,32($sp)
@@ -159,7 +155,7 @@ $L6:
 	.rdata
 	.align	2
 $LC0:
-	.ascii	"%d\012\000"
+	.ascii	"%d\000"
 	.text
 	.align	2
 	.globl	printInt

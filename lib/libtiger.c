@@ -39,12 +39,11 @@ void printStr(string str)
     {
         putchar(str->content[i]);
     }
-    putchar('\n');
 }
 
 void printInt(int i)
 {
-    printf("%d\n", i);
+    printf("%d", i);
 }
 
 void flush()
