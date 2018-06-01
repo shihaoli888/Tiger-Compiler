@@ -3,6 +3,7 @@
 //
 
 #include <string.h>
+#include <assem.h>
 #include "assem.h"
 #include "flowgraph.h"
 #include "liveness.h"
@@ -73,17 +74,44 @@ static bool checkInstUseTemp(AS_instr inst, Temp_temp temp) {
     return FALSE;
 }
 
+static void replaceTempListTemp(Temp_tempList tempList, Temp_temp from, Temp_temp to) {
+    for (; tempList; tempList = tempList->tail) {
+        if (tempList->head == from)
+            tempList->head = to;
+    }
+}
+
+static void replaceTemp(AS_instrList instList, Temp_temp from, Temp_temp to) {
+    for (; instList; instList = instList->tail) {
+        AS_instr inst = instList->head;
+        switch (inst->kind) {
+            case I_OPER:
+                replaceTempListTemp(inst->u.OPER.src, from, to);
+                replaceTempListTemp(inst->u.OPER.dst, from, to);
+                break;
+            case I_MOVE:
+                replaceTempListTemp(inst->u.MOVE.src, from, to);
+                replaceTempListTemp(inst->u.MOVE.dst, from, to);
+                break;
+            default:
+                break;
+        }
+    }
+}
+
 static AS_instrList insertLoad(AS_instrList prev, Temp_temp temp, F_access access) {
+    Temp_temp newTemp = Temp_newtemp();
     AS_instr load =
             AS_Oper(
                     FormatString("lw `d0, %d+%s(`s0)\n", F_inFrameOffset(access), FRAME_SIZE),
-                    Temp_TempList(temp, NULL),
+                    Temp_TempList(newTemp, NULL),
                     Temp_TempList(F_SP(), NULL),
                     NULL
             );
     AS_instrList follow = prev->tail;
     prev->tail = AS_InstrList(load, follow);
-    return prev->tail->tail;
+    replaceTemp(prev->tail->tail, temp, newTemp);
+    return prev->tail;
 }
 
 static AS_instrList insertStore(AS_instrList prev, Temp_temp temp, F_access access) {
@@ -158,8 +186,8 @@ struct RA_result RA_regAlloc(F_frame f, AS_instrList il) {
     Temp_tempList spilledNodes = NULL;
     struct COL_result col_result;
 #if DEBUG_IT
-    int MAX_LOOP = 2; // todo: only for debug
-    int currLoop = 0;
+//    int MAX_LOOP = 5; // todo: only for debug
+//    int currLoop = 0;
     FILE *assemFile = fopen("debugAssem.s", "w");
     FILE *assemBeforeAllocFile = fopen("debugAssemBeforeAlloc.s", "w");
     FILE *graph = fopen("debugGraph.txt", "w");
@@ -179,8 +207,8 @@ struct RA_result RA_regAlloc(F_frame f, AS_instrList il) {
         G_graph ig = lg.graph;
         Temp_map initial = F_get_tempmap();
 //    Temp_tempList registers = F_registers();
-//        Temp_tempList registers = Union_Temp_tempList(F_calleesaves(), F_callersaves());
-        Temp_tempList registers = Union_Temp_tempList(F_calleesaves(), NULL);
+        Temp_tempList registers = Union_Temp_tempList(F_calleesaves(), F_callersaves());
+//        Temp_tempList registers = Union_Temp_tempList(F_calleesaves(), NULL);
         col_result = COL_color(ig, initial, registers);
         spilledNodes = col_result.spills;
         if (spilledNodes) {
@@ -190,9 +218,9 @@ struct RA_result RA_regAlloc(F_frame f, AS_instrList il) {
             AS_printInstrList(assemFile, il, col_result.coloring);
 #endif
         }
-        currLoop++;
-        if (currLoop >= MAX_LOOP)
-            break;
+//        currLoop++;
+//        if (currLoop >= MAX_LOOP)
+//            break;
     } while (spilledNodes);
 
     fclose(graph);
