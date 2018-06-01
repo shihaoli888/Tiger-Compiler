@@ -95,6 +95,7 @@ static G_nodeList diff_G_nodeList(G_nodeList list, G_node x) {
         }
         p = p->tail;
     }
+    return list;
 }
 
 static G_nodeList union_G_nodeList(G_nodeList list, G_node x) {
@@ -271,6 +272,7 @@ static void Init(G_graph ig, Temp_map initial, Temp_tempList regs) {
     // todo: init all global variable
     global.initial = G_nodes(ig); // todo: shallow copy, may need deep copy
     global.precolored = initial;
+    global.coloredNodes = NULL;
     global.spilledNodes = NULL;
     global.color = Temp_empty();
     global.degrees = G_empty();

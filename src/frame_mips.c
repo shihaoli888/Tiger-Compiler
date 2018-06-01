@@ -257,19 +257,19 @@ Temp_tempList F_callersaves(void) {
 
 Temp_tempList F_calleesaves(void) {
 	if (calleesaves==NULL) {
-		Temp_temp s[8];
+		Temp_temp s[2];
 		int i;
-		for (i = 0; i < 8; i++) s[i] = Temp_newtemp();
-		for (i = 0; i < 8; i++) calleesaves = Temp_TempList(s[i], calleesaves);
+		for (i = 0; i < 2; i++) s[i] = Temp_newtemp();
+		for (i = 0; i < 2; i++) calleesaves = Temp_TempList(s[i], calleesaves);
 		Temp_map m = F_get_tempmap_();
 		Temp_enter(m, s[0], String("$s0"));
 		Temp_enter(m, s[1], String("$s1"));
-		Temp_enter(m, s[2], String("$s2"));
-		Temp_enter(m, s[3], String("$s3"));
-		Temp_enter(m, s[4], String("$s4"));
-		Temp_enter(m, s[5], String("$s5"));
-		Temp_enter(m, s[6], String("$s6"));
-		Temp_enter(m, s[7], String("$s7"));
+//		Temp_enter(m, s[2], String("$s2"));
+//		Temp_enter(m, s[3], String("$s3"));
+//		Temp_enter(m, s[4], String("$s4"));
+//		Temp_enter(m, s[5], String("$s5"));
+//		Temp_enter(m, s[6], String("$s6"));
+//		Temp_enter(m, s[7], String("$s7"));
 	}
 	return calleesaves;
 }
