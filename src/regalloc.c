@@ -21,18 +21,27 @@ static Temp_tempList Union_Temp_tempList(Temp_tempList l1, Temp_tempList l2) {
 }
 
 struct RA_result RA_regAlloc(F_frame f, AS_instrList il) {
-    G_graph flowgraph = FG_AssemFlowGraph(il);
-    struct Live_graph lg = Live_liveness(flowgraph);
+    Temp_tempList spilledNodes = NULL;
+    struct COL_result col_result;
+    do {
+        G_graph flowgraph = FG_AssemFlowGraph(il);
+        struct Live_graph lg = Live_liveness(flowgraph);
 
-    G_graph ig = lg.graph;
-    Temp_map initial = F_get_tempmap();
+        G_graph ig = lg.graph;
+        Temp_map initial = F_get_tempmap();
 //    Temp_tempList registers = F_registers();
-    Temp_tempList registers = Union_Temp_tempList(F_calleesaves(), F_callersaves());
-    struct COL_result col_result = COL_color(ig, initial, registers);
-    struct RA_result res;
+        Temp_tempList registers = Union_Temp_tempList(F_calleesaves(), F_callersaves());
+        col_result = COL_color(ig, initial, registers);
+        spilledNodes = col_result.spills;
+        // todo: rewrite program
+        if (spilledNodes) {
+            fprintf(stderr, "spill not supported\n");
+            assert(0);
+        }
+    } while (!spilledNodes);
 
-    // todo: return directly from COL_result
+    struct RA_result res;
     res.coloring = col_result.coloring;
-    res.il = il;
+    res.il = il; // todo: rewrite update
     return res;
 }

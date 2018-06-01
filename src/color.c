@@ -126,7 +126,7 @@ static void MakeWorkList() {
     G_nodeList curr = global.initial;
     while (curr) {
 //        global.initial = diff_G_nodeList(global.initial, curr->head);
-#if DEBUG_IT
+#if 0
         printf("degree: %d\n", G_degree(curr->head) / 2);
 #endif
         if (!isPrecolored(curr->head)) {
@@ -271,6 +271,7 @@ static void Init(G_graph ig, Temp_map initial, Temp_tempList regs) {
     // todo: init all global variable
     global.initial = G_nodes(ig); // todo: shallow copy, may need deep copy
     global.precolored = initial;
+    global.spilledNodes = NULL;
     global.color = Temp_empty();
     global.degrees = G_empty();
     global.registers = regs;
@@ -323,7 +324,7 @@ static void AssignColors() {
         } else {
             global.coloredNodes = union_G_nodeList(global.coloredNodes, top);
             Temp_temp colorTemp = okColors->head;
-#if DEBUG_IT
+#if 0
             printf("color a node: %d - %s(%d)\n", getTmpnum(getNodeTemp(top)), getTempColor(colorTemp), getTmpnum(colorTemp));
 #endif
             Temp_enter(global.color, getNodeTemp(top), getTempColor(colorTemp));
@@ -358,9 +359,19 @@ static void Main() {
 #endif
     if (global.spilledNodes) {
         // todo: deal with spill
-        fprintf(stderr, "spill happen, not supported till now..\n");
-        assert(0);
+        printf("spill happen\n");
+//        fprintf(stderr, "spill happen, not supported till now..\n");
+//        assert(0);
     }
+}
+
+static Temp_tempList nodeListToTempList(G_nodeList nodeList) {
+    Temp_tempList res = NULL;
+    while (nodeList) {
+        res = Temp_TempList(getNodeTemp(nodeList->head), res);
+        nodeList = nodeList->tail;
+    }
+    return res;
 }
 
 struct COL_result COL_color(G_graph ig, Temp_map initial, Temp_tempList regs) {
@@ -436,6 +447,6 @@ struct COL_result COL_color(G_graph ig, Temp_map initial, Temp_tempList regs) {
     Main();
     struct COL_result res;
     res.coloring = global.color;
-    res.spills = NULL; // todo: spills
+    res.spills = nodeListToTempList(global.spilledNodes);
     return res;
 }
