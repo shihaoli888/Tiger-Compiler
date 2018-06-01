@@ -57,5 +57,6 @@ AS_proc F_progEntryExit3(F_frame frame, AS_instrList body);
 
 string F_string(F_frag str);
 
+int F_inFrameOffset(F_access access);
 
 #endif // !FRAME_H

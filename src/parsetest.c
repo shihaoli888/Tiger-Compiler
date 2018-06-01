@@ -196,7 +196,7 @@ void doProc(FILE *file, FILE *assemFile, F_frame frame, T_stm stm) {
     struct RA_result ra_result = RA_regAlloc(frame, instrList);
     fprintf(assemFile,".text\n.align 2\n.globl %s\n",Temp_labelstring(F_name(frame)));
     fprintf(assemFile, "%s", proc->prolog);
-    AS_printInstrList(assemFile, instrList, ra_result.coloring);
+    AS_printInstrList(assemFile, ra_result.il, ra_result.coloring);
     fprintf(assemFile, "%s", proc->epilog);
 	fprintf(assemFile, "\n\n\n\n");
 }

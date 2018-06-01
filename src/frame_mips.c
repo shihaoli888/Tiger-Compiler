@@ -11,6 +11,11 @@ struct F_access_ {
 	} u;
 };
 
+int F_inFrameOffset(F_access access) {
+	assert(access->kind == inFrame);
+	return access->u.offset;
+}
+
 struct F_frame_ {
 	Temp_label name;
 	unsigned int frame_size;

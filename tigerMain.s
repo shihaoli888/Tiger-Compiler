@@ -16,28 +16,60 @@ sw $s3, -24+tigerMain_FRAMESIZE($sp)
 sw $s2, -28+tigerMain_FRAMESIZE($sp)
 sw $s1, -32+tigerMain_FRAMESIZE($sp)
 sw $s0, -36+tigerMain_FRAMESIZE($sp)
-li $t0, 0
-li $t2, 1
-li $t1, 2
-li $t3, 3
-li $t4, 4
-li $t5, 5
-li $t6, 6
-li $t7, 7
-li $t8, 8
+li $s7, 0
+li $s6, 1
+li $s7, 2
+li $s5, 3
+li $s4, 4
+li $s3, 5
+li $s2, 6
+li $s1, 7
+li $s0, 8
 li $t9, 9
-li $t0, 10
-add $t1, $t2, $t1
-add $t1, $t1, $t3
-add $t1, $t1, $t4
-add $t1, $t1, $t5
-add $t1, $t1, $t6
-add $t1, $t1, $t7
-add $t1, $t1, $t8
-add $t1, $t1, $t9
-add $t0, $t1, $t0
-move $t0, $t0
-move $a0, $t0
+li $t8, 10
+li $t7, 11
+li $t6, 12
+li $t5, 13
+li $t4, 14
+li $t3, 15
+li $t2, 16
+li $t1, 17
+li $t0, 18
+li r120, 19
+sw r120, -48+tigerMain_FRAMESIZE($sp)
+lw r120, -48+tigerMain_FRAMESIZE($sp)
+sw r120, -44+tigerMain_FRAMESIZE($sp)
+lw r120, -44+tigerMain_FRAMESIZE($sp)
+sw r120, -48+tigerMain_FRAMESIZE($sp)
+lw r120, -48+tigerMain_FRAMESIZE($sp)
+sw r120, -40+tigerMain_FRAMESIZE($sp)
+add $s7, $s6, $s7
+add $s7, $s7, $s5
+add $s7, $s7, $s4
+add $s7, $s7, $s3
+add $s7, $s7, $s2
+add $s7, $s7, $s1
+add $s7, $s7, $s0
+add $s7, $s7, $t9
+add $s7, $s7, $t8
+add $s7, $s7, $t7
+add $s7, $s7, $t6
+add $s7, $s7, $t5
+add $s7, $s7, $t4
+add $s7, $s7, $t3
+add $s7, $s7, $t2
+add $s7, $s7, $t1
+add $s7, $s7, $t0
+lw r120, -40+tigerMain_FRAMESIZE($sp)
+sw r120, -48+tigerMain_FRAMESIZE($sp)
+lw r120, -48+tigerMain_FRAMESIZE($sp)
+sw r120, -44+tigerMain_FRAMESIZE($sp)
+lw r120, -44+tigerMain_FRAMESIZE($sp)
+sw r120, -48+tigerMain_FRAMESIZE($sp)
+lw r120, -48+tigerMain_FRAMESIZE($sp)
+add $s7, $s7, r120
+move $s7, $s7
+move $a0, $s7
 jal printInt
 nop
 li $v0, 0
