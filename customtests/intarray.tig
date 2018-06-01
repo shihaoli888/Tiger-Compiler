@@ -12,15 +12,17 @@ let
     (
         while 1 do
         (
-            printStr("\nsize: ");
+            printStr("size: ");
             printInt(size);
+            printStr("\n");
             if size = 0
             then break
             else
             ( 
                 for i:= 0 to 2 * size do(
-                    printStr("\ni: ");
+                    printStr("i: ");
                     printInt(i);
+                    printStr("\n");
                     if i = size
                     then break
                     else
