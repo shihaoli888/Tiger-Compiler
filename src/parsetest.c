@@ -258,11 +258,11 @@ int main(int argc, char **argv) {
       fprintf(stderr, "usage: a.out filename\n");
       exit(1);
     }*/
-//  parse("testcases/queens.tig");
+  parse("testcases/queens.tig");
     //parse("customtests/func.tig");
     //parse("customtests/cjump.tig");
     //parse("testcases/test1.tig"); 
-    parse("customtests/tree.tig");
+//    parse("customtests/tree.tig");
     printf("Done//:~");
     return 0;
 }
