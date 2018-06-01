@@ -7,18 +7,14 @@ let
         function isDivisible(dividend:int, divisor: int) = 
             ans := (dividend / divisor * divisor <> dividend)
     in
-    
-        printInt(num);
-        printStr("\n");
         if num = 2
         then ans := 1
         else 
             for i := 2 to num - 1 do 
             (
                 isDivisible(num, i);
-                printInt(num);
-                printStr("\n");
                 printInt(i);
+                printStr("\n");
                 if 1 <> ans then break
             )
     end
