@@ -160,7 +160,7 @@ static void traverseVar(S_table env, int depth, A_var v) {
 	{
 		escape_entry x = S_look(env, v->u.simple);
 		if (x) {
-			if (depth > x->d) x->escape = TRUE;
+			if (depth > x->d) *(x->escape) = TRUE;
 		}
 		return;
 	}

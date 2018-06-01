@@ -332,14 +332,6 @@ T_stm F_progEntryExit1(F_frame frame, T_exp body) {
 	F_access ra_tmp = F_allocLocal(frame, TRUE);
 	T_stm stm = T_Move(F_Exp(ra_tmp, T_Temp(F_FP())), T_Temp(F_RA()));
 #endif
-	for (i = 0; args&&i < 4; i++,args=args->tail,as=as->tail) {
-		stm = T_Seq(stm,T_Move(F_Exp(args->head, T_Temp(F_FP())), T_Temp(as->head)));
-	} 
-	while (args) {
-		stm = T_Seq(stm,T_Move(F_Exp(args->head, T_Temp(F_FP())),
-			T_Mem(T_Binop(T_plus, T_Temp(F_FP()), T_Const(i*get_wordsize())))));
-		args = args->tail;
-	}
 	Temp_tempList calleesaves = F_calleesaves();
 #if SPILL
 	Temp_tempList calleesaves_tmp = NULL,cp;
@@ -365,6 +357,14 @@ T_stm F_progEntryExit1(F_frame frame, T_exp body) {
 #else
 		stm = T_Seq(stm, T_Move(F_Exp(t->head, T_Temp(F_FP())), T_Temp(calleesaves->head)));
 #endif
+	}
+	for (i = 0; args&&i < 4; i++, args = args->tail, as = as->tail) {
+		stm = T_Seq(stm, T_Move(F_Exp(args->head, T_Temp(F_FP())), T_Temp(as->head)));
+	}
+	while (args) {
+		stm = T_Seq(stm, T_Move(F_Exp(args->head, T_Temp(F_FP())),
+			T_Mem(T_Binop(T_plus, T_Temp(F_FP()), T_Const(i*get_wordsize())))));
+		args = args->tail;
 	}
 	T_stm pro = stm;
 	T_stm epi = T_Move(T_Temp(F_RV()), body);

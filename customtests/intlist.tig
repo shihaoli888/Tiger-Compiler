@@ -1,25 +1,32 @@
 /* 自我递归类型定义; 记录; while, for循环 */
+/* 0,5,4,3,2,1 */
 let
     type intlist = {val: int, next: intlist}
     var ans := 0
     function sum(il: intlist): int = 
     (    
-        while iltmp do
+        while il do
         (
             ans := ans + il.val;
-            il := il.next
+            il := il.next;
+            printInt(ans);
+            printStr(" ")
         );
+        printStr("\n");
         ans
     )
 
     var il: intlist := intlist {val= 0, next= nil }
-    var tmp := il
+    var tmp:intlist := il
 in 
     for i := 0 to 5 do
     (
-        tmp := intlist {val= i, next= nil};
-        il.next = tmp
+        tmp := intlist {val= i, next= il.next};
+        printInt(i);
+        printStr(" ");
+        il.next := tmp
     );
-    sum(il)
+    printInt(sum(il));
+    printStr("\n")
 
 end

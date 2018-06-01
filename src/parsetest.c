@@ -224,7 +224,7 @@ void parse(string fname) {
         //FILE *fp2 = fopen("canon_tree.txt", "w");
 
         FILE *instrFp = fopen("instr_b4_allocation.txt", "w");
-        FILE *assemFile = fopen("tigerMain.s", "w");
+        FILE *assemFile = fopen("tigerMainL.s", "w");
 		tmp = res;
 		fprintf(assemFile, ".data\n");
 		for (; tmp; tmp = tmp->tail) {
@@ -264,6 +264,7 @@ int main(int argc, char **argv) {
     //parse("testcases/test1.tig"); 
 //    parse("customtests/stdlib.tig");
     parse("customtests/spill.tig");
+//    parse("customtests/tree.tig");
     printf("Done//:~");
     return 0;
 }
