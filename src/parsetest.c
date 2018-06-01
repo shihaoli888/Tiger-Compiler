@@ -224,7 +224,7 @@ void parse(string fname) {
         //FILE *fp2 = fopen("canon_tree.txt", "w");
 
         FILE *instrFp = fopen("instr_b4_allocation.txt", "w");
-        FILE *assemFile = fopen("tigerMain.s", "w");
+        FILE *assemFile = fopen("tigerMainL.s", "w");
 		tmp = res;
 		fprintf(assemFile, ".data\n");
 		for (; tmp; tmp = tmp->tail) {

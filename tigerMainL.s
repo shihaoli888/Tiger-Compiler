@@ -94,8 +94,6 @@ addi $sp,$sp,-44
 
 L19:
 sw $ra, -4+check_FRAMESIZE($sp)
-sw $a0, 0+check_FRAMESIZE($sp)
-move $a3, $a1
 sw $s7, -8+check_FRAMESIZE($sp)
 sw $s6, -12+check_FRAMESIZE($sp)
 sw $s5, -16+check_FRAMESIZE($sp)
@@ -104,6 +102,8 @@ sw $s3, -24+check_FRAMESIZE($sp)
 sw $s2, -28+check_FRAMESIZE($sp)
 sw $s1, -32+check_FRAMESIZE($sp)
 sw $s0, -36+check_FRAMESIZE($sp)
+sw $a0, 0+check_FRAMESIZE($sp)
+move $s0, $a1
 lw $t0, 0+check_FRAMESIZE($sp)
 li $t1, 1
 sw $t1, -4($t0)
@@ -111,7 +111,7 @@ la $t0, L13
 move $a0, $t0
 jal printStr
 nop
-move $a0, $a3
+move $a0, $s0
 jal printInt
 nop
 la $t0, L14
@@ -120,7 +120,7 @@ jal printStr
 nop
 lw $t0, 0+check_FRAMESIZE($sp)
 move $a0, $t0
-move $a1, $a3
+move $a1, $s0
 jal isPrime
 nop
 lw $t0, 0+check_FRAMESIZE($sp)
@@ -163,8 +163,6 @@ addi $sp,$sp,-48
 
 L21:
 sw $ra, -4+isPrime_FRAMESIZE($sp)
-sw $a0, 0+isPrime_FRAMESIZE($sp)
-move $a3, $a1
 sw $s7, -8+isPrime_FRAMESIZE($sp)
 sw $s6, -12+isPrime_FRAMESIZE($sp)
 sw $s5, -16+isPrime_FRAMESIZE($sp)
@@ -173,7 +171,9 @@ sw $s3, -24+isPrime_FRAMESIZE($sp)
 sw $s2, -28+isPrime_FRAMESIZE($sp)
 sw $s1, -32+isPrime_FRAMESIZE($sp)
 sw $s0, -36+isPrime_FRAMESIZE($sp)
-move $a0, $a3
+sw $a0, 0+isPrime_FRAMESIZE($sp)
+move $s0, $a1
+move $a0, $s0
 jal printInt
 nop
 la $t0, L3
@@ -181,13 +181,13 @@ move $a0, $t0
 jal printStr
 nop
 li $t0, 2
-beq $a3, $t0, L10
+beq $s0, $t0, L10
 nop
 
 L11:
-li $s1, 2
-addi $s0, $a3, -1
-ble $s1, $s0, L8
+li $s2, 2
+addi $s1, $s0, -1
+ble $s2, $s1, L8
 nop
 
 L4:
@@ -217,18 +217,18 @@ nop
 
 L8:
 addi $a0, $sp, isPrime_FRAMESIZE
-move $a1, $a3
-move $a2, $s1
+move $a1, $s0
+move $a2, $s2
 jal isDivisible
 nop
-move $a0, $a3
+move $a0, $s0
 jal printInt
 nop
 la $t0, L5
 move $a0, $t0
 jal printStr
 nop
-move $a0, $s1
+move $a0, $s2
 jal printInt
 nop
 li $t1, 1
@@ -238,11 +238,11 @@ bne $t1, $t0, L6
 nop
 
 L7:
-bge $s1, $s0, L4
+bge $s2, $s1, L4
 nop
 
 L9:
-addi $s1, $s1, 1
+addi $s2, $s2, 1
 j L8
 nop
 
@@ -268,9 +268,6 @@ addi $sp,$sp,-36
 
 L23:
 sw $ra, -4+isDivisible_FRAMESIZE($sp)
-sw $a0, 0+isDivisible_FRAMESIZE($sp)
-move $t2, $a1
-move $t1, $a2
 sw $s7, -8+isDivisible_FRAMESIZE($sp)
 sw $s6, -12+isDivisible_FRAMESIZE($sp)
 sw $s5, -16+isDivisible_FRAMESIZE($sp)
@@ -279,6 +276,9 @@ sw $s3, -24+isDivisible_FRAMESIZE($sp)
 sw $s2, -28+isDivisible_FRAMESIZE($sp)
 sw $s1, -32+isDivisible_FRAMESIZE($sp)
 sw $s0, -36+isDivisible_FRAMESIZE($sp)
+sw $a0, 0+isDivisible_FRAMESIZE($sp)
+move $t2, $a1
+move $t1, $a2
 lw $t0, 0+isDivisible_FRAMESIZE($sp)
 lw $t0, 0($t0)
 addi $t3, $t0, -4
