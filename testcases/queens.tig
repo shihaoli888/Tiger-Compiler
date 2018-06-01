@@ -13,12 +13,12 @@ let
     function printboard() =
        (for i := 0 to N-1
 	 do (for j := 0 to N-1 
-	      do print(if col[i]=j then " O" else " .");
-	     print("\n"));
-         print("\n"))
+	      do printStr(if col[i]=j then " O" else " .");
+	     printStr("\n"));
+         printStr("\n"))
 
     function try(c:int) = 
-( /*  for i:= 0 to c do print("."); print("\n"); flush();*/
+( /*  for i:= 0 to c do printStr("."); printStr("\n"); flush();*/
      if c=N
      then printboard()
      else for r := 0 to N-1
