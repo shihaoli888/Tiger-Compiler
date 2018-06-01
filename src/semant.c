@@ -138,10 +138,16 @@ struct expty transExp(Tr_level level, S_table venv, S_table tenv, A_exp a, Tr_ex
 			}
 		}
 		// cmp op need equal type
+		if (
+				actual_ty(left.ty)->kind == Ty_record && actual_ty(right.ty)->kind == Ty_nil
+				|| actual_ty(right.ty)->kind == Ty_record && actual_ty(left.ty)->kind == Ty_nil
+			) {
+			return expTy(Tr_opExp(left.exp, right.exp, op), Ty_Int());
+		}
 		if (actual_ty(left.ty)!= actual_ty(right.ty)) {
 			EM_error(a->u.op.left->pos, "same type required");
 		}
-		return expTy(Tr_opExp(left.exp,right.exp,op), Ty_Int());
+		return expTy(Tr_opExp(left.exp, right.exp, op), Ty_Int());
 	}
 	case A_recordExp:
 	{
