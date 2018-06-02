@@ -261,8 +261,8 @@ int main(int argc, char **argv) {
      // parse("testcases/queens.tig");
     //parse("customtests/func.tig");
     //parse("customtests/cjump.tig");
-    //parse("testcases/queens.tig"); 
-    parse("customtests/redeclare.tig");
+    parse("testcases/test40.tig"); 
+    //parse("c:/w/shared/LJZ_TC/customtests/merge.tig");
     printf("Done//:~");
     return 0;
 }

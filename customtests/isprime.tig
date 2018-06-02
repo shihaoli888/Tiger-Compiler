@@ -13,8 +13,6 @@ let
             for i := 2 to num - 1 do 
             (
                 isDivisible(num, i);
-                printInt(i);
-                printStr("\n");
                 if 1 <> ans then break
             )
     end

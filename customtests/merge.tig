@@ -9,31 +9,18 @@ function readint(any: any) : int =
 		  ord(buffer)>=ord("0") & ord(buffer)<=ord("9")
      function skipto() =
      (
-       printStr("skipto\n");
-         printInt(buffer = " "| buffer = "\n");
-       while buffer=" " | buffer="\n"
+         while stringcmp(buffer, " ")=0 | stringcmp(buffer, "\n")=0
          do (
-         printStr(buffer);
-         printStr("\n");
          buffer := tigerGetchar()
-         );
-         printStr(buffer);
-         printStr("\n")
+         )
      )
   in 
-     printStr("\nreadint\n");
      skipto();
      any.any := isdigit(buffer);
 
-     printStr(buffer);
-     printStr("buffer\n");
-     printInt(any.any);
-     printStr("\n");
      while isdigit(buffer)
-       do (i := i*10+ord(buffer)-ord("0"); buffer := tigerGetchar();
-     printInt(i);
-     printStr("\n")
-       
+       do (i := i*10+ord(buffer)-ord("0"); 
+          buffer := tigerGetchar()
        );
      i
  end
@@ -44,11 +31,6 @@ function readint(any: any) : int =
     let var any := any{any=0}
         var i := readint(any)
      in 
-     printStr("\nreadlist\n");
-     printInt(any.any);
-     printStr("\n");
-     printInt(i);
-     printStr("\n");
      if any.any
          then list{first=i,rest=readlist()}
          else nil
@@ -71,9 +53,6 @@ function readint(any: any) : int =
 
   /* BODY OF MAIN PROGRAM */
  in 
- printlist(list1);
- printlist(list2);
- printlist(merge(list1,list2));
- printInt(" " = "\n")
+ printlist(merge(list1,list2))
 end
 

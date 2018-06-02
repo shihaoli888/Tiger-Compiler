@@ -14,7 +14,6 @@ typedef struct String *string;
 string constchar[256];
 string emptychar;
 
-
 unsigned char *initArray(int size, int initVal)
 {
     int *res = (int *)malloc(sizeof(int) * size);
@@ -97,10 +96,19 @@ string substring(string str, int first, int len)
 int stringcmp(string s1, string s2)
 {
     int l1 = s1->len, l2 = s2->len;
-    for(int i = 0, j = 0; i < l1 & j < l2; i++, j++){
-        if(s1->content[i] != s2->content[j])
-            return 
+    int i, j;
+    for (i = 0, j = 0; i < l1 & j < l2; i++, j++)
+    {
+        if (s1->content[i] != s2->content[j])
+            return s1->content[i] > s2->content[j];
     }
+    if (i == l1 && j == l2)
+    {
+        return 0;
+    }
+    if (i != l1)
+        return 1;
+    return -1;
 }
 
 string concat(string str1, string str2)
