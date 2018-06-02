@@ -7,10 +7,14 @@ let
         function bar(a: int) =
             ans := a + 1
     in
+
+    bar(1)
+    /*
             for i := 1 to num do
             (
                 bar(i)
             )
+    */
     end
 in
     foo(2)

@@ -234,6 +234,8 @@ L2:
 nop
 
 
+--------
+
 L3:
 move r206, $ra
 sw r206, -364+tigerMain_FRAMESIZE($sp)
@@ -650,6 +652,8 @@ nop
 L2:
 nop
 
+
+--------
 
 L3:
 move r206, $ra
@@ -1069,3 +1073,5 @@ nop
 L2:
 nop
 
+
+--------

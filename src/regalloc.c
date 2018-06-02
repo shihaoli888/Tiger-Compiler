@@ -191,7 +191,7 @@ struct RA_result RA_regAlloc(F_frame f, AS_instrList il) {
     Temp_tempList spilledNodes = NULL;
     struct COL_result col_result;
 #if DEBUG_IT
-    int MAX_LOOP = 5; // todo: only for debug
+    int MAX_LOOP = 99999; // todo: only for debug
     int currLoop = 0;
     FILE *assemFile = fopen("debugAssem.s", "w");
     FILE *assemBeforeAllocFile = fopen("debugAssemBeforeAlloc.s", "w");
@@ -201,6 +201,7 @@ struct RA_result RA_regAlloc(F_frame f, AS_instrList il) {
         spilledNodes = NULL;
 #if 1
         AS_printInstrList(assemBeforeAllocFile, il, F_get_tempmap());
+        fprintf(assemBeforeAllocFile, "\n--------\n");
 #endif
         G_graph flowgraph = FG_AssemFlowGraph(il);
         struct Live_graph lg = Live_liveness(flowgraph);
@@ -221,6 +222,7 @@ struct RA_result RA_regAlloc(F_frame f, AS_instrList il) {
             il = rewriteProgram(il, spilledNodes, allocInfo);
 #if 1
             AS_printInstrList(assemFile, il, col_result.coloring);
+            fprintf(assemFile, "\n--------\n");
 #endif
         }
         currLoop++;
