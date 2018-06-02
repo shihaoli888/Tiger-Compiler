@@ -167,7 +167,7 @@ void doProc(FILE *file, FILE *assemFile, F_frame frame, T_stm stm) {
     struct C_block block = C_basicBlocks(stmList);
     Temp_label done = block.label;
     T_stmList tracedStmList = C_traceSchedule(block);
-//    printStmList(file, tracedStmList);
+    printStmList(file, tracedStmList);
 
     /***������һ������***/
     AS_instrList instrList = F_codegen(frame, tracedStmList);
@@ -261,12 +261,8 @@ int main(int argc, char **argv) {
      // parse("testcases/queens.tig");
     //parse("customtests/func.tig");
     //parse("customtests/cjump.tig");
-    //parse("testcases/test1.tig");
-//    parse("customtests/tree.tig");
-//    parse("testcases/merge.tig");
+    //parse("testcases/queens.tig"); 
     parse("customtests/merge.tig");
-//    parse("customtests/readint.tig");
-    //parse("customtests/tree.tig");
     printf("Done//:~");
     return 0;
 }

@@ -11,6 +11,6 @@ let
         ans
     )
 in 
-    factorial(8);
+    printInt(factorial(8));
     printStr("\n")
 end
