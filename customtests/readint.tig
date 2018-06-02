@@ -1,0 +1,11 @@
+let
+    function tt(a:int):int=
+    let
+        var b:=10
+    in if a=0
+        then b
+        else a
+    end
+in
+   tt(0)
+end 
