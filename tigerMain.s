@@ -5,7 +5,7 @@ L35:
 .ascii " "
 .align 2
 L34:
-.word 2
+.word 1
 .ascii "\n"
 .align 2
 L19:
@@ -13,7 +13,7 @@ L19:
 .ascii "0"
 .align 2
 L10:
-.word 2
+.word 1
 .ascii "\n"
 .align 2
 L9:

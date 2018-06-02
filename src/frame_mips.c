@@ -412,8 +412,16 @@ AS_proc F_progEntryExit3(F_frame frame, AS_instrList body) {
 string F_string(F_frag str) {
 	char buffer[100];
 	string s = str->u.stringg.str;
-	int i=0;
-	for (; s[i]; i++);
-	sprintf(buffer, "%s:\n.word %d\n.ascii \"%s\"\n", Temp_labelstring(str->u.stringg.label), i, str->u.stringg.str);
+	int count = 0;
+	int flag = 0;
+	for (int i = 0; s[i]; i++) {
+		if (s[i] == '\\'&&flag == 0) {
+			flag = 1;
+			continue;
+		}
+		count++;
+		flag = 0;
+	}
+	sprintf(buffer, "%s:\n.word %d\n.ascii \"%s\"\n", Temp_labelstring(str->u.stringg.label), count, str->u.stringg.str);
 	return String(buffer);
 }
