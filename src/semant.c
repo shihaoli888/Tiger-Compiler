@@ -5,6 +5,14 @@
 #include "translate.h"
 #include "escape.h"
 
+static int ty_equal(Ty_ty t1, Ty_ty t2) {
+	Ty_ty at1 = actual_ty(t1);
+	Ty_ty at2 = actual_ty(t2);
+	if (at1->kind == Ty_record && at2->kind == Ty_nil) return TRUE;
+	else if (at1->kind == Ty_nil && at2->kind == Ty_record) return TRUE;
+	else return at1 == at2;
+}
+
 static int loop_flag = 0;
 struct expty expTy(Tr_exp exp, Ty_ty ty) {
 	struct expty t;
@@ -218,10 +226,11 @@ struct expty transExp(Tr_level level, S_table venv, S_table tenv, A_exp a, Tr_ex
 	{
 		struct expty lvalue = transVar(level, venv, tenv, a->u.assign.var,breakk);
 		struct expty e = transExp(level, venv, tenv, a->u.assign.exp,breakk);
-		if ((e.ty)->kind == Ty_void) {
+		if (actual_ty(e.ty)->kind == Ty_void) {
 			EM_error(a->pos, "right value can't be Void");
 		}
-		if (lvalue.ty != e.ty) {
+		
+		if (!ty_equal(lvalue.ty, e.ty)) {
 			EM_error(a->pos, "assignment need same type");
 		}
 		return expTy(Tr_assignExp(lvalue.exp,e.exp), Ty_Void());
@@ -231,14 +240,14 @@ struct expty transExp(Tr_level level, S_table venv, S_table tenv, A_exp a, Tr_ex
 		struct expty e1 = transExp(level, venv, tenv, a->u.iff.test,breakk);
 		struct expty e2 = transExp(level, venv, tenv, a->u.iff.then,breakk);
 		if (a->u.iff.elsee == NULL) {
-			if ((e2.ty)->kind != Ty_void) {
+			if (actual_ty(e2.ty)->kind != Ty_void) {
 				EM_error(a->pos, "then must be a void expression");
 			}
 			return expTy(Tr_iffExp(e1.exp,e2.exp,NULL), Ty_Void());
 		}
 		else {
 			struct expty e3 = transExp(level, venv, tenv, a->u.iff.elsee,breakk);
-			if (e2.ty != e3.ty) {
+			if (!ty_equal(e2.ty, e3.ty)) {
 				EM_error(a->pos, "then and else must hava same value");
 			}
 			return expTy(Tr_iffExp(e1.exp,e2.exp,e3.exp), e2.ty);
@@ -254,7 +263,7 @@ struct expty transExp(Tr_level level, S_table venv, S_table tenv, A_exp a, Tr_ex
 		loop_flag = 1;
 		struct expty body = transExp(level, venv, tenv, a->u.whilee.body,breakk);
 		loop_flag = pre_loop_flag;
-		if ((body.ty)->kind != Ty_void) {
+		if (actual_ty(body.ty)->kind != Ty_void) {
 			EM_error(a->pos,"while 's body must be a void expression");
 		}
 		Tr_exp w = Tr_whileExp(test.exp, body.exp, breakk);
@@ -271,7 +280,7 @@ struct expty transExp(Tr_level level, S_table venv, S_table tenv, A_exp a, Tr_ex
 		S_enter(venv, a->u.forr.var, E_VarEntry(i,Ty_Int()));
 		struct expty e1 = transExp(level, venv, tenv, a->u.forr.lo,breakk);
 		struct expty e2 = transExp(level, venv, tenv, a->u.forr.hi,breakk);
-		if ((e1.ty)->kind != Ty_int || (e2.ty)->kind != Ty_int) {
+		if (actual_ty(e1.ty)->kind != Ty_int || actual_ty(e2.ty)->kind != Ty_int) {
 			EM_error(a->pos, "lo and hi must be int expression");
 		}
 		//for break exp
@@ -279,7 +288,7 @@ struct expty transExp(Tr_level level, S_table venv, S_table tenv, A_exp a, Tr_ex
 		loop_flag = 1;
 		struct expty e3 = transExp(level, venv, tenv, a->u.forr.body,breakk);
 		loop_flag = pre_loop_flag;
-		if ((e3.ty)->kind != Ty_void) {
+		if (actual_ty(e3.ty)->kind != Ty_void) {
 			EM_error(a->pos, "body must be a void expression");
 		}
 		S_endScope(venv);
@@ -329,7 +338,8 @@ struct expty transExp(Tr_level level, S_table venv, S_table tenv, A_exp a, Tr_ex
 		if ((e1.ty)->kind != Ty_int ) {
 			EM_error(a->pos, "array size must be int");
 		}
-		if (e2.ty != actual_ty(typ->u.array)) {
+		
+		if (!ty_equal(e2.ty, typ->u.array)) {
 			EM_error(a->pos, "initializing exp and array type differ");
 		}
 		return expTy(Tr_arrayExp(e2.exp,e1.exp), typ);
@@ -350,7 +360,7 @@ Tr_exp transDec(Tr_level level, S_table venv, S_table tenv, A_dec d, Tr_exp brea
 				if(t->kind != Ty_record)
 					EM_error(d->pos, "nil can only init record");
 			}
-			else if(t != e.ty) {
+			else if(!ty_equal(t,e.ty)) {
 				EM_error(d->pos, "type and init mismatch");
 			}
 		}

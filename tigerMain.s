@@ -1,32 +1,40 @@
 .data
 .align 2
-L15:
+L35:
+.word 1
+.ascii " "
+.align 2
+L34:
 .word 2
 .ascii "\n"
 .align 2
-L14:
-.word 18
-.ascii " a prime number?\n"
+L19:
+.word 1
+.ascii "0"
 .align 2
-L13:
-.word 3
-.ascii "Is "
-.align 2
-L5:
+L10:
 .word 2
 .ascii "\n"
 .align 2
-L3:
-.word 2
-.ascii "\n"
+L9:
+.word 1
+.ascii " "
+.align 2
+L2:
+.word 1
+.ascii "9"
+.align 2
+L1:
+.word 1
+.ascii "0"
 .text
 .align 2
 .globl tigerMain
 tigerMain:
-tigerMain_FRAMESIZE = 48
-addi $sp,$sp,-48
+tigerMain_FRAMESIZE = 52
+addi $sp,$sp,-52
 
-L17:
+L40:
 sw $ra, -8+tigerMain_FRAMESIZE($sp)
 sw $s7, -12+tigerMain_FRAMESIZE($sp)
 sw $s6, -16+tigerMain_FRAMESIZE($sp)
@@ -36,34 +44,36 @@ sw $s3, -28+tigerMain_FRAMESIZE($sp)
 sw $s2, -32+tigerMain_FRAMESIZE($sp)
 sw $s1, -36+tigerMain_FRAMESIZE($sp)
 sw $s0, -40+tigerMain_FRAMESIZE($sp)
-li $t0, 1
-sw $t0, -4+tigerMain_FRAMESIZE($sp)
-li $t0, 2
-addi $a0, $sp, tigerMain_FRAMESIZE
-move $a1, $t0
-jal check
+addi $s7, $fp, -4
+jal tigerGetchar
 nop
-li $t0, 7
+move $s6, $v0
+sw $s6, 0($s7)
 addi $a0, $sp, tigerMain_FRAMESIZE
-move $a1, $t0
-jal check
+jal readlist
 nop
-li $t0, 10
+move $s6, $v0
+addi $s7, $fp, -4
+jal tigerGetchar
+nop
+move $s5, $v0
+sw $s5, 0($s7)
 addi $a0, $sp, tigerMain_FRAMESIZE
-move $a1, $t0
-jal check
+jal readlist
 nop
-li $t0, 15
+move $s5, $v0
+move $s7, $fp
 addi $a0, $sp, tigerMain_FRAMESIZE
-move $a1, $t0
-jal check
+move $a1, $s6
+move $a2, $s5
+jal merge
 nop
-li $t0, 17
-addi $a0, $sp, tigerMain_FRAMESIZE
-move $a1, $t0
-jal check
+move $s6, $v0
+move $a0, $s7
+move $a1, $s6
+jal printlist
 nop
-li $v0, 0
+move $v0, $v0
 lw $s7, -12+tigerMain_FRAMESIZE($sp)
 lw $s6, -16+tigerMain_FRAMESIZE($sp)
 lw $s5, -20+tigerMain_FRAMESIZE($sp)
@@ -73,13 +83,13 @@ lw $s2, -32+tigerMain_FRAMESIZE($sp)
 lw $s1, -36+tigerMain_FRAMESIZE($sp)
 lw $s0, -40+tigerMain_FRAMESIZE($sp)
 lw $ra, -8+tigerMain_FRAMESIZE($sp)
-j L16
+j L39
 nop
 
-L16:
+L39:
 nop
 
-addi $sp,$sp,48
+addi $sp,$sp,52
 jr $ra
 
 
@@ -87,65 +97,74 @@ jr $ra
 
 .text
 .align 2
-.globl check
-check:
-check_FRAMESIZE = 44
+.globl printlist
+printlist:
+printlist_FRAMESIZE = 44
 addi $sp,$sp,-44
 
-L19:
-sw $ra, -4+check_FRAMESIZE($sp)
-sw $a0, 0+check_FRAMESIZE($sp)
-move $a3, $a1
-sw $s7, -8+check_FRAMESIZE($sp)
-sw $s6, -12+check_FRAMESIZE($sp)
-sw $s5, -16+check_FRAMESIZE($sp)
-sw $s4, -20+check_FRAMESIZE($sp)
-sw $s3, -24+check_FRAMESIZE($sp)
-sw $s2, -28+check_FRAMESIZE($sp)
-sw $s1, -32+check_FRAMESIZE($sp)
-sw $s0, -36+check_FRAMESIZE($sp)
-lw $t0, 0+check_FRAMESIZE($sp)
-li $t1, 1
-sw $t1, -4($t0)
-la $t0, L13
-move $a0, $t0
-jal printStr
-nop
-move $a0, $a3
-jal printInt
-nop
-la $t0, L14
-move $a0, $t0
-jal printStr
-nop
-lw $t0, 0+check_FRAMESIZE($sp)
-move $a0, $t0
-move $a1, $a3
-jal isPrime
-nop
-lw $t0, 0+check_FRAMESIZE($sp)
-lw $t0, -4($t0)
-move $a0, $t0
-jal printInt
-nop
-la $t0, L15
-move $a0, $t0
-jal printStr
-nop
-move $v0, $v0
-lw $s7, -8+check_FRAMESIZE($sp)
-lw $s6, -12+check_FRAMESIZE($sp)
-lw $s5, -16+check_FRAMESIZE($sp)
-lw $s4, -20+check_FRAMESIZE($sp)
-lw $s3, -24+check_FRAMESIZE($sp)
-lw $s2, -28+check_FRAMESIZE($sp)
-lw $s1, -32+check_FRAMESIZE($sp)
-lw $s0, -36+check_FRAMESIZE($sp)
-lw $ra, -4+check_FRAMESIZE($sp)
-j L18
+L42:
+sw $ra, -4+printlist_FRAMESIZE($sp)
+sw $s7, -8+printlist_FRAMESIZE($sp)
+sw $s6, -12+printlist_FRAMESIZE($sp)
+sw $s5, -16+printlist_FRAMESIZE($sp)
+sw $s4, -20+printlist_FRAMESIZE($sp)
+sw $s3, -24+printlist_FRAMESIZE($sp)
+sw $s2, -28+printlist_FRAMESIZE($sp)
+sw $s1, -32+printlist_FRAMESIZE($sp)
+sw $s0, -36+printlist_FRAMESIZE($sp)
+sw $a0, 0+printlist_FRAMESIZE($sp)
+move $s7, $a1
+beq $s7, $zero, L36
 nop
 
-L18:
+L37:
+li $s6, 4
+mul $s6, $zero, $s6
+add $s6, $s7, $s6
+lw $s6, 0($s6)
+move $a0, $s6
+jal printInt
+nop
+la $s6, L35
+move $a0, $s6
+jal printStr
+nop
+lw $s4, 0+printlist_FRAMESIZE($sp)
+li $s6, 4
+li $s5, 1
+mul $s6, $s5, $s6
+add $s7, $s7, $s6
+lw $s7, 0($s7)
+move $a0, $s4
+move $a1, $s7
+jal printlist
+nop
+move $s7, $v0
+
+L38:
+move $v0, $s7
+lw $s7, -8+printlist_FRAMESIZE($sp)
+lw $s6, -12+printlist_FRAMESIZE($sp)
+lw $s5, -16+printlist_FRAMESIZE($sp)
+lw $s4, -20+printlist_FRAMESIZE($sp)
+lw $s3, -24+printlist_FRAMESIZE($sp)
+lw $s2, -28+printlist_FRAMESIZE($sp)
+lw $s1, -32+printlist_FRAMESIZE($sp)
+lw $s0, -36+printlist_FRAMESIZE($sp)
+lw $ra, -4+printlist_FRAMESIZE($sp)
+j L41
+nop
+
+L36:
+la $s7, L34
+move $a0, $s7
+jal printStr
+nop
+move $s7, $v0
+j L38
+nop
+
+L41:
 nop
 
 addi $sp,$sp,44
@@ -156,101 +175,130 @@ jr $ra
 
 .text
 .align 2
-.globl isPrime
-isPrime:
-isPrime_FRAMESIZE = 48
+.globl merge
+merge:
+merge_FRAMESIZE = 48
 addi $sp,$sp,-48
 
-L21:
-sw $ra, -4+isPrime_FRAMESIZE($sp)
-sw $a0, 0+isPrime_FRAMESIZE($sp)
-move $a3, $a1
-sw $s7, -8+isPrime_FRAMESIZE($sp)
-sw $s6, -12+isPrime_FRAMESIZE($sp)
-sw $s5, -16+isPrime_FRAMESIZE($sp)
-sw $s4, -20+isPrime_FRAMESIZE($sp)
-sw $s3, -24+isPrime_FRAMESIZE($sp)
-sw $s2, -28+isPrime_FRAMESIZE($sp)
-sw $s1, -32+isPrime_FRAMESIZE($sp)
-sw $s0, -36+isPrime_FRAMESIZE($sp)
-move $a0, $a3
-jal printInt
-nop
-la $t0, L3
-move $a0, $t0
-jal printStr
-nop
-li $t0, 2
-beq $a3, $t0, L10
+L44:
+sw $ra, -4+merge_FRAMESIZE($sp)
+sw $s7, -8+merge_FRAMESIZE($sp)
+sw $s6, -12+merge_FRAMESIZE($sp)
+sw $s5, -16+merge_FRAMESIZE($sp)
+sw $s4, -20+merge_FRAMESIZE($sp)
+sw $s3, -24+merge_FRAMESIZE($sp)
+sw $s2, -28+merge_FRAMESIZE($sp)
+sw $s1, -32+merge_FRAMESIZE($sp)
+sw $s0, -36+merge_FRAMESIZE($sp)
+sw $a0, 0+merge_FRAMESIZE($sp)
+move $s5, $a1
+move $s4, $a2
+beq $s5, $zero, L31
 nop
 
-L11:
-li $s1, 2
-addi $s0, $a3, -1
-ble $s1, $s0, L8
+L32:
+beq $s4, $zero, L28
 nop
 
-L4:
-li $t0, 0
-
-L12:
-li $v0, 0
-lw $s7, -8+isPrime_FRAMESIZE($sp)
-lw $s6, -12+isPrime_FRAMESIZE($sp)
-lw $s5, -16+isPrime_FRAMESIZE($sp)
-lw $s4, -20+isPrime_FRAMESIZE($sp)
-lw $s3, -24+isPrime_FRAMESIZE($sp)
-lw $s2, -28+isPrime_FRAMESIZE($sp)
-lw $s1, -32+isPrime_FRAMESIZE($sp)
-lw $s0, -36+isPrime_FRAMESIZE($sp)
-lw $ra, -4+isPrime_FRAMESIZE($sp)
-j L20
+L29:
+li $s7, 4
+mul $s7, $zero, $s7
+add $s7, $s5, $s7
+lw $s6, 0($s7)
+li $s7, 4
+mul $s7, $zero, $s7
+add $s7, $s4, $s7
+lw $s7, 0($s7)
+blt $s6, $s7, L25
 nop
 
-L10:
-lw $t0, 0+isPrime_FRAMESIZE($sp)
-li $t1, 1
-sw $t1, -4($t0)
-li $t0, 0
-j L12
+L26:
+li $s7, 8
+move $a0, $s7
+jal allocRecord
 nop
-
-L8:
-addi $a0, $sp, isPrime_FRAMESIZE
-move $a1, $a3
-move $a2, $s1
-jal isDivisible
-nop
-move $a0, $a3
-jal printInt
-nop
-la $t0, L5
-move $a0, $t0
-jal printStr
-nop
+move $s6, $v0
+li $s7, 4
+mul $s7, $zero, $s7
+add $s7, $s4, $s7
+lw $s7, 0($s7)
+sw $s7, 0($s6)
+addi $s7, $s6, 4
+lw $s1, 0+merge_FRAMESIZE($sp)
+li $s3, 4
+li $s2, 1
+mul $s3, $s2, $s3
+add $s4, $s4, $s3
+lw $s4, 0($s4)
 move $a0, $s1
-jal printInt
+move $a1, $s5
+move $a2, $s4
+jal merge
 nop
-li $t1, 1
-lw $t0, 0+isPrime_FRAMESIZE($sp)
-lw $t0, -4($t0)
-bne $t1, $t0, L6
+move $s5, $v0
+sw $s5, 0($s7)
+move $s7, $s6
+
+L27:
+move $s7, $s7
+
+L30:
+move $s7, $s7
+
+L33:
+move $v0, $s7
+lw $s7, -8+merge_FRAMESIZE($sp)
+lw $s6, -12+merge_FRAMESIZE($sp)
+lw $s5, -16+merge_FRAMESIZE($sp)
+lw $s4, -20+merge_FRAMESIZE($sp)
+lw $s3, -24+merge_FRAMESIZE($sp)
+lw $s2, -28+merge_FRAMESIZE($sp)
+lw $s1, -32+merge_FRAMESIZE($sp)
+lw $s0, -36+merge_FRAMESIZE($sp)
+lw $ra, -4+merge_FRAMESIZE($sp)
+j L43
 nop
 
-L7:
-bge $s1, $s0, L4
+L31:
+move $s7, $s4
+j L33
 nop
 
-L9:
-addi $s1, $s1, 1
-j L8
+L28:
+move $s7, $s5
+j L30
 nop
 
-L6:
-j L4
+L25:
+li $s7, 8
+move $a0, $s7
+jal allocRecord
+nop
+move $s6, $v0
+li $s7, 4
+mul $s7, $zero, $s7
+add $s7, $s5, $s7
+lw $s7, 0($s7)
+sw $s7, 0($s6)
+addi $s7, $s6, 4
+lw $s1, 0+merge_FRAMESIZE($sp)
+li $s3, 4
+li $s2, 1
+mul $s3, $s2, $s3
+add $s5, $s5, $s3
+lw $s5, 0($s5)
+move $a0, $s1
+move $a1, $s5
+move $a2, $s4
+jal merge
+nop
+move $s5, $v0
+sw $s5, 0($s7)
+move $s7, $s6
+j L27
 nop
 
-L20:
+L43:
 nop
 
 addi $sp,$sp,48
@@ -261,55 +309,351 @@ jr $ra
 
 .text
 .align 2
-.globl isDivisible
-isDivisible:
-isDivisible_FRAMESIZE = 36
-addi $sp,$sp,-36
+.globl readlist
+readlist:
+readlist_FRAMESIZE = 44
+addi $sp,$sp,-44
 
-L23:
-sw $ra, -4+isDivisible_FRAMESIZE($sp)
-sw $a0, 0+isDivisible_FRAMESIZE($sp)
-move $t2, $a1
-move $t1, $a2
-sw $s7, -8+isDivisible_FRAMESIZE($sp)
-sw $s6, -12+isDivisible_FRAMESIZE($sp)
-sw $s5, -16+isDivisible_FRAMESIZE($sp)
-sw $s4, -20+isDivisible_FRAMESIZE($sp)
-sw $s3, -24+isDivisible_FRAMESIZE($sp)
-sw $s2, -28+isDivisible_FRAMESIZE($sp)
-sw $s1, -32+isDivisible_FRAMESIZE($sp)
-sw $s0, -36+isDivisible_FRAMESIZE($sp)
-lw $t0, 0+isDivisible_FRAMESIZE($sp)
-lw $t0, 0($t0)
-addi $t3, $t0, -4
-li $t4, 1
-div $t0, $t2, $t1
-mul $t0, $t0, $t1
-bne $t0, $t2, L1
+L46:
+sw $ra, -4+readlist_FRAMESIZE($sp)
+sw $s7, -8+readlist_FRAMESIZE($sp)
+sw $s6, -12+readlist_FRAMESIZE($sp)
+sw $s5, -16+readlist_FRAMESIZE($sp)
+sw $s4, -20+readlist_FRAMESIZE($sp)
+sw $s3, -24+readlist_FRAMESIZE($sp)
+sw $s2, -28+readlist_FRAMESIZE($sp)
+sw $s1, -32+readlist_FRAMESIZE($sp)
+sw $s0, -36+readlist_FRAMESIZE($sp)
+sw $a0, 0+readlist_FRAMESIZE($sp)
+li $s7, 4
+move $a0, $s7
+jal allocRecord
+nop
+move $s7, $v0
+sw $zero, 0($s7)
+move $s6, $s7
+lw $s7, 0+readlist_FRAMESIZE($sp)
+move $a0, $s7
+move $a1, $s6
+jal readint
+nop
+move $s7, $v0
+li $s5, 4
+mul $s5, $zero, $s5
+add $s6, $s6, $s5
+lw $s6, 0($s6)
+bne $zero, $s6, L22
 nop
 
-L2:
-li $t4, 0
+L23:
+li $s7, 0
 
-L1:
-sw $t4, 0($t3)
-li $v0, 0
-lw $s7, -8+isDivisible_FRAMESIZE($sp)
-lw $s6, -12+isDivisible_FRAMESIZE($sp)
-lw $s5, -16+isDivisible_FRAMESIZE($sp)
-lw $s4, -20+isDivisible_FRAMESIZE($sp)
-lw $s3, -24+isDivisible_FRAMESIZE($sp)
-lw $s2, -28+isDivisible_FRAMESIZE($sp)
-lw $s1, -32+isDivisible_FRAMESIZE($sp)
-lw $s0, -36+isDivisible_FRAMESIZE($sp)
-lw $ra, -4+isDivisible_FRAMESIZE($sp)
-j L22
+L24:
+move $v0, $s7
+lw $s7, -8+readlist_FRAMESIZE($sp)
+lw $s6, -12+readlist_FRAMESIZE($sp)
+lw $s5, -16+readlist_FRAMESIZE($sp)
+lw $s4, -20+readlist_FRAMESIZE($sp)
+lw $s3, -24+readlist_FRAMESIZE($sp)
+lw $s2, -28+readlist_FRAMESIZE($sp)
+lw $s1, -32+readlist_FRAMESIZE($sp)
+lw $s0, -36+readlist_FRAMESIZE($sp)
+lw $ra, -4+readlist_FRAMESIZE($sp)
+j L45
 nop
 
 L22:
+li $s6, 8
+move $a0, $s6
+jal allocRecord
+nop
+move $s6, $v0
+sw $s7, 0($s6)
+addi $s7, $s6, 4
+lw $s5, 0+readlist_FRAMESIZE($sp)
+move $a0, $s5
+jal readlist
+nop
+move $s5, $v0
+sw $s5, 0($s7)
+move $s7, $s6
+j L24
 nop
 
-addi $sp,$sp,36
+L45:
+nop
+
+addi $sp,$sp,44
+jr $ra
+
+
+
+
+.text
+.align 2
+.globl readint
+readint:
+readint_FRAMESIZE = 44
+addi $sp,$sp,-44
+
+L48:
+sw $ra, -4+readint_FRAMESIZE($sp)
+sw $s7, -8+readint_FRAMESIZE($sp)
+sw $s6, -12+readint_FRAMESIZE($sp)
+sw $s5, -16+readint_FRAMESIZE($sp)
+sw $s4, -20+readint_FRAMESIZE($sp)
+sw $s3, -24+readint_FRAMESIZE($sp)
+sw $s2, -28+readint_FRAMESIZE($sp)
+sw $s1, -32+readint_FRAMESIZE($sp)
+sw $s0, -36+readint_FRAMESIZE($sp)
+sw $a0, 0+readint_FRAMESIZE($sp)
+move $s6, $a1
+li $s7, 0
+addi $a0, $sp, readint_FRAMESIZE
+jal skipto
+nop
+li $s5, 4
+mul $s5, $zero, $s5
+add $s6, $s6, $s5
+move $s6, $s6
+lw $s5, 0+readint_FRAMESIZE($sp)
+lw $s5, -4($s5)
+addi $a0, $sp, readint_FRAMESIZE
+move $a1, $s5
+jal isdigit
+nop
+move $s5, $v0
+sw $s5, 0($s6)
+
+L20:
+lw $s6, 0+readint_FRAMESIZE($sp)
+lw $s6, -4($s6)
+addi $a0, $sp, readint_FRAMESIZE
+move $a1, $s6
+jal isdigit
+nop
+move $s6, $v0
+bne $zero, $s6, L21
+nop
+
+L18:
+move $v0, $s7
+lw $s7, -8+readint_FRAMESIZE($sp)
+lw $s6, -12+readint_FRAMESIZE($sp)
+lw $s5, -16+readint_FRAMESIZE($sp)
+lw $s4, -20+readint_FRAMESIZE($sp)
+lw $s3, -24+readint_FRAMESIZE($sp)
+lw $s2, -28+readint_FRAMESIZE($sp)
+lw $s1, -32+readint_FRAMESIZE($sp)
+lw $s0, -36+readint_FRAMESIZE($sp)
+lw $ra, -4+readint_FRAMESIZE($sp)
+j L47
+nop
+
+L21:
+li $s6, 10
+mul $s7, $s7, $s6
+move $s7, $s7
+lw $s6, 0+readint_FRAMESIZE($sp)
+lw $s6, -4($s6)
+move $a0, $s6
+jal ord
+nop
+move $s6, $v0
+add $s7, $s7, $s6
+move $s6, $s7
+la $s7, L19
+move $a0, $s7
+jal ord
+nop
+move $s7, $v0
+sub $s7, $s6, $s7
+move $s7, $s7
+lw $s6, 0+readint_FRAMESIZE($sp)
+addi $s6, $s6, -4
+jal tigerGetchar
+nop
+move $s5, $v0
+sw $s5, 0($s6)
+j L20
+nop
+
+L47:
+nop
+
+addi $sp,$sp,44
+jr $ra
+
+
+
+
+.text
+.align 2
+.globl skipto
+skipto:
+skipto_FRAMESIZE = 40
+addi $sp,$sp,-40
+
+L50:
+sw $ra, -4+skipto_FRAMESIZE($sp)
+sw $s7, -8+skipto_FRAMESIZE($sp)
+sw $s6, -12+skipto_FRAMESIZE($sp)
+sw $s5, -16+skipto_FRAMESIZE($sp)
+sw $s4, -20+skipto_FRAMESIZE($sp)
+sw $s3, -24+skipto_FRAMESIZE($sp)
+sw $s2, -28+skipto_FRAMESIZE($sp)
+sw $s1, -32+skipto_FRAMESIZE($sp)
+sw $s0, -36+skipto_FRAMESIZE($sp)
+sw $a0, 0+skipto_FRAMESIZE($sp)
+
+L16:
+lw $s7, 0+skipto_FRAMESIZE($sp)
+lw $s7, 0($s7)
+lw $s6, -4($s7)
+la $s7, L9
+beq $s6, $s7, L11
+nop
+
+L12:
+li $s5, 1
+lw $s7, 0+skipto_FRAMESIZE($sp)
+lw $s7, 0($s7)
+lw $s6, -4($s7)
+la $s7, L10
+beq $s6, $s7, L14
+nop
+
+L15:
+li $s5, 0
+
+L14:
+move $s7, $s5
+
+L13:
+bne $zero, $s7, L17
+nop
+
+L8:
+li $v0, 0
+lw $s7, -8+skipto_FRAMESIZE($sp)
+lw $s6, -12+skipto_FRAMESIZE($sp)
+lw $s5, -16+skipto_FRAMESIZE($sp)
+lw $s4, -20+skipto_FRAMESIZE($sp)
+lw $s3, -24+skipto_FRAMESIZE($sp)
+lw $s2, -28+skipto_FRAMESIZE($sp)
+lw $s1, -32+skipto_FRAMESIZE($sp)
+lw $s0, -36+skipto_FRAMESIZE($sp)
+lw $ra, -4+skipto_FRAMESIZE($sp)
+j L49
+nop
+
+L11:
+li $s7, 1
+j L13
+nop
+
+L17:
+lw $s7, 0+skipto_FRAMESIZE($sp)
+lw $s7, 0($s7)
+addi $s7, $s7, -4
+jal tigerGetchar
+nop
+move $s6, $v0
+sw $s6, 0($s7)
+j L16
+nop
+
+L49:
+nop
+
+addi $sp,$sp,40
+jr $ra
+
+
+
+
+.text
+.align 2
+.globl isdigit
+isdigit:
+isdigit_FRAMESIZE = 44
+addi $sp,$sp,-44
+
+L52:
+sw $ra, -4+isdigit_FRAMESIZE($sp)
+sw $s7, -8+isdigit_FRAMESIZE($sp)
+sw $s6, -12+isdigit_FRAMESIZE($sp)
+sw $s5, -16+isdigit_FRAMESIZE($sp)
+sw $s4, -20+isdigit_FRAMESIZE($sp)
+sw $s3, -24+isdigit_FRAMESIZE($sp)
+sw $s2, -28+isdigit_FRAMESIZE($sp)
+sw $s1, -32+isdigit_FRAMESIZE($sp)
+sw $s0, -36+isdigit_FRAMESIZE($sp)
+sw $a0, 0+isdigit_FRAMESIZE($sp)
+move $s7, $a1
+lw $s7, 0+isdigit_FRAMESIZE($sp)
+lw $s7, 0($s7)
+lw $s7, -4($s7)
+move $a0, $s7
+jal ord
+nop
+move $s7, $v0
+move $s6, $s7
+la $s7, L1
+move $a0, $s7
+jal ord
+nop
+move $s7, $v0
+bge $s6, $s7, L3
+nop
+
+L4:
+li $s7, 0
+
+L5:
+move $v0, $s7
+lw $s7, -8+isdigit_FRAMESIZE($sp)
+lw $s6, -12+isdigit_FRAMESIZE($sp)
+lw $s5, -16+isdigit_FRAMESIZE($sp)
+lw $s4, -20+isdigit_FRAMESIZE($sp)
+lw $s3, -24+isdigit_FRAMESIZE($sp)
+lw $s2, -28+isdigit_FRAMESIZE($sp)
+lw $s1, -32+isdigit_FRAMESIZE($sp)
+lw $s0, -36+isdigit_FRAMESIZE($sp)
+lw $ra, -4+isdigit_FRAMESIZE($sp)
+j L51
+nop
+
+L3:
+li $s6, 1
+lw $s7, 0+isdigit_FRAMESIZE($sp)
+lw $s7, 0($s7)
+lw $s7, -4($s7)
+move $a0, $s7
+jal ord
+nop
+move $s7, $v0
+move $s7, $s7
+la $s5, L2
+move $a0, $s5
+jal ord
+nop
+move $s5, $v0
+ble $s7, $s5, L6
+nop
+
+L7:
+li $s6, 0
+
+L6:
+move $s7, $s6
+j L5
+nop
+
+L51:
+nop
+
+addi $sp,$sp,44
 jr $ra
 
 

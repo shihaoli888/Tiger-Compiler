@@ -326,6 +326,8 @@ T_stm F_progEntryExit1(F_frame frame, T_exp body) {
 #else
 	F_access ra_tmp = F_allocLocal(frame, TRUE);
 	T_stm stm = T_Move(F_Exp(ra_tmp, T_Temp(F_FP())), T_Temp(F_RA()));
+	//F_access fp_tmp = F_allocLocal(frame, TRUE);
+	//stm = T_Move(F_Exp(fp_tmp, T_Temp(F_FP())), T_Temp(F_FP()));
 #endif
 	Temp_tempList calleesaves = F_calleesaves();
 #if SPILL
