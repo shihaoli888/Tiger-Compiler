@@ -172,12 +172,11 @@ void doProc(FILE *file, FILE *assemFile, F_frame frame, T_stm stm) {
     /***������һ������***/
     AS_instrList instrList = F_codegen(frame, tracedStmList);
     instrList = F_progEntryExit2(instrList,done);
-    AS_proc proc = F_progEntryExit3(frame, instrList);
     /******/
     /***�ϲ���һ����ӡ����***/
-    fprintf(file, "%s", proc->prolog);
-    AS_printInstrList(file, instrList, F_get_tempmap());
-    fprintf(file, "%s", proc->epilog);
+//    fprintf(file, "%s", proc->prolog);
+//    AS_printInstrList(file, instrList, F_get_tempmap());
+//    fprintf(file, "%s", proc->epilog);
     /******/
     fprintf(file, "\n\n\nliveness\n\n");
     //fclose(file);
@@ -194,6 +193,8 @@ void doProc(FILE *file, FILE *assemFile, F_frame frame, T_stm stm) {
 
     // coloring
     struct RA_result ra_result = RA_regAlloc(frame, instrList);
+
+    AS_proc proc = F_progEntryExit3(frame, instrList);
     fprintf(assemFile,".text\n.align 2\n.globl %s\n",Temp_labelstring(F_name(frame)));
     fprintf(assemFile, "%s", proc->prolog);
     AS_printInstrList(assemFile, ra_result.il, ra_result.coloring);
@@ -258,14 +259,17 @@ int main(int argc, char **argv) {
       fprintf(stderr, "usage: a.out filename\n");
       exit(1);
     }*/
-  parse("testcases/queens.tig");
+//  parse("testcases/queens.tig");
+//    parse("testcases/merge.tig");
     //parse("customtests/func.tig");
     //parse("customtests/cjump.tig");
     //parse("testcases/test1.tig"); 
 //    parse("customtests/stdlib.tig");
-//    parse("customtests/spill.tig");
+    parse("customtests/spill.tig");
 //    parse("customtests/tree.tig");
 //    parse("customtests/isprime.tig");
+//    parse("customtests/factorial.tig");
+//    parse("customtests/isprime_simple.tig");
     printf("Done//:~");
     return 0;
 }

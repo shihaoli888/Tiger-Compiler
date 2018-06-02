@@ -84,18 +84,22 @@ static void replaceTempListTemp(Temp_tempList tempList, Temp_temp from, Temp_tem
 static void replaceTemp(AS_instrList instList, Temp_temp from, Temp_temp to) {
     for (; instList; instList = instList->tail) {
         AS_instr inst = instList->head;
-        switch (inst->kind) {
-            case I_OPER:
-                replaceTempListTemp(inst->u.OPER.src, from, to);
-                replaceTempListTemp(inst->u.OPER.dst, from, to);
-                break;
-            case I_MOVE:
-                replaceTempListTemp(inst->u.MOVE.src, from, to);
-                replaceTempListTemp(inst->u.MOVE.dst, from, to);
-                break;
-            default:
-                break;
+        if (checkInstUseTemp(inst, from)) {
+            switch (inst->kind) {
+                case I_OPER:
+                    replaceTempListTemp(inst->u.OPER.src, from, to);
+//                    replaceTempListTemp(inst->u.OPER.dst, from, to);
+                    break;
+                case I_MOVE:
+                    replaceTempListTemp(inst->u.MOVE.src, from, to);
+//                    replaceTempListTemp(inst->u.MOVE.dst, from, to);
+                    break;
+                default:
+                    break;
+            }
         }
+        if (checkInstDefTemp(inst, from))
+            break;
     }
 }
 
@@ -180,14 +184,15 @@ static void show_nodeinfo(FILE *out, void *info) {
 }
 
 struct RA_result RA_regAlloc(F_frame f, AS_instrList il) {
+    FRAME_SIZE[0] = '\0';
     strcpy(FRAME_SIZE, Temp_labelstring(F_name(f)));
     strcpy(FRAME_SIZE + strlen(Temp_labelstring(F_name(f))), "_FRAMESIZE");
 
     Temp_tempList spilledNodes = NULL;
     struct COL_result col_result;
 #if DEBUG_IT
-//    int MAX_LOOP = 5; // todo: only for debug
-//    int currLoop = 0;
+    int MAX_LOOP = 5; // todo: only for debug
+    int currLoop = 0;
     FILE *assemFile = fopen("debugAssem.s", "w");
     FILE *assemBeforeAllocFile = fopen("debugAssemBeforeAlloc.s", "w");
     FILE *graph = fopen("debugGraph.txt", "w");
@@ -218,10 +223,12 @@ struct RA_result RA_regAlloc(F_frame f, AS_instrList il) {
             AS_printInstrList(assemFile, il, col_result.coloring);
 #endif
         }
-//        currLoop++;
-//        if (currLoop >= MAX_LOOP)
-//            break;
+        currLoop++;
+        if (currLoop >= MAX_LOOP)
+            break;
     } while (spilledNodes);
+    if (currLoop >= MAX_LOOP)
+        assert(0);
 
     fclose(graph);
     fclose(assemFile);
