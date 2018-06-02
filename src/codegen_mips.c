@@ -216,9 +216,9 @@ static void munchStm(T_stm s)
 						emit(AS_Oper(FormatString("addi `d0, `s0, %d+%s\n", e->u.BINOP.right->u.CONST, framesize),
 							Temp_TempList(munchExp(s->u.MOVE.dst), NULL), Temp_TempList(F_SP(), NULL), NULL));
 					}
-					else 
-					emit(AS_Oper(FormatString("addi `d0, `s0, %d\n", e->u.BINOP.right->u.CONST),
-						Temp_TempList(munchExp(s->u.MOVE.dst), NULL), Temp_TempList(munchExp(e->u.BINOP.left), NULL), NULL));
+					else
+						emit(AS_Oper(FormatString("addi `d0, `s0, %d\n", e->u.BINOP.right->u.CONST),
+							Temp_TempList(munchExp(s->u.MOVE.dst), NULL), Temp_TempList(munchExp(e->u.BINOP.left), NULL), NULL));
 				}
 				else
 				{
@@ -232,7 +232,13 @@ static void munchStm(T_stm s)
 			}
 			else
 			{
-				emit(AS_Move("move `d0, `s0\n", Temp_TempList(munchExp(s->u.MOVE.dst), NULL), Temp_TempList(munchExp(s->u.MOVE.src), NULL)));
+				if (e->kind == T_TEMP && e->u.TEMP == F_FP())
+				{
+					emit(AS_Oper(FormatString("addi `d0, `s0, %s\n", framesize),
+						Temp_TempList(munchExp(s->u.MOVE.dst), NULL), Temp_TempList(F_SP(), NULL), NULL));
+				}
+				else
+					emit(AS_Move("move `d0, `s0\n", Temp_TempList(munchExp(s->u.MOVE.dst), NULL), Temp_TempList(munchExp(s->u.MOVE.src), NULL)));
 			}
 		}
 		return;
