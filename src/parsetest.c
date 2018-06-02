@@ -262,7 +262,7 @@ int main(int argc, char **argv) {
     //parse("customtests/func.tig");
     //parse("customtests/cjump.tig");
     //parse("testcases/queens.tig"); 
-    parse("c:/w/shared/LJZ_TC/customtests/redeclare.tig");
+    parse("customtests/redeclare.tig");
     printf("Done//:~");
     return 0;
 }

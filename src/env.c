@@ -42,5 +42,6 @@ S_table E_base_venv(void) {
 	S_enter(tmp,S_Symbol(String("concat")),E_FunEntry(NULL, Temp_namedlabel("concat"),Ty_TyList(Ty_String(),Ty_TyList(Ty_String(),NULL)), Ty_String()));
 	S_enter(tmp,S_Symbol(String("not")),E_FunEntry(NULL, Temp_namedlabel("not"),Ty_TyList(Ty_Int(),NULL), Ty_Int()));
 	S_enter(tmp,S_Symbol(String("tigerExit")),E_FunEntry(NULL, Temp_namedlabel("tigerExit"),Ty_TyList(Ty_Int(),NULL), Ty_Void()));
+	S_enter(tmp,S_Symbol(String("stringcmp")),E_FunEntry(NULL, Temp_namedlabel("stringcmp"),Ty_TyList(Ty_String(),Ty_TyList(Ty_String(),NULL)), Ty_Int()));
 	return tmp;
 }

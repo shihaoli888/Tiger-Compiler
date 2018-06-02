@@ -363,6 +363,7 @@ T_stm F_progEntryExit1(F_frame frame, T_exp body) {
 		stm = T_Seq(stm, T_Move(F_Exp(args->head, T_Temp(F_FP())),
 			T_Mem(T_Binop(T_plus, T_Temp(F_FP()), T_Const(i*get_wordsize())))));
 		args = args->tail;
+		i++;
 	}
 	T_stm pro = stm;
 	T_stm epi = T_Move(T_Temp(F_RV()), body);
