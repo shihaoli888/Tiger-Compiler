@@ -421,10 +421,8 @@ static Temp_tempList munchArgs(T_expList argExps)
 	// T_expList argList = argExps;
 	Temp_tempList rargList = F_argregs();
 	Temp_tempList resfirst = NULL, reslast = NULL;
-	int cnt = 0;
 	for (; argExps; argExps = argExps->tail)
 	{
-		cnt++;
 		if (last == NULL)
 		{
 			first = last = Temp_TempList(munchExp(argExps->head), NULL);
@@ -436,7 +434,6 @@ static Temp_tempList munchArgs(T_expList argExps)
 	}
 	for (; first && rargList; first = first->tail, rargList = rargList->tail)
 	{
-		cnt--;
 		if (first->head == F_FP()) {
 
 			emit(AS_Oper(FormatString("addi `d0, `s0, %s\n", framesize),
@@ -452,8 +449,9 @@ static Temp_tempList munchArgs(T_expList argExps)
 			reslast = reslast->tail = Temp_TempList(rargList->head, NULL);
 		}
 	}
-	cnt--;
-	for (; first; first = first->tail, cnt--)
+
+	int cnt = 4;
+	for (; first; first = first->tail, cnt++)
 	{
 		emit(AS_Oper(FormatString("sw `s0, %d(`s1)\n", cnt * 4), NULL, Temp_TempList(first->head, Temp_TempList(F_SP(), NULL)), NULL));
 	}

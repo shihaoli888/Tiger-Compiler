@@ -94,6 +94,15 @@ string substring(string str, int first, int len)
     return res;
 }
 
+int stringcmp(string s1, string s2)
+{
+    int l1 = s1->len, l2 = s2->len;
+    for(int i = 0, j = 0; i < l1 & j < l2; i++, j++){
+        if(s1->content[i] != s2->content[j])
+            return 
+    }
+}
+
 string concat(string str1, string str2)
 {
     if (str1->len == 0)

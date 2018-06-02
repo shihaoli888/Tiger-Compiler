@@ -41,7 +41,7 @@ F_accessList make_formals_list(F_frame f, U_boolList formals) {
 	F_accessList ret = NULL,p=NULL;
 	U_boolList tf = formals;
 	int count = 0;
-	for (; tf; tf = tf->tail,count++) {
+	for (; tf; tf = tf->tail) {
 		F_access a;
 		if (tf->head) {
 			a = InFrame(count*F_WORDSIZE);
@@ -57,6 +57,7 @@ F_accessList make_formals_list(F_frame f, U_boolList formals) {
 			p->tail = F_AccessList(a, NULL);
 			p = p->tail;
 		}
+		count++;
 	}
 	return ret;
 }
