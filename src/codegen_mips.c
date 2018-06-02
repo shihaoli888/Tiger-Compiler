@@ -211,6 +211,12 @@ static void munchStm(T_stm s)
 				}
 				else if (e->u.BINOP.right->kind == T_CONST && e->u.BINOP.right->u.CONST <= IMM_MAX && e->u.BINOP.right->u.CONST >= IMM_MIN)
 				{
+					if (e->u.BINOP.left->kind == T_TEMP && e->u.BINOP.left->u.TEMP == F_FP())
+					{
+						emit(AS_Oper(FormatString("addi `d0, `s0, %d+%s\n", e->u.BINOP.right->u.CONST, framesize),
+							Temp_TempList(munchExp(s->u.MOVE.dst), NULL), Temp_TempList(F_SP(), NULL), NULL));
+					}
+					else 
 					emit(AS_Oper(FormatString("addi `d0, `s0, %d\n", e->u.BINOP.right->u.CONST),
 						Temp_TempList(munchExp(s->u.MOVE.dst), NULL), Temp_TempList(munchExp(e->u.BINOP.left), NULL), NULL));
 				}
