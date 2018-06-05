@@ -478,6 +478,115 @@ $L21:
 	.end	substring
 	.size	substring, .-substring
 	.align	2
+	.globl	stringcmp
+	.set	nomips16
+	.ent	stringcmp
+	.type	stringcmp, @function
+stringcmp:
+	.frame	$fp,32,$31		# vars= 16, regs= 1/0, args= 0, gp= 8
+	.mask	0x40000000,-4
+	.fmask	0x00000000,0
+	.set	noreorder
+	.set	nomacro
+	addiu	$sp,$sp,-32
+	sw	$fp,28($sp)
+	move	$fp,$sp
+	sw	$4,32($fp)
+	sw	$5,36($fp)
+	lw	$2,32($fp)
+	lw	$2,0($2)
+	sw	$2,16($fp)
+	lw	$2,36($fp)
+	lw	$2,0($2)
+	sw	$2,20($fp)
+	sw	$0,8($fp)
+	sw	$0,12($fp)
+	j	$L23
+	nop
+
+$L26:
+	lw	$3,32($fp)
+	lw	$2,8($fp)
+	addu	$2,$3,$2
+	lbu	$3,4($2)
+	lw	$4,36($fp)
+	lw	$2,12($fp)
+	addu	$2,$4,$2
+	lbu	$2,4($2)
+	beq	$3,$2,$L24
+	nop
+
+	lw	$3,32($fp)
+	lw	$2,8($fp)
+	addu	$2,$3,$2
+	lbu	$3,4($2)
+	lw	$4,36($fp)
+	lw	$2,12($fp)
+	addu	$2,$4,$2
+	lbu	$2,4($2)
+	sltu	$2,$2,$3
+	j	$L25
+	nop
+
+$L24:
+	lw	$2,8($fp)
+	addiu	$2,$2,1
+	sw	$2,8($fp)
+	lw	$2,12($fp)
+	addiu	$2,$2,1
+	sw	$2,12($fp)
+$L23:
+	lw	$3,8($fp)
+	lw	$2,16($fp)
+	slt	$2,$3,$2
+	andi	$3,$2,0x00ff
+	lw	$4,12($fp)
+	lw	$2,20($fp)
+	slt	$2,$4,$2
+	andi	$2,$2,0x00ff
+	and	$2,$3,$2
+	andi	$2,$2,0x00ff
+	bne	$2,$0,$L26
+	nop
+
+	lw	$3,8($fp)
+	lw	$2,16($fp)
+	bne	$3,$2,$L27
+	nop
+
+	lw	$3,12($fp)
+	lw	$2,20($fp)
+	bne	$3,$2,$L27
+	nop
+
+	move	$2,$0
+	j	$L25
+	nop
+
+$L27:
+	lw	$3,8($fp)
+	lw	$2,16($fp)
+	beq	$3,$2,$L28
+	nop
+
+	li	$2,1			# 0x1
+	j	$L25
+	nop
+
+$L28:
+	li	$2,-1			# 0xffffffffffffffff
+$L25:
+	move	$sp,$fp
+	lw	$fp,28($sp)
+	addiu	$sp,$sp,32
+	j	$31
+	nop
+
+	.set	macro
+	.set	reorder
+	.end	stringcmp
+	.size	stringcmp, .-stringcmp
+	.align	2
 	.globl	concat
 	.set	nomips16
 	.ent	concat
@@ -496,24 +605,24 @@ concat:
 	sw	$5,44($fp)
 	lw	$2,40($fp)
 	lw	$2,0($2)
-	bne	$2,$0,$L23
+	bne	$2,$0,$L30
 	nop
 
 	lw	$2,44($fp)
-	j	$L24
+	j	$L31
 	nop
 
-$L23:
+$L30:
 	lw	$2,44($fp)
 	lw	$2,0($2)
-	bne	$2,$0,$L25
+	bne	$2,$0,$L32
 	nop
 
 	lw	$2,40($fp)
-	j	$L24
+	j	$L31
 	nop
 
-$L25:
+$L32:
 	lw	$2,40($fp)
 	lw	$3,0($2)
 	lw	$2,44($fp)
@@ -563,7 +672,7 @@ $L25:
 	nop
 
 	lw	$2,28($fp)
-$L24:
+$L31:
 	move	$sp,$fp
 	lw	$31,36($sp)
 	lw	$fp,32($sp)
@@ -642,10 +751,10 @@ main:
 	sw	$fp,32($sp)
 	move	$fp,$sp
 	sw	$0,24($fp)
-	j	$L29
+	j	$L36
 	nop
 
-$L30:
+$L37:
 	li	$4,8			# 0x8
 	jal	malloc
 	nop
@@ -677,10 +786,10 @@ $L30:
 	lw	$2,24($fp)
 	addiu	$2,$2,1
 	sw	$2,24($fp)
-$L29:
+$L36:
 	lw	$2,24($fp)
 	slt	$2,$2,256
-	bne	$2,$0,$L30
+	bne	$2,$0,$L37
 	nop
 
 	li	$4,8			# 0x8

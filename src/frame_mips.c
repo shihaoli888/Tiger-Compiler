@@ -46,7 +46,7 @@ F_accessList make_formals_list(F_frame f, U_boolList formals) {
 	F_accessList ret = NULL,p=NULL;
 	U_boolList tf = formals;
 	int count = 0;
-	for (; tf; tf = tf->tail,count++) {
+	for (; tf; tf = tf->tail) {
 		F_access a;
 		if (tf->head) {
 			a = InFrame(count*F_WORDSIZE);
@@ -62,6 +62,7 @@ F_accessList make_formals_list(F_frame f, U_boolList formals) {
 			p->tail = F_AccessList(a, NULL);
 			p = p->tail;
 		}
+		count++;
 	}
 	return ret;
 }
@@ -331,6 +332,8 @@ T_stm F_progEntryExit1(F_frame frame, T_exp body) {
 #else
 	F_access ra_tmp = F_allocLocal(frame, TRUE);
 	T_stm stm = T_Move(F_Exp(ra_tmp, T_Temp(F_FP())), T_Temp(F_RA()));
+	//F_access fp_tmp = F_allocLocal(frame, TRUE);
+	//stm = T_Move(F_Exp(fp_tmp, T_Temp(F_FP())), T_Temp(F_FP()));
 #endif
 	Temp_tempList calleesaves = F_calleesaves();
 #if SPILL
@@ -365,6 +368,7 @@ T_stm F_progEntryExit1(F_frame frame, T_exp body) {
 		stm = T_Seq(stm, T_Move(F_Exp(args->head, T_Temp(F_FP())),
 			T_Mem(T_Binop(T_plus, T_Temp(F_FP()), T_Const(i*get_wordsize())))));
 		args = args->tail;
+		i++;
 	}
 	T_stm pro = stm;
 	T_stm epi = T_Move(T_Temp(F_RV()), body);
@@ -415,8 +419,16 @@ AS_proc F_progEntryExit3(F_frame frame, AS_instrList body) {
 string F_string(F_frag str) {
 	char buffer[100];
 	string s = str->u.stringg.str;
-	int i=0;
-	for (; s[i]; i++);
-	sprintf(buffer, "%s:\n.word %d\n.ascii \"%s\"\n", Temp_labelstring(str->u.stringg.label), i, str->u.stringg.str);
+	int count = 0;
+	int flag = 0;
+	for (int i = 0; s[i]; i++) {
+		if (s[i] == '\\'&&flag == 0) {
+			flag = 1;
+			continue;
+		}
+		count++;
+		flag = 0;
+	}
+	sprintf(buffer, "%s:\n.word %d\n.ascii \"%s\"\n", Temp_labelstring(str->u.stringg.label), count, str->u.stringg.str);
 	return String(buffer);
 }

@@ -478,9 +478,10 @@ Tr_exp Tr_callExp(Temp_label name, Tr_expList oargs, Tr_level calllevel, Tr_leve
 Tr_exp Tr_letExp(Tr_expList lets) {
 	T_stm h = unNx(lets->head);
 	for (lets = lets->tail; lets; lets = lets->tail) {
+		if (lets->tail == NULL) break;
 		h = T_Seq(h, unNx(lets->head));
 	}
-	return Tr_Nx(h);
+	return Tr_Ex(T_Eseq(h,unEx(lets->head)));
 }
 
 Tr_exp Tr_assignExp(Tr_exp lv, Tr_exp rv) {

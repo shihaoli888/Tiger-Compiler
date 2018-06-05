@@ -8,12 +8,20 @@ function readint(any: any) : int =
      function isdigit(s : string) : int = 
 		  ord(buffer)>=ord("0") & ord(buffer)<=ord("9")
      function skipto() =
-       while buffer=" " | buffer="\n"
-         do buffer := tigerGetchar()
-  in skipto();
+     (
+         while stringcmp(buffer, " ")=0 | stringcmp(buffer, "\n")=0
+         do (
+         buffer := tigerGetchar()
+         )
+     )
+  in 
+     skipto();
      any.any := isdigit(buffer);
+
      while isdigit(buffer)
-       do (i := i*10+ord(buffer)-ord("0"); buffer := tigerGetchar());
+       do (i := i*10+ord(buffer)-ord("0"); 
+          buffer := tigerGetchar()
+       );
      i
  end
 
@@ -22,7 +30,8 @@ function readint(any: any) : int =
  function readlist() : list =
     let var any := any{any=0}
         var i := readint(any)
-     in if any.any
+     in 
+     if any.any
          then list{first=i,rest=readlist()}
          else nil
     end
@@ -35,7 +44,7 @@ function readint(any: any) : int =
       else list{first=b.first,rest=merge(a,b.rest)}
 
  function printlist(l: list) =
-   if l=nil then print("\n")
+   if l=nil then printStr("\n")
    else (printInt(l.first); printStr(" "); printlist(l.rest))
 
    var list1 := readlist()
@@ -43,6 +52,7 @@ function readint(any: any) : int =
 
 
   /* BODY OF MAIN PROGRAM */
- in printlist(merge(list1,list2))
+ in 
+ printlist(merge(list1,list2))
 end
 

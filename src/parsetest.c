@@ -167,7 +167,7 @@ void doProc(FILE *file, FILE *assemFile, F_frame frame, T_stm stm) {
     struct C_block block = C_basicBlocks(stmList);
     Temp_label done = block.label;
     T_stmList tracedStmList = C_traceSchedule(block);
-//    printStmList(file, tracedStmList);
+    printStmList(file, tracedStmList);
 
     /***������һ������***/
     AS_instrList instrList = F_codegen(frame, tracedStmList);
@@ -225,7 +225,7 @@ void parse(string fname) {
         //FILE *fp2 = fopen("canon_tree.txt", "w");
 
         FILE *instrFp = fopen("instr_b4_allocation.txt", "w");
-        FILE *assemFile = fopen("tigerMainL.s", "w");
+        FILE *assemFile = fopen("tigerMain.s", "w");
 		tmp = res;
 		fprintf(assemFile, ".data\n");
 		for (; tmp; tmp = tmp->tail) {
@@ -259,17 +259,10 @@ int main(int argc, char **argv) {
       fprintf(stderr, "usage: a.out filename\n");
       exit(1);
     }*/
-//  parse("testcases/queens.tig");
-//    parse("testcases/merge.tig");
+     // parse("testcases/queens.tig");
     //parse("customtests/func.tig");
     //parse("customtests/cjump.tig");
-    parse("testcases/test4.tig");
-//    parse("customtests/stdlib.tig");
-//    parse("customtests/spill.tig");
-//    parse("customtests/tree.tig");
-//    parse("customtests/isprime.tig");
-//    parse("customtests/factorial.tig");
-//    parse("customtests/isprime_simple.tig");
+    parse("testcases/test40.tig"); 
     printf("Done//:~");
     return 0;
 }
