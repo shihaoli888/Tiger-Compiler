@@ -1,86 +1,44 @@
-t100		conflict:	t117	t118	t119	t120	t121	t122	t123	t124	t107	$sp	$zero	t151	
-t151		conflict:	t100	t150	t117	t118	t119	t120	t121	t122	t123	t124	t107	$zero	t152	
-t152		conflict:	t151	t150	t117	t118	t119	t120	t121	t122	t123	t124	t107	$zero	$a0	
-$a1		conflict:	$a0	t150	t117	t118	t119	t120	t121	t122	t123	t124	t107	$zero	
-$a0		conflict:	t152	t150	t117	t118	t119	t120	t121	t122	t123	t124	t107	$zero	$a1	
-$t0		conflict:	t150	$v0	t117	t118	t119	t120	t121	t122	t123	t124	t107	$sp	$zero	
-$t1		conflict:	t150	$v0	t117	t118	t119	t120	t121	t122	t123	t124	t107	$sp	$zero	
-$t2		conflict:	t150	$v0	t117	t118	t119	t120	t121	t122	t123	t124	t107	$sp	$zero	
-$t3		conflict:	t150	$v0	t117	t118	t119	t120	t121	t122	t123	t124	t107	$sp	$zero	
-$t4		conflict:	t150	$v0	t117	t118	t119	t120	t121	t122	t123	t124	t107	$sp	$zero	
-$t5		conflict:	t150	$v0	t117	t118	t119	t120	t121	t122	t123	t124	t107	$sp	$zero	
-$t6		conflict:	t150	$v0	t117	t118	t119	t120	t121	t122	t123	t124	t107	$sp	$zero	
-$t7		conflict:	t150	$v0	t117	t118	t119	t120	t121	t122	t123	t124	t107	$sp	$zero	
-$t8		conflict:	t150	$v0	t117	t118	t119	t120	t121	t122	t123	t124	t107	$sp	$zero	
-$t9		conflict:	t150	$v0	t117	t118	t119	t120	t121	t122	t123	t124	t107	$sp	$zero	
-t149		conflict:	t150	t117	t118	t119	t120	t121	t122	t123	t124	t107	$sp	$zero	
-t150		conflict:	t117	t118	t119	t120	t121	t122	t123	t124	t107	$zero	t151	t152	$a0	$a1	$t0	$t1	$t2	$t3	$t4	$t5	$t6	$t7	$t8	$t9	$sp	$v0	$ra	t149	
-t153		conflict:	t117	t118	t119	t120	t121	t122	t123	t124	t107	$sp	$zero	
-$v0		conflict:	$t0	$t1	$t2	$t3	$t4	$t5	$t6	$t7	$t8	$t9	t150	$ra	t117	t118	t119	t120	t121	t122	t123	t124	t107	$sp	$zero	
-t117		conflict:	t107	$s0	$s1	$s2	$s3	$s4	$s5	$s6	$zero	t118	t119	t120	t121	t122	t123	t124	t100	t150	t151	t152	$a0	$a1	$t0	$t1	$t2	$t3	$t4	$t5	$t6	$t7	$t8	$t9	$sp	$ra	t149	t153	$v0	t102	
-t118		conflict:	t117	t107	$s0	$s1	$s2	$s3	$s4	$s5	$zero	t119	t120	t121	t122	t123	t124	t100	t150	t151	t152	$a0	$a1	$t0	$t1	$t2	$t3	$t4	$t5	$t6	$t7	$t8	$t9	$sp	$ra	t149	t153	$v0	$s7	t102	
-t119		conflict:	t117	t118	t107	$s0	$s1	$s2	$s3	$s4	$zero	t120	t121	t122	t123	t124	t100	t150	t151	t152	$a0	$a1	$t0	$t1	$t2	$t3	$t4	$t5	$t6	$t7	$t8	$t9	$sp	$ra	t149	t153	$v0	$s7	$s6	t102	
-t120		conflict:	t117	t118	t119	t107	$s0	$s1	$s2	$s3	$zero	t121	t122	t123	t124	t100	t150	t151	t152	$a0	$a1	$t0	$t1	$t2	$t3	$t4	$t5	$t6	$t7	$t8	$t9	$sp	$ra	t149	t153	$v0	$s7	$s6	$s5	t102	
-t121		conflict:	t117	t118	t119	t120	t107	$s0	$s1	$s2	$zero	t122	t123	t124	t100	t150	t151	t152	$a0	$a1	$t0	$t1	$t2	$t3	$t4	$t5	$t6	$t7	$t8	$t9	$sp	$ra	t149	t153	$v0	$s7	$s6	$s5	$s4	t102	
-t122		conflict:	t117	t118	t119	t120	t121	t107	$s0	$s1	$zero	t123	t124	t100	t150	t151	t152	$a0	$a1	$t0	$t1	$t2	$t3	$t4	$t5	$t6	$t7	$t8	$t9	$sp	$ra	t149	t153	$v0	$s7	$s6	$s5	$s4	$s3	t102	
-t123		conflict:	t117	t118	t119	t120	t121	t122	t107	$s0	$zero	t124	t100	t150	t151	t152	$a0	$a1	$t0	$t1	$t2	$t3	$t4	$t5	$t6	$t7	$t8	$t9	$sp	$ra	t149	t153	$v0	$s7	$s6	$s5	$s4	$s3	$s2	t102	
-t124		conflict:	t117	t118	t119	t120	t121	t122	t123	t107	$zero	t100	t150	t151	t152	$a0	$a1	$t0	$t1	$t2	$t3	$t4	$t5	$t6	$t7	$t8	$t9	$sp	$ra	t149	t153	$v0	$s7	$s6	$s5	$s4	$s3	$s2	$s1	t102	
-t107		conflict:	$zero	t117	t118	t119	t120	t121	t122	t123	t124	t100	t150	t151	t152	$a0	$a1	$t0	$t1	$t2	$t3	$t4	$t5	$t6	$t7	$t8	$t9	$sp	$ra	t149	t153	$v0	$s7	$s6	$s5	$s4	$s3	$s2	$s1	$s0	t102	
-t102		conflict:	t117	t118	t119	t120	t121	t122	t123	t124	t107	$sp	$zero	
-$s0		conflict:	t117	t118	t119	t120	t121	t122	t123	t107	$s1	$s2	$s3	$s4	$s5	$s6	$s7	$sp	$zero	$ra	
-$s1		conflict:	t117	t118	t119	t120	t121	t122	t124	t107	$s2	$s3	$s4	$s5	$s6	$s7	$sp	$zero	$s0	$ra	
-$s2		conflict:	t117	t118	t119	t120	t121	t123	t124	t107	$s3	$s4	$s5	$s6	$s7	$sp	$zero	$s1	$s0	$ra	
-$s3		conflict:	t117	t118	t119	t120	t122	t123	t124	t107	$s4	$s5	$s6	$s7	$sp	$zero	$s2	$s1	$s0	$ra	
-$s4		conflict:	t117	t118	t119	t121	t122	t123	t124	t107	$s5	$s6	$s7	$sp	$zero	$s3	$s2	$s1	$s0	$ra	
-$s5		conflict:	t117	t118	t120	t121	t122	t123	t124	t107	$s6	$s7	$sp	$zero	$s4	$s3	$s2	$s1	$s0	$ra	
-$s6		conflict:	t117	t119	t120	t121	t122	t123	t124	t107	$s7	$sp	$zero	$s5	$s4	$s3	$s2	$s1	$s0	$ra	
-$s7		conflict:	t118	t119	t120	t121	t122	t123	t124	t107	$sp	$zero	$s6	$s5	$s4	$s3	$s2	$s1	$s0	$ra	
-$sp		conflict:	t100	$t0	$t1	$t2	$t3	$t4	$t5	$t6	$t7	$t8	$t9	t150	t117	t118	t119	t120	t121	t122	t123	t124	t107	$zero	t149	t153	$v0	$s7	$s6	$s5	$s4	$s3	$s2	$s1	$s0	$ra	t102	
-$ra		conflict:	t150	$v0	t117	t118	t119	t120	t121	t122	t123	t124	t107	$s0	$s1	$s2	$s3	$s4	$s5	$s6	$s7	$sp	$zero	
-$zero		conflict:	t107	t117	t118	t119	t120	t121	t122	t123	t124	t100	t150	t151	t152	$a0	$a1	$t0	$t1	$t2	$t3	$t4	$t5	$t6	$t7	$t8	$t9	$sp	t149	t153	$v0	$s7	$s6	$s5	$s4	$s3	$s2	$s1	$s0	$ra	t102	
-
---------
-t107		conflict:	$a1	$a0	$s0	$s1	$s2	$s3	$s4	$s5	$s6	$s7	$sp	$zero	
-t118		conflict:	$a1	$a0	t117	$s0	$s1	$s2	$s3	$s4	$s5	$sp	$zero	
-t100		conflict:	t117	t119	t120	t121	t122	t123	t124	$sp	$zero	t151	
-t151		conflict:	t100	t150	t117	t119	t120	t121	t122	t123	t124	$zero	t152	
-t152		conflict:	t151	t150	t117	t119	t120	t121	t122	t123	t124	$zero	$a0	
-$a1		conflict:	t107	t118	$a0	t150	t117	t119	t120	t121	t122	t123	t124	$zero	
-$a0		conflict:	t107	t118	t152	t150	t117	t119	t120	t121	t122	t123	t124	$zero	$a1	
-$t0		conflict:	t150	$v0	t117	t119	t120	t121	t122	t123	t124	$sp	$zero	
-$t1		conflict:	t150	$v0	t117	t119	t120	t121	t122	t123	t124	$sp	$zero	
-$t2		conflict:	t150	$v0	t117	t119	t120	t121	t122	t123	t124	$sp	$zero	
-$t3		conflict:	t150	$v0	t117	t119	t120	t121	t122	t123	t124	$sp	$zero	
-$t4		conflict:	t150	$v0	t117	t119	t120	t121	t122	t123	t124	$sp	$zero	
-$t5		conflict:	t150	$v0	t117	t119	t120	t121	t122	t123	t124	$sp	$zero	
-$t6		conflict:	t150	$v0	t117	t119	t120	t121	t122	t123	t124	$sp	$zero	
-$t7		conflict:	t150	$v0	t117	t119	t120	t121	t122	t123	t124	$sp	$zero	
-$t8		conflict:	t150	$v0	t117	t119	t120	t121	t122	t123	t124	$sp	$zero	
-$t9		conflict:	t150	$v0	t117	t119	t120	t121	t122	t123	t124	$sp	$zero	
-t149		conflict:	t150	t117	t119	t120	t121	t122	t123	t124	$sp	$zero	
-t150		conflict:	t117	t119	t120	t121	t122	t123	t124	$zero	t151	t152	$a0	$a1	$t0	$t1	$t2	$t3	$t4	$t5	$t6	$t7	$t8	$t9	$sp	$v0	$ra	t149	
-t153		conflict:	t117	t119	t120	t121	t122	t123	t124	$sp	$zero	
-$v0		conflict:	$t0	$t1	$t2	$t3	$t4	$t5	$t6	$t7	$t8	$t9	t150	$ra	t117	t119	t120	t121	t122	t123	t124	$sp	$zero	
-t117		conflict:	$s0	$s1	$s2	$s3	$s4	$s5	$s6	$zero	t118	t119	t120	t121	t122	t123	t124	t100	t150	t151	t152	$a0	$a1	$t0	$t1	$t2	$t3	$t4	$t5	$t6	$t7	$t8	$t9	$sp	$ra	t149	t153	$v0	t102	
-t154		conflict:	t119	t120	t121	t122	t123	t124	$s7	$sp	$zero	
-t119		conflict:	t117	$s0	$s1	$s2	$s3	$s4	$zero	t120	t121	t122	t123	t124	t100	t150	t151	t152	$a0	$a1	$t0	$t1	$t2	$t3	$t4	$t5	$t6	$t7	$t8	$t9	$sp	$ra	t149	t153	$v0	$s7	t154	$s6	t102	
-t120		conflict:	t117	t119	$s0	$s1	$s2	$s3	$zero	t121	t122	t123	t124	t100	t150	t151	t152	$a0	$a1	$t0	$t1	$t2	$t3	$t4	$t5	$t6	$t7	$t8	$t9	$sp	$ra	t149	t153	$v0	$s7	t154	$s6	$s5	t102	
-t121		conflict:	t117	t119	t120	$s0	$s1	$s2	$zero	t122	t123	t124	t100	t150	t151	t152	$a0	$a1	$t0	$t1	$t2	$t3	$t4	$t5	$t6	$t7	$t8	$t9	$sp	$ra	t149	t153	$v0	$s7	t154	$s6	$s5	$s4	t102	
-t122		conflict:	t117	t119	t120	t121	$s0	$s1	$zero	t123	t124	t100	t150	t151	t152	$a0	$a1	$t0	$t1	$t2	$t3	$t4	$t5	$t6	$t7	$t8	$t9	$sp	$ra	t149	t153	$v0	$s7	t154	$s6	$s5	$s4	$s3	t102	
-t123		conflict:	t117	t119	t120	t121	t122	$s0	$zero	t124	t100	t150	t151	t152	$a0	$a1	$t0	$t1	$t2	$t3	$t4	$t5	$t6	$t7	$t8	$t9	$sp	$ra	t149	t153	$v0	$s7	t154	$s6	$s5	$s4	$s3	$s2	t102	
-t124		conflict:	t117	t119	t120	t121	t122	t123	$zero	t100	t150	t151	t152	$a0	$a1	$t0	$t1	$t2	$t3	$t4	$t5	$t6	$t7	$t8	$t9	$sp	$ra	t149	t153	$v0	$s7	t154	$s6	$s5	$s4	$s3	$s2	$s1	t102	
-t155		conflict:	$s0	$s1	$s2	$s3	$s4	$s5	$s6	$s7	$sp	$zero	
-t102		conflict:	t117	t119	t120	t121	t122	t123	t124	$sp	$zero	
-$s0		conflict:	t107	t117	t118	t119	t120	t121	t122	t123	$s1	$s2	$s3	$s4	$s5	$s6	$s7	$sp	$zero	t155	$ra	
-$s1		conflict:	t107	t117	t118	t119	t120	t121	t122	t124	$s2	$s3	$s4	$s5	$s6	$s7	$sp	$zero	$s0	t155	$ra	
-$s2		conflict:	t107	t117	t118	t119	t120	t121	t123	t124	$s3	$s4	$s5	$s6	$s7	$sp	$zero	$s1	$s0	t155	$ra	
-$s3		conflict:	t107	t117	t118	t119	t120	t122	t123	t124	$s4	$s5	$s6	$s7	$sp	$zero	$s2	$s1	$s0	t155	$ra	
-$s4		conflict:	t107	t117	t118	t119	t121	t122	t123	t124	$s5	$s6	$s7	$sp	$zero	$s3	$s2	$s1	$s0	t155	$ra	
-$s5		conflict:	t107	t117	t118	t120	t121	t122	t123	t124	$s6	$s7	$sp	$zero	$s4	$s3	$s2	$s1	$s0	t155	$ra	
-$s6		conflict:	t107	t117	t119	t120	t121	t122	t123	t124	$s7	$sp	$zero	$s5	$s4	$s3	$s2	$s1	$s0	t155	$ra	
-$s7		conflict:	t107	t119	t120	t121	t122	t123	t124	$sp	$zero	t154	$s6	$s5	$s4	$s3	$s2	$s1	$s0	t155	$ra	
-$sp		conflict:	t107	t118	t100	$t0	$t1	$t2	$t3	$t4	$t5	$t6	$t7	$t8	$t9	t150	t117	t119	t120	t121	t122	t123	t124	$zero	t149	t153	$v0	$s7	t154	$s6	$s5	$s4	$s3	$s2	$s1	$s0	t155	$ra	t102	
-$ra		conflict:	t150	$v0	t117	t119	t120	t121	t122	t123	t124	$s0	$s1	$s2	$s3	$s4	$s5	$s6	$s7	$sp	$zero	
-$zero		conflict:	t107	t117	t118	t119	t120	t121	t122	t123	t124	t100	t150	t151	t152	$a0	$a1	$t0	$t1	$t2	$t3	$t4	$t5	$t6	$t7	$t8	$t9	$sp	t149	t153	$v0	$s7	t154	$s6	$s5	$s4	$s3	$s2	$s1	$s0	t155	$ra	t102	
+t236		conflict:	t106	$sp	$zero	
+t235		conflict:	t106	$sp	$zero	
+t237		conflict:	$zero	
+t239		conflict:	t110	t106	t107	$sp	$zero	
+t238		conflict:	t110	t106	t107	$sp	$zero	
+t240		conflict:	t110	t106	$zero	
+t110		conflict:	$zero	t239	t238	t109	t240	t106	t244	t243	t246	t245	t242	t241	t247	$a0	$t0	$t1	$t2	$t3	$t4	$t5	$t6	$t7	$t8	$t9	$sp	$v0	$ra	t107	t248	t108	
+t244		conflict:	t110	t106	t109	t107	$zero	
+t246		conflict:	t110	t106	t243	t109	t107	$zero	
+t106		conflict:	t236	t235	t239	t238	t109	t240	t110	$zero	t244	t243	t246	t245	t242	t241	t247	$a0	$t0	$t1	$t2	$t3	$t4	$t5	$t6	$t7	$t8	$t9	$sp	$v0	$ra	t107	t248	t108	
+t245		conflict:	t110	t106	t243	t109	t107	$zero	
+t243		conflict:	t110	t106	t109	t107	$zero	t246	t245	
+t242		conflict:	t110	t106	t109	t107	$zero	
+t241		conflict:	t110	t106	t109	t107	$zero	
+t247		conflict:	t110	t106	t109	t107	$zero	
+$a0		conflict:	t110	t106	t109	t107	$zero	
+$t0		conflict:	$v0	t110	t106	t109	t107	$sp	$zero	
+$t1		conflict:	$v0	t110	t106	t109	t107	$sp	$zero	
+$t2		conflict:	$v0	t110	t106	t109	t107	$sp	$zero	
+$t3		conflict:	$v0	t110	t106	t109	t107	$sp	$zero	
+$t4		conflict:	$v0	t110	t106	t109	t107	$sp	$zero	
+$t5		conflict:	$v0	t110	t106	t109	t107	$sp	$zero	
+$t6		conflict:	$v0	t110	t106	t109	t107	$sp	$zero	
+$t7		conflict:	$v0	t110	t106	t109	t107	$sp	$zero	
+$t8		conflict:	$v0	t110	t106	t109	t107	$sp	$zero	
+$t9		conflict:	$v0	t110	t106	t109	t107	$sp	$zero	
+$v0		conflict:	$t0	$t1	$t2	$t3	$t4	$t5	$t6	$t7	$t8	$t9	$ra	t110	t106	t109	t107	$sp	$zero	
+t109		conflict:	t110	t106	$zero	t244	t243	t246	t245	t242	t241	t247	$a0	$t0	$t1	$t2	$t3	$t4	$t5	$t6	$t7	$t8	$t9	$sp	$v0	$ra	t107	t248	t108	
+t107		conflict:	t239	t238	t244	t243	t246	t245	t242	t241	t247	$a0	$t0	$t1	$t2	$t3	$t4	$t5	$t6	$t7	$t8	$t9	$v0	$ra	t110	t106	t109	$sp	$zero	t248	t108	
+t248		conflict:	t110	t106	t109	t107	$zero	
+t108		conflict:	t110	t106	t109	t107	$zero	
+$s0		conflict:	$s1	$s2	$s3	$s4	$s5	$s6	$s7	$sp	$zero	$ra	
+$s1		conflict:	$s2	$s3	$s4	$s5	$s6	$s7	$sp	$zero	$s0	$ra	
+$s2		conflict:	$s3	$s4	$s5	$s6	$s7	$sp	$zero	$s1	$s0	$ra	
+$s3		conflict:	$s4	$s5	$s6	$s7	$sp	$zero	$s2	$s1	$s0	$ra	
+$s4		conflict:	$s5	$s6	$s7	$sp	$zero	$s3	$s2	$s1	$s0	$ra	
+$s5		conflict:	$s6	$s7	$sp	$zero	$s4	$s3	$s2	$s1	$s0	$ra	
+$s6		conflict:	$s7	$sp	$zero	$s5	$s4	$s3	$s2	$s1	$s0	$ra	
+$s7		conflict:	$sp	$zero	$s6	$s5	$s4	$s3	$s2	$s1	$s0	$ra	
+$sp		conflict:	t236	t235	$s7	$s6	$s5	$s4	$s3	$s2	$s1	$s0	t239	t238	$t0	$t1	$t2	$t3	$t4	$t5	$t6	$t7	$t8	$t9	t110	t106	t109	$zero	$v0	$ra	t107	
+$ra		conflict:	$v0	$s0	$s1	$s2	$s3	$s4	$s5	$s6	$s7	t110	t106	t109	t107	$sp	$zero	
+$zero		conflict:	t236	t235	t110	t237	$s7	$s6	$s5	$s4	$s3	$s2	$s1	$s0	t239	t238	t109	t240	t106	t244	t243	t246	t245	t242	t241	t247	$a0	$t0	$t1	$t2	$t3	$t4	$t5	$t6	$t7	$t8	$t9	$sp	$v0	$ra	t107	t248	t108	
 
 --------

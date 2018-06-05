@@ -1,6 +1,6 @@
 #include "frame.h"
 
-#define SPILL 1
+#define SPILL 0
 
 #define F_WORDSIZE 4
 struct F_access_ {

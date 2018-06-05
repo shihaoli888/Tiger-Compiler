@@ -35,7 +35,7 @@ function readint(any: any) : int =
       else list{first=b.first,rest=merge(a,b.rest)}
 
  function printlist(l: list) =
-   if l=nil then print("\n")
+   if l=nil then printStr("\n")
    else (printInt(l.first); printStr(" "); printlist(l.rest))
 
    var list1 := readlist()
