@@ -358,13 +358,13 @@ static void Main() {
         if (!isPrecolored(p->head))
             printf("%d - %s\n", getTmpnum(getNodeTemp(p->head)), Temp_look(global.color, getNodeTemp(p->head)));
     }
-#endif
     if (global.spilledNodes) {
         // todo: deal with spill
         printf("spill happen\n");
 //        fprintf(stderr, "spill happen, not supported till now..\n");
 //        assert(0);
     }
+#endif
 }
 
 static Temp_tempList nodeListToTempList(G_nodeList nodeList) {

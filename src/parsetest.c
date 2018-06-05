@@ -259,9 +259,9 @@ int main(int argc, char **argv) {
       fprintf(stderr, "usage: a.out filename\n");
       exit(1);
     }*/
-    parse("testcases/queens.tig");
+//    parse("testcases/queens.tig");
     //parse("testcases/merge.tig");
-    //parse("customtests/spill.tig");
+    parse("customtests/spill.tig");
     //parse("customtests/isprime.tig");
     //parse("customtests/func.tig");
     //parse("customtests/cjump.tig");
