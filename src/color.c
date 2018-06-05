@@ -8,7 +8,7 @@
 #include "temp.h"
 #include "color.h"
 
-#define DEBUG_IT 1
+#define DEBUG_IT 0
 
 static enum COL_nodeType {
     COL_NODE_PRECOLORED,
@@ -377,8 +377,8 @@ static Temp_tempList nodeListToTempList(G_nodeList nodeList) {
 }
 
 struct COL_result COL_color(G_graph ig, Temp_map initial, Temp_tempList regs) {
-    printf("coloring..\n");
 #if 0
+    printf("coloring..\n");
     // show initial info
     {
         printf("initial test:\n");
