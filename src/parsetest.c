@@ -259,12 +259,15 @@ int main(int argc, char **argv) {
       fprintf(stderr, "usage: a.out filename\n");
       exit(1);
     }*/
-//    parse("testcases/queens.tig");
-    //parse("testcases/merge.tig");
-    parse("customtests/spill.tig");
-    //parse("customtests/isprime.tig");
-    //parse("customtests/func.tig");
-    //parse("customtests/cjump.tig");
+//    parse("customtests/queens.tig");
+//    parse("customtests/merge.tig");
+//    parse("customtests/spill.tig");
+//    parse("customtests/isprime.tig");
+//    parse("customtests/intarray.tig");
+//    parse("customtests/intlist.tig");
+//    parse("customtests/redeclare.tig");
+//    parse("customtests/stdlib.tig");
+    parse("customtests/tree.tig");
     printf("Done//:~");
     return 0;
 }
