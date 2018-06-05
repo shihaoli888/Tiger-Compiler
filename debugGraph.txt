@@ -1,30 +1,19 @@
-t178		conflict:	t102	$sp	$zero	
-t177		conflict:	t102	$sp	$zero	
-t176		conflict:	t102	$sp	$zero	
-t184		conflict:	t183	t102	t179	t175	$zero	
-t183		conflict:	t102	t179	t175	$zero	t184	
-t182		conflict:	t102	t179	t175	$zero	
-t102		conflict:	$sp	$zero	t178	t177	t176	t175	t179	t183	t184	t182	
-t181		conflict:	t179	t175	$zero	
-t179		conflict:	t102	t175	$zero	t183	t184	t182	t181	t180	
-t180		conflict:	t179	t175	$zero	$a0	
-$a1		conflict:	$a0	t175	$zero	
-$a0		conflict:	t180	t175	$zero	$a1	
-$t0		conflict:	t175	$v0	$sp	$zero	
-$t1		conflict:	t175	$v0	$sp	$zero	
-$t2		conflict:	t175	$v0	$sp	$zero	
-$t3		conflict:	t175	$v0	$sp	$zero	
-$t4		conflict:	t175	$v0	$sp	$zero	
-$t5		conflict:	t175	$v0	$sp	$zero	
-$t6		conflict:	t175	$v0	$sp	$zero	
-$t7		conflict:	t175	$v0	$sp	$zero	
-$t8		conflict:	t175	$v0	$sp	$zero	
-$t9		conflict:	t175	$v0	$sp	$zero	
-t174		conflict:	t175	$sp	$zero	
-t175		conflict:	t102	$zero	t179	t183	t184	t182	t181	t180	$a0	$a1	$t0	$t1	$t2	$t3	$t4	$t5	$t6	$t7	$t8	$t9	$sp	$v0	$ra	t174	
-t185		conflict:	$sp	$zero	
-$v0		conflict:	$t0	$t1	$t2	$t3	$t4	$t5	$t6	$t7	$t8	$t9	t175	$ra	$sp	$zero	
-t104		conflict:	$sp	$zero	
+t102		conflict:	t100	$zero	
+t100		conflict:	$zero	t102	
+t118		conflict:	$zero	
+t129		conflict:	$zero	
+$a0		conflict:	$zero	
+$t0		conflict:	$v0	$sp	$zero	
+$t1		conflict:	$v0	$sp	$zero	
+$t2		conflict:	$v0	$sp	$zero	
+$t3		conflict:	$v0	$sp	$zero	
+$t4		conflict:	$v0	$sp	$zero	
+$t5		conflict:	$v0	$sp	$zero	
+$t6		conflict:	$v0	$sp	$zero	
+$t7		conflict:	$v0	$sp	$zero	
+$t8		conflict:	$v0	$sp	$zero	
+$t9		conflict:	$v0	$sp	$zero	
+$v0		conflict:	$t0	$t1	$t2	$t3	$t4	$t5	$t6	$t7	$t8	$t9	$ra	$sp	$zero	
 $s0		conflict:	$s1	$s2	$s3	$s4	$s5	$s6	$s7	$sp	$zero	$ra	
 $s1		conflict:	$s2	$s3	$s4	$s5	$s6	$s7	$sp	$zero	$s0	$ra	
 $s2		conflict:	$s3	$s4	$s5	$s6	$s7	$sp	$zero	$s1	$s0	$ra	
@@ -33,8 +22,8 @@ $s4		conflict:	$s5	$s6	$s7	$sp	$zero	$s3	$s2	$s1	$s0	$ra
 $s5		conflict:	$s6	$s7	$sp	$zero	$s4	$s3	$s2	$s1	$s0	$ra	
 $s6		conflict:	$s7	$sp	$zero	$s5	$s4	$s3	$s2	$s1	$s0	$ra	
 $s7		conflict:	$sp	$zero	$s6	$s5	$s4	$s3	$s2	$s1	$s0	$ra	
-$sp		conflict:	t102	t178	t177	t176	$t0	$t1	$t2	$t3	$t4	$t5	$t6	$t7	$t8	$t9	t175	$zero	t174	t185	$v0	$s7	$s6	$s5	$s4	$s3	$s2	$s1	$s0	$ra	t104	
-$ra		conflict:	t175	$v0	$s0	$s1	$s2	$s3	$s4	$s5	$s6	$s7	$sp	$zero	
-$zero		conflict:	t102	t178	t177	t176	t175	t179	t183	t184	t182	t181	t180	$a0	$a1	$t0	$t1	$t2	$t3	$t4	$t5	$t6	$t7	$t8	$t9	$sp	t174	t185	$v0	$s7	$s6	$s5	$s4	$s3	$s2	$s1	$s0	$ra	t104	
+$sp		conflict:	$t0	$t1	$t2	$t3	$t4	$t5	$t6	$t7	$t8	$t9	$zero	$v0	$s7	$s6	$s5	$s4	$s3	$s2	$s1	$s0	$ra	
+$ra		conflict:	$v0	$s0	$s1	$s2	$s3	$s4	$s5	$s6	$s7	$sp	$zero	
+$zero		conflict:	t100	t102	t118	t129	$a0	$t0	$t1	$t2	$t3	$t4	$t5	$t6	$t7	$t8	$t9	$sp	$v0	$s7	$s6	$s5	$s4	$s3	$s2	$s1	$s0	$ra	
 
 --------

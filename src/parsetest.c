@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <regalloc.h>
+#include <tree.h>
 #include "frame.h"
 #include "canon.h"
 #include "util.h"
@@ -148,6 +149,125 @@ void printStmList(FILE *out, T_stmList stmList) {
     }
 }
 
+// vis file prepare
+
+static int nodeId;
+
+static void printVisStm(FILE *out, T_stm stm, int parent);
+
+static void printVisTreeExp(FILE *out, T_exp exp, int parent);
+
+void printVisStmList(FILE *out, T_stmList stmList) {
+    nodeId = 0;
+    for (; stmList; stmList = stmList->tail) {
+        printVisStm(out, stmList->head, 0);
+    }
+}
+
+static void printVisStm(FILE *out, T_stm stm, int parent) {
+    int newParent;
+    switch (stm->kind) {
+        case T_SEQ:
+            fprintf(out, "%d SEQ\n", parent);
+            ++nodeId;
+            newParent = nodeId;
+            printVisStm(out, stm->u.SEQ.left, newParent);
+            printVisStm(out, stm->u.SEQ.right, newParent);
+            break;
+        case T_LABEL:
+            fprintf(out, "%d LABEL(%s)\n", parent, S_name(stm->u.LABEL));
+            ++nodeId;
+            break;
+        case T_JUMP:
+            fprintf(out, "%d JUMP\n", parent);
+            ++nodeId;
+            newParent = nodeId;
+            printVisTreeExp(out, stm->u.JUMP.exp, newParent);
+            break;
+        case T_CJUMP:
+            fprintf(out, "%d CJUMP\n", parent);
+            ++nodeId;
+            newParent = nodeId;
+            fprintf(out, "%d %s\n", newParent, rel_oper[stm->u.CJUMP.op]);
+            ++nodeId;
+            printVisTreeExp(out, stm->u.CJUMP.left, newParent); // -1 to get parentid
+            printVisTreeExp(out, stm->u.CJUMP.right, newParent);
+            fprintf(out, "%d %s\n", newParent, S_name(stm->u.CJUMP.true));
+            ++nodeId;
+            fprintf(out, "%d %s\n", newParent, S_name(stm->u.CJUMP.false));
+            ++nodeId;
+            break;
+        case T_MOVE:
+            fprintf(out, "%d MOVE\n", parent);
+            ++nodeId;
+            newParent = nodeId;
+            printVisTreeExp(out, stm->u.MOVE.dst, newParent);
+            printVisTreeExp(out, stm->u.MOVE.src, newParent);
+            break;
+        case T_EXP:
+            fprintf(out, "%d EXP\n", parent);
+            ++nodeId;
+            newParent = nodeId;
+            printVisTreeExp(out, stm->u.EXP, newParent);
+            break;
+    }
+}
+
+static void printVisTreeExp(FILE *out, T_exp exp, int parent) {
+    int newParent;
+    switch (exp->kind) {
+        case T_BINOP:
+            fprintf(out, "%d BINOP\n", parent);
+            ++nodeId;
+            newParent = nodeId;
+            fprintf(out, "%d %s\n", newParent, bin_oper[exp->u.BINOP.op]);
+            ++nodeId;
+            printVisTreeExp(out, exp->u.BINOP.left, newParent);
+            printVisTreeExp(out, exp->u.BINOP.right, newParent);
+            break;
+        case T_MEM:
+            fprintf(out, "%d MEM\n", parent);
+            ++nodeId;
+            newParent = nodeId;
+            printVisTreeExp(out, exp->u.MEM, newParent);
+            break;
+        case T_TEMP:
+            fprintf(out, "%d TEMP t%d\n", parent, getTmpnum(exp->u.TEMP));
+            ++nodeId;
+            break;
+        case T_ESEQ:
+            fprintf(out, "%d ESEQ\n", parent);
+            ++nodeId;
+            newParent = nodeId;
+            printVisStm(out, exp->u.ESEQ.stm, newParent);
+            printVisTreeExp(out, exp->u.ESEQ.exp, newParent);
+            break;
+        case T_NAME:
+            fprintf(out, "%d NAME %s\n", parent, S_name(exp->u.NAME));
+            ++nodeId;
+            break;
+        case T_CONST:
+            fprintf(out, "%d CONST %d\n", parent, exp->u.CONST);
+            ++nodeId;
+            break;
+        case T_CALL: {
+            T_expList args = exp->u.CALL.args;
+            fprintf(out, "%d CALL\n", parent);
+            ++nodeId;
+            newParent = nodeId;
+            printVisTreeExp(out, exp->u.CALL.fun, newParent);
+            fprintf(out, "%d ARGS\n", newParent);
+            ++nodeId;
+            newParent = nodeId;
+            for (; args; args = args->tail) {
+                printVisTreeExp(out, args->head, newParent);
+            }
+            break;
+        }
+    } /* end of switch */
+}
+
+
 void show_nodeinfo(FILE *out, void *info) {
     Temp_map m = F_get_tempmap();
     string name = Temp_look(m, (Temp_temp) info);
@@ -171,7 +291,7 @@ void doProc(FILE *file, FILE *assemFile, F_frame frame, T_stm stm) {
 
     /***������һ������***/
     AS_instrList instrList = F_codegen(frame, tracedStmList);
-    instrList = F_progEntryExit2(instrList,done);
+    instrList = F_progEntryExit2(instrList, done);
     /******/
     /***�ϲ���һ����ӡ����***/
 //    fprintf(file, "%s", proc->prolog);
@@ -195,11 +315,11 @@ void doProc(FILE *file, FILE *assemFile, F_frame frame, T_stm stm) {
     struct RA_result ra_result = RA_regAlloc(frame, instrList);
 
     AS_proc proc = F_progEntryExit3(frame, instrList);
-    fprintf(assemFile,".text\n.align 2\n.globl %s\n",Temp_labelstring(F_name(frame)));
+    fprintf(assemFile, ".text\n.align 2\n.globl %s\n", Temp_labelstring(F_name(frame)));
     fprintf(assemFile, "%s", proc->prolog);
     AS_printInstrList(assemFile, ra_result.il, ra_result.coloring);
     fprintf(assemFile, "%s", proc->epilog);
-	fprintf(assemFile, "\n\n\n\n");
+    fprintf(assemFile, "\n\n\n\n");
 }
 
 #endif // _DEBUG
@@ -219,22 +339,25 @@ void parse(string fname) {
             }
         }
         FILE *fp = fopen("ir_tree.txt", "w");
+        FILE *visFile = fopen("visualization/ir_vis.txt", "w");
         printStmList(fp, show);
+        printVisStmList(visFile, show);
         fclose(fp);
+        fclose(visFile);
 
         //FILE *fp2 = fopen("canon_tree.txt", "w");
 
         FILE *instrFp = fopen("instr_b4_allocation.txt", "w");
         FILE *assemFile = fopen("tigerMain.s", "w");
-		tmp = res;
-		fprintf(assemFile, ".data\n");
-		for (; tmp; tmp = tmp->tail) {
-			if (tmp->head->kind == F_stringFrag) {
-                fprintf(assemFile,".align 2\n");
-				fprintf(assemFile, "%s", F_string(tmp->head));
-			}
-		}
-		//fprintf(assemFile, ".text\n.globl tigerMain\n");
+        tmp = res;
+        fprintf(assemFile, ".data\n");
+        for (; tmp; tmp = tmp->tail) {
+            if (tmp->head->kind == F_stringFrag) {
+                fprintf(assemFile, ".align 2\n");
+                fprintf(assemFile, "%s", F_string(tmp->head));
+            }
+        }
+        //fprintf(assemFile, ".text\n.globl tigerMain\n");
         tmp = res;
         for (; tmp; tmp = tmp->tail)
             if (tmp->head->kind == F_progFrag)
@@ -259,6 +382,7 @@ int main(int argc, char **argv) {
       fprintf(stderr, "usage: a.out filename\n");
       exit(1);
     }*/
+//    parse("testcases/test4.tig");
 //    parse("customtests/queens.tig");
 //    parse("customtests/merge.tig");
 //    parse("customtests/spill.tig");
@@ -267,7 +391,8 @@ int main(int argc, char **argv) {
 //    parse("customtests/intlist.tig");
 //    parse("customtests/redeclare.tig");
 //    parse("customtests/stdlib.tig");
-    parse("customtests/tree.tig");
+//    parse("customtests/tree.tig");
+    parse("customtests/plus.tig");
     printf("Done//:~");
     return 0;
 }
