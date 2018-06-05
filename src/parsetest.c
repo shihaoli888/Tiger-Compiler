@@ -263,9 +263,9 @@ int main(int argc, char **argv) {
 //    parse("testcases/merge.tig");
     //parse("customtests/func.tig");
     //parse("customtests/cjump.tig");
-    //parse("testcases/test1.tig"); 
+    parse("testcases/test4.tig");
 //    parse("customtests/stdlib.tig");
-    parse("customtests/spill.tig");
+//    parse("customtests/spill.tig");
 //    parse("customtests/tree.tig");
 //    parse("customtests/isprime.tig");
 //    parse("customtests/factorial.tig");
