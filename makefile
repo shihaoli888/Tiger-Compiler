@@ -3,17 +3,19 @@ YACC_FLAGS = --yacc -dv -osrc/y.tab.c
 LEX_C = flex
 LEX_FLAGS = -osrc/lex.yy.c
 CC = gcc
-CPP_FLAGS = -I include -D_DEBUG
+CPP_FLAGS = -I include
 VPATH = src include
-OBJS = parsetest.o errormsg.o util.o symbol.o absyn.o table.o y.tab.o lex.yy.o env.o semant.o types.o frame_mips.o temp.o translate.o tree.o canon.o assem.o flowgraph.o graph.o liveness.o codegen_mips.o escape.o 
+OBJS = main.o errormsg.o util.o symbol.o absyn.o table.o y.tab.o \
+lex.yy.o env.o semant.o types.o frame_mips.o temp.o translate.o tree.o \
+canon.o assem.o flowgraph.o graph.o liveness.o codegen_mips.o escape.o \
+color.o regalloc.o
 
 .PHONY: all
-all: parsetest
+all: LJZ_TC
 
-.PHONY: parsetest
-parsetest: $(OBJS)
-	$(CC) -o $@.out $^
-	./$@.out $@.tig
+.PHONY: LJZ_TC
+LJZ_TC: $(OBJS)
+	$(CC) -o $@ $^
 
 %.o: %.c
 	$(CC) $(CPP_FLAGS) -c -o $@ $<

@@ -2,13 +2,14 @@
 // 如跳转指令延迟槽内指令运行与否，及条件跳转伪指令、乘除伪指令
 #include <assert.h>
 #include <stdlib.h>
+#include <string.h>
 #include "util.h"
 #include "codegen.h"
 
 static AS_instrList iList = NULL, last = NULL;
 static char framesize[30];
-static const IMM_MAX = 32767;
-static const IMM_MIN = -32768;
+static const int IMM_MAX = 32767;
+static const int IMM_MIN = -32768;
 
 static void emit(AS_instr inst);
 static void munchStm(T_stm s);

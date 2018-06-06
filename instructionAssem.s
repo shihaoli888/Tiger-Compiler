@@ -1,3 +1,0 @@
-.data
-.text
-.globl tigerMain

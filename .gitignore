@@ -8,9 +8,10 @@ cmake-build-debug
 *.d
 unistd.h
 tigerdebug.*
-main.c
 Debug
 Release
 *_tree.txt
+*.txt
 instr_b4_allocation.txt
 *.s
+LJZ_TC
