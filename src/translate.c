@@ -1,3 +1,10 @@
+/**
+ * @brief 
+ * 
+ * @file translate.c
+ * @author lishihao
+ * @date 2018-06-09
+ */
 #include "translate.h"
 #include "frame.h"
 #include "tree.h"
@@ -177,7 +184,7 @@ static Tr_accessList make_trformals_list(Tr_level level) {
 	F_accessList f = F_formals(level->frame);
 	if (!f) return NULL;
 	else {
-		//È¥¾²Ì¬Á´
+		//È¥ï¿½ï¿½Ì¬ï¿½ï¿½
 		f = f->tail;
 		for (; f; f = f->tail) {
 			Tr_access tmp = checked_malloc(sizeof(*tmp));
@@ -199,7 +206,7 @@ static Tr_accessList make_trformals_list(Tr_level level) {
 Tr_level Tr_newLevel(Tr_level parent, Temp_label name, U_boolList formals) {
 	Tr_level level = checked_malloc(sizeof(*level));
 	level->parent = parent;
-	level->frame = F_newFrame(name, U_BoolList(TRUE, formals));//¼Ó¸ö¾²Ì¬Á´Î»
+	level->frame = F_newFrame(name, U_BoolList(TRUE, formals));//ï¿½Ó¸ï¿½ï¿½ï¿½Ì¬ï¿½ï¿½Î»
 	level->formals = make_trformals_list(level);
 	return level;
 }
@@ -229,7 +236,7 @@ Temp_label Tr_levelName(Tr_level level) {
 Tr_exp Tr_simpleVar(Tr_access acc, Tr_level lev) {
 	T_exp tmp = NULL;
 	for (; lev; lev = lev->parent) {
-		if (lev == acc->level) {//Í¬Ò»Ç¶Ì×²ã
+		if (lev == acc->level) {//Í¬Ò»Ç¶ï¿½×²ï¿½
 			if (tmp == NULL) {
 				return Tr_Ex( F_Exp(acc->access, T_Temp(F_FP())));
 			}
@@ -237,7 +244,7 @@ Tr_exp Tr_simpleVar(Tr_access acc, Tr_level lev) {
 				return Tr_Ex(F_Exp(acc->access, tmp));
 			}
 		}
-		else {//²»Í¬Ç¶Ì×²ã£¬ÕÒ¾²Ì¬Á´
+		else {//ï¿½ï¿½Í¬Ç¶ï¿½×²ã£¬ï¿½Ò¾ï¿½Ì¬ï¿½ï¿½
 			if (tmp == NULL) {
 				tmp = F_Exp(F_formals(lev->frame)->head, T_Temp(F_FP()));
 			}
@@ -341,7 +348,7 @@ Tr_exp Tr_ifthenelse(Tr_exp test, Tr_exp then, Tr_exp elsess) {
 	Temp_temp r = Temp_newtemp();
 	Temp_label final = Temp_newlabel();
 	T_stm jump = T_Jump(T_Name(final), Temp_LabelList(final, NULL));
-	//ÔÝÊ±°´ÕÕ×î¼òµ¥µÄÀ´
+	//ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½òµ¥µï¿½ï¿½ï¿½
 	return Tr_Ex(T_Eseq(e1.stm,
 		T_Eseq(T_Label(t),
 			T_Eseq(T_Move(T_Temp(r), unEx(then)),
@@ -522,10 +529,10 @@ Tr_exp Tr_seqExp(Tr_expList seq) {
 static F_fragList prog_frags = NULL;
 
 void Tr_progEntryExit(Tr_level level, Tr_exp body, Tr_accessList formals) {
-	///*È±ºÜ¶à£¬F_progEntryExit1 3*/
+	///*È±ï¿½Ü¶à£¬F_progEntryExit1 3*/
 	//T_stm progbody = NULL;
 	//if (body->kind == Tr_ex) {
-	//	//´ø·µ»ØÖµ
+	//	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
 	//	Temp_temp rv = F_RV();
 	//	progbody = T_Move(T_Temp(rv), unEx(body));
 	//}

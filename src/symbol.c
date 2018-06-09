@@ -1,3 +1,10 @@
+/**
+ * @brief 
+ * refer to textbook
+ * @file symbol.c
+ * @author your name
+ * @date 2018-06-09
+ */
 #include "symbol.h"
 #include "table.h"
 #include <string.h>

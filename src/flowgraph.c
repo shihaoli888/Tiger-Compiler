@@ -1,3 +1,10 @@
+/**
+ * @brief 
+ * 
+ * @file flowgraph.c
+ * @author lishihao
+ * @date 2018-06-09
+ */
 #include "flowgraph.h"
 
 
@@ -52,7 +59,7 @@ G_graph FG_AssemFlowGraph(AS_instrList il) {
 		G_node tmp = FG_AssemNode(g, il->head);
 		if(pre){
 			AS_instr preil = G_nodeInfo(pre);
-			//²»ÊÇÎÞÌõ¼þÌø×ª
+			//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×ª
 			if (!(preil->kind == I_OPER &&preil->u.OPER.dst==NULL&&preil->u.OPER.src == NULL&&preil->u.OPER.jumps)) {
 				G_addEdge(pre, tmp);
 			}

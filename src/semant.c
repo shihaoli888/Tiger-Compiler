@@ -1,3 +1,10 @@
+/**
+ * @brief 
+ * 
+ * @file semant.c
+ * @author lishihao
+ * @date 2018-06-09
+ */
 #include "util.h"
 #include "errormsg.h"
 #include "semant.h"
@@ -170,8 +177,8 @@ struct expty transExp(Tr_level level, S_table venv, S_table tenv, A_exp a, Tr_ex
 		int record_count = 0;
 		Ty_fieldList tmp = typ->u.record;
 		for (; tmp; tmp = tmp->tail) record_count++;
-		int *offset = checked_malloc(sizeof(int)*record_count);//¼ÇÂ¼¶ÔÓ¦ÉêÃ÷Î»ÖÃµÄÆ«ÒÆ
-		//±éÀú²éÓòÃûºÍÀàÐÍÊÇ·ñ¶ÔÓ¦´æÔÚ
+		int *offset = checked_malloc(sizeof(int)*record_count);//ï¿½ï¿½Â¼ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½Î»ï¿½Ãµï¿½Æ«ï¿½ï¿½
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½
 		Tr_expList eargs = NULL, eargsp;
 		int k = 0;
 		for (; tl; tl = tl->tail,k++) {
@@ -272,7 +279,7 @@ struct expty transExp(Tr_level level, S_table venv, S_table tenv, A_exp a, Tr_ex
 	}
 	case A_forExp:
 	{
-		//ÒþÊ½ÉêÃ÷±äÁ¿
+		//ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		Tr_exp oldbreak = breakk;
 		breakk = Tr_doneExp();
 		S_beginScope(venv);
@@ -396,7 +403,7 @@ Tr_exp transDec(Tr_level level, S_table venv, S_table tenv, A_dec d, Tr_exp brea
 		}
 		p = name_tylist;
 		tmp = d->u.type;
-		//ÅÐ¶ÏÊÇ·ñÓÐ»·
+		//ï¿½Ð¶ï¿½ï¿½Ç·ï¿½ï¿½Ð»ï¿½
 		for (; p; p = p->tail,tmp=tmp->tail) {
 			Ty_ty tt = p->head;
 			for (tt = tt->u.name.ty; tt;) {
@@ -414,8 +421,8 @@ Tr_exp transDec(Tr_level level, S_table venv, S_table tenv, A_dec d, Tr_exp brea
 	case A_functionDec:
 	{
 		A_fundecList funcs = d->u.function;
-		/*ÊÕ¼¯º¯ÊýÍ·*/
-		//±£´ælevelÁ´±í
+		/*ï¿½Õ¼ï¿½ï¿½ï¿½ï¿½ï¿½Í·*/
+		//ï¿½ï¿½ï¿½ï¿½levelï¿½ï¿½ï¿½ï¿½
 		Tr_levelList levell = NULL;
 		Tr_levelList pp = NULL;
 		for (; funcs; funcs = funcs->tail) {
@@ -463,7 +470,7 @@ Tr_exp transDec(Tr_level level, S_table venv, S_table tenv, A_dec d, Tr_exp brea
 			if (body.ty != resultTy) {
 				EM_error(f->pos, "return value mismatch");
 			}
-			/*Î´Íê³É ÊÓ½ÇÎ»ÒÆxxx*/
+			/*Î´ï¿½ï¿½ï¿½ ï¿½Ó½ï¿½Î»ï¿½ï¿½xxx*/
 			Tr_progEntryExit(pp->head, body.exp, Tr_formals(pp->head));
 			S_endScope(venv);
 		}

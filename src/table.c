@@ -1,3 +1,10 @@
+/**
+ * @brief 
+ * refer to textbook but wrote myself
+ * @file table.c
+ * @author lishihao
+ * @date 2018-06-09
+ */
 #include "table.h"
 #include <memory.h>
 #include "util.h"

@@ -1,3 +1,10 @@
+/**
+ * @brief 
+ * 
+ * @file liveness.c
+ * @author lishihao
+ * @date 2018-06-09
+ */
 #include "liveness.h"
 #include "flowgraph.h"
 
@@ -116,7 +123,7 @@ static void solve_data_equation(G_nodeList flist){
 			bitmap_diff(in, out, def);
 			bitmap_union(in, use, in);
 			if (!(bitmap_equal(in, inn) && bitmap_equal(out, outt))) {
-				//Î´½áÊø
+				//Î´ï¿½ï¿½ï¿½ï¿½
 				flag = 1;
 			}
 		}
@@ -141,13 +148,13 @@ struct Live_graph Live_liveness(G_graph flow) {
 	G_graph lg = G_Graph();
 	G_nodeList glist = G_nodes(flow),glistp;
 	int node_count = 0;
-	//¹¹½¨±äÁ¿Í¼
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼
 	for (glistp=glist; glistp; glistp = glistp->tail) {
 		G_node n = glistp->head;
 		Temp_tempList def = FG_def(n);
 		for (; def; def = def->tail) {
 			if (node_offset(def->head, G_nodes(lg)) == -1) {
-				G_Node(lg, def->head);//¼ÓÈëÐÂ±äÁ¿
+				G_Node(lg, def->head);//ï¿½ï¿½ï¿½ï¿½ï¿½Â±ï¿½ï¿½ï¿½
 				node_count++;
 			}
 		}
@@ -165,7 +172,7 @@ struct Live_graph Live_liveness(G_graph flow) {
 
 	for (glistp = glist; glistp; glistp = glistp->tail) {
 		G_node flownode = glistp->head;
-		//³õÊ¼»¯def
+		//ï¿½ï¿½Ê¼ï¿½ï¿½def
 		bitmap defmap = Bitmap_empty();
 		Temp_tempList def = FG_def(flownode);
 		for (; def; def = def->tail) {
@@ -177,7 +184,7 @@ struct Live_graph Live_liveness(G_graph flow) {
 			}
 		}
 		enterLiveMap(def_table, flownode, defmap);
-		//³õÊ¼»¯use
+		//ï¿½ï¿½Ê¼ï¿½ï¿½use
 		bitmap usemap = Bitmap_empty();
 		Temp_tempList use= FG_use(flownode);
 		for (; use;use = use->tail) {
@@ -189,14 +196,14 @@ struct Live_graph Live_liveness(G_graph flow) {
 			}
 		}
 		enterLiveMap(use_table, flownode, usemap);
-		//³õÊ¼»¯in out ¿Õ¼¯
+		//ï¿½ï¿½Ê¼ï¿½ï¿½in out ï¿½Õ¼ï¿½
 		bitmap inmap = Bitmap_empty();
 		enterLiveMap(in_table, flownode, inmap);
 		bitmap outmap = Bitmap_empty();
 		enterLiveMap(out_table, flownode, outmap);
 	}
 
-	//½âÊý¾ÝÁ÷·½³Ì
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	solve_data_equation(G_nodes(flow));
 	
 	Live_moveList moveList = NULL;
