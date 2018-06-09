@@ -6,6 +6,10 @@
 #include "tree.h"
 #include "canon.h"
 
+/*
+ * data structure referenced from book
+ */
+
 typedef struct expRefList_ *expRefList;
 struct expRefList_ {
     T_exp *head;
@@ -58,6 +62,7 @@ static C_stmListList start_block(T_stmList stmList, Temp_label done);
 static C_stmListList end_block_and_gen_others(T_stmList prevStmList, T_stmList currStmList, Temp_label done);
 
 /*
+ * referenced from book
  * 判断是不是Nop
  */
 static bool isNop(T_stm x) {
@@ -65,6 +70,7 @@ static bool isNop(T_stm x) {
 }
 
 /*
+ * referenced from book
  * 判断是否可以交换
  */
 static bool commute(T_stm x, T_exp y) {
@@ -136,6 +142,7 @@ static T_stm seq(T_stm x, T_stm y) {
 }
 
 /*
+ * referenced from book
  * 转化一个exp，结果为statement以及一个转化好的exp
  */
 static struct stmExp do_exp(T_exp exp) {
@@ -179,6 +186,7 @@ static struct stmExp do_exp(T_exp exp) {
 }
 
 /*
+ * referenced from book
  * 转化一个statement
  */
 static T_stm do_stm(T_stm stm) {

@@ -19,17 +19,26 @@ Linux debian-mips 3.2.0-4-4kc-malta
 - `LJZ_TC/`
   - `include/`
     - balabala
+    - `canon.h` 基本块生成、线性化、trace生成相关接口
+    - `color.h` 寄存器着色接口
+    - `regalloc.h` 寄存器分配相关接口
   - `src/`
-    - `tiger.lex` 
-
-    - `tiger.y` 
+    - `tiger.lex` lex词法分析
+    - `canon.c` 基本块生成、线性化、trace生成相关实现
+    - `color.c` 寄存器着色相关实现
+    - `regalloc.c` 寄存器分配相关实现，包含对活性分析的调用
+    - `tiger.y`
   - `lib/`
     - `libtiger.c` , `libtiger.s` TIGER外部函数
     - `tigerMain.c`, `tigerMain.s` TIGER程序编译结果示例
   - `visualization/` 可视化中间代码树
-    - index.html
-    - ir_vis.txt
-    - ...
+    - index.html 中间代码树呈现文件
+    - ir_vis.txt 生成的原始数据文件
+    - index.js 可视化相关处理
+    - main.css 可视化处理相关样式
+    - Treant.js 可视化用到的库文件
+    - Treant.css 可视化用到的库文件
+    - vendor 可视化用到的Treant依赖
   - `makefile`
   - `CMakeLists.txt`
   - `customtests/` 测试用例
