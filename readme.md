@@ -18,11 +18,36 @@ Linux debian-mips 3.2.0-4-4kc-malta
 ## 文件清单
 - `LJZ_TC/`
   - `include/`
-    - balabala
+    - `env.h` 值环境和类型环境接口
+    - `escape.h` 逃逸分析接口
+    - `flowgraph.h` 数据流图生成接口
+    - `frame.h` 栈帧相关接口
+    - `graph.h` 基本的图结构接口
+    - `liveness.h` 活跃分析接口
+    - `semant.h` 语义分析接口 涉及类型检查和中间代码树
+    - `symbol.h` 符号表接口
+    - `table.h`  基础hash表接口
+    - `temp.h` 临时变量接口
+    - `translate.h` 中间代码翻译接口，由semant调用
+    - `tree.h` 中间代码树数据结构
+    - `types.h` 类型接口
     - `canon.h` 基本块生成、线性化、trace生成相关接口
     - `color.h` 寄存器着色接口
     - `regalloc.h` 寄存器分配相关接口
   - `src/`
+    - `env.c` 值环境和类型环境实现
+    - `escape.c` 逃逸分析实现
+    - `flowgraph.c` 数据流图生成实现
+    - `frame_mips.c` 栈帧相关实现
+    - `graph.c` 基本的图结构实现
+    - `liveness.c` 活跃分析实现
+    - `semant.c` 语义分析实现
+    - `symbol.c` 符号表实现
+    - `table.c`  基础hash表实现
+    - `temp.c` 临时变量实现
+    - `translate.c` 中间代码翻译实现
+    - `tree.c` 中间代码树构造函数
+    - `types.c` 类型实现
     - `tiger.lex` lex词法分析
     - `canon.c` 基本块生成、线性化、trace生成相关实现
     - `color.c` 寄存器着色相关实现
