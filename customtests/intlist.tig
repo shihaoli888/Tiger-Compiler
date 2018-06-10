@@ -8,11 +8,8 @@ let
         while il do
         (
             ans := ans + il.val;
-            il := il.next;
-            printInt(ans);
-            printStr(" ")
+            il := il.next
         );
-        printStr("\n");
         ans
     )
 
@@ -28,5 +25,4 @@ in
     );
     printInt(sum(il));
     printStr("\n")
-
 end

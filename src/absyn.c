@@ -1,6 +1,7 @@
 /*
  * absyn.c - Abstract Syntax Functions. Most functions create an instance of an
  *           abstract syntax rule.
+ * The code is from the textbook.
  */
 
 #include "util.h"

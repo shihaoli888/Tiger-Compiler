@@ -1,3 +1,4 @@
+// The code is from the textbook.
 #include "util.h"
 #include <string.h>
 #include <stdlib.h>

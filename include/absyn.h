@@ -6,6 +6,7 @@
 *
 * All types and functions declared in this header file begin with "A_"
 * Linked list types end with "..list"
+* The code is from the textbook.
 */
 
 /* Type Definitions */

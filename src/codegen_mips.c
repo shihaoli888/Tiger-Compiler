@@ -1,5 +1,10 @@
-// 指令表现以在Spim模拟器上运行为准
-// 如跳转指令延迟槽内指令运行与否，及条件跳转伪指令、乘除伪指令
+/**
+ * @brief 
+ * 
+ * @file codegen_mips.c
+ * @author Ji Yixin
+ * @date 2018-06-10
+ */
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>

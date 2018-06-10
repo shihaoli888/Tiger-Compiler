@@ -1,8 +1,15 @@
+/**
+ * @brief 
+ * 
+ * @file main.c
+ * @author Ji Yixin
+ * @date 2018-06-10
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <regalloc.h>
-#include <tree.h>
+#include "regalloc.h"
+#include "tree.h"
 #include "frame.h"
 #include "canon.h"
 #include "util.h"
@@ -440,7 +447,7 @@ void compile(char *inFileName, char *outFileName) {
 }
 
 int main(int argc, char **argv) {
-	   #ifdef _DEBUG
+	  #ifdef _DEBUG
 	//    parse("testcases/test4.tig");
 	//    parse("customtests/queens.tig");
 	//    parse("customtests/merge.tig");
@@ -451,10 +458,10 @@ int main(int argc, char **argv) {
 	//    parse("customtests/redeclare.tig");
 	//    parse("customtests/stdlib.tig");
 	//    parse("customtests/tree.tig");
-	   parse("customtests/plus.tig");
-	   printf("Done//:~");
-	   return 0;
-	   #endif
+	   parse("customtests/test2.tig");
+	  printf("Done//:~");
+	  return 0;
+	  #endif
 
     // simple command line parsing
 	char* inFileName = NULL;

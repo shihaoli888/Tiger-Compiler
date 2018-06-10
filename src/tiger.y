@@ -1,4 +1,11 @@
 %{
+/**
+ * @brief 
+ * 
+ * @file main.c
+ * @author Ji Yixin
+ * @date 2018-06-10
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include "util.h"

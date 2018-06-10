@@ -34,6 +34,11 @@ Linux debian-mips 3.2.0-4-4kc-malta
     - `canon.h` 基本块生成、线性化、trace生成相关接口
     - `color.h` 寄存器着色接口
     - `regalloc.h` 寄存器分配相关接口
+    - `absyn.h` 抽象语法树接口
+    - `assem.h`汇编代码接口
+    - `codegen.h`指令选择接口
+    - `errormsg.h`报错接口
+    - `util.h`使用函数接口
   - `src/`
     - `env.c` 值环境和类型环境实现
     - `escape.c` 逃逸分析实现
@@ -52,7 +57,13 @@ Linux debian-mips 3.2.0-4-4kc-malta
     - `canon.c` 基本块生成、线性化、trace生成相关实现
     - `color.c` 寄存器着色相关实现
     - `regalloc.c` 寄存器分配相关实现，包含对活性分析的调用
-    - `tiger.y`
+    - `tiger.y`yacc语法分析
+    - `absyn.c`抽象语法树实现
+    - `assem.c`汇编代码结构实现
+    - `codegen_mips.c`指令选择实现
+    - `errormsg.c`报错函数实现
+    - `main.c`程序入口
+    - `util.c`实用函数实现
   - `lib/`
     - `libtiger.c` , `libtiger.s` TIGER外部函数
     - `tigerMain.c`, `tigerMain.s` TIGER程序编译结果示例

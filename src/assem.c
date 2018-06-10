@@ -1,6 +1,7 @@
 /*
  * mipscodegen.c - Functions to translate to Assem-instructions for
  *             the Jouette assembly language using Maximal Munch.
+ * The code is from the textbook.
  */
 
 #include <stdio.h>

@@ -19,16 +19,16 @@ let
             then break
             else
             ( 
+                printStr("i: ");
                 for i:= 0 to 2 * size do(
-                    printStr("i: ");
                     printInt(i);
-                    printStr("\n");
+                    printStr(" ");
                     if i = size
                     then break
                     else
                         ans := ans + nums[i]
-                )
-                ;
+                );
+                printStr("\n");
                 size := size -1 
             )
         );
